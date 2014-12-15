@@ -1,0 +1,39 @@
+source 'https://rubygems.org'
+
+# Default Rails gems
+gem 'rails', '4.1.2'
+gem 'pg'
+gem 'sass-rails', '~> 4.0.3'
+gem 'uglifier', '>= 1.3.0'
+gem 'coffee-rails', '~> 4.0.0'
+gem 'jquery-rails'
+gem 'jbuilder', '~> 2.0'
+gem 'sdoc', '~> 0.4.0',         group: :doc
+gem 'spring',                   group: :development
+
+gem 'angularjs-rails'               # Simple Angular wrapper for Rails
+gem 'annotate'                      # Provides Schema-like annotations on the models' rb files.
+gem 'font-awesome-rails'            # Custom icon pack.
+gem 'quiet_assets'                  # Hides asset stuff from the console.
+gem 'rmagick', require: 'RMagick'   # Image processing for resizing and conversion and such.
+gem 'lodash-rails'                  # Simple LoDash (Underscore, but better) wrapper.
+
+
+group :development, :test do 
+  gem 'factory_girl_rails'          # Provides factories for quick creation during tests.
+  gem 'faker'                       # Provides quick data for seeds and tests
+  gem 'pry'                         # Alternative console, allows for JS-style breakpoints.
+  gem 'pry-byebug'                  # A Pry augmentor, provides convenience methods like 'next'.
+  gem 'rspec-rails'                 # Testing framework. Better than what's included with Rails.
+end 
+
+group :test do 
+  gem 'capybara'                    # Used for feature (browser-based) tests.
+  gem 'capybara-webkit'             # Allows feature tests to run in a headless webkit state. Faster, but you can't see the magic.
+  gem 'capybara-angular'            # Allows feature tests to work with Angular
+  gem 'database_cleaner'            # Wipes the database between tests.
+  gem 'guard-rspec'                 # Watches files for automated test running.
+  gem 'launchy'                     # Launches a browser to show the state of a feature test. Useful for debugging
+  gem 'selenium-webdriver'          # Allows feature tests to run in the browser. Slower, but you can see the magic.
+end
+
