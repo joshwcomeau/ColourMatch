@@ -14,6 +14,7 @@ gem 'spring',                   group: :development
 
 gem 'annotate'                      # Provides Schema-like annotations on the models' rb files.
 gem 'bower-rails'                   # Front-end package manager.
+gem 'image_sorcery'                 # Lightweight ImageMagick wrapper. Supposedly better than RMagick.
 gem 'miro'                          # Dominant-color extractor. May replace with a custom one.
 gem 'quiet_assets'                  # Hides asset stuff from the console.
 gem 'rmagick', require: 'RMagick'   # Image processing

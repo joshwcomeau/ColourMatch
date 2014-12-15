@@ -89,6 +89,7 @@ GEM
     hike (1.2.3)
     hitimes (1.2.2)
     i18n (0.6.11)
+    image_sorcery (1.1.0)
     jbuilder (2.2.5)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
@@ -228,6 +229,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   guard-rspec
+  image_sorcery
   jbuilder (~> 2.0)
   launchy
   miro
