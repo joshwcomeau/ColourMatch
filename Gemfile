@@ -5,18 +5,17 @@ gem 'rails', '4.1.2'
 gem 'pg'
 gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.0.0'
-gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',         group: :doc
 gem 'spring',                   group: :development
 
-gem 'angularjs-rails'               # Simple Angular wrapper for Rails
+
+
+
 gem 'annotate'                      # Provides Schema-like annotations on the models' rb files.
-gem 'font-awesome-rails'            # Custom icon pack.
+gem 'bower-rails'                   # Front-end package manager.
 gem 'quiet_assets'                  # Hides asset stuff from the console.
 gem 'rmagick', require: 'RMagick'   # Image processing for resizing and conversion and such.
-gem 'lodash-rails'                  # Simple LoDash (Underscore, but better) wrapper.
 
 
 group :development, :test do 

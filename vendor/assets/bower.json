@@ -1,0 +1,14 @@
+{
+  "name": "dsl-generated dependencies",
+  "dependencies": {
+    "angular": "latest",
+    "angular-animate": "latest",
+    "angular-resource": "latest",
+    "angular-route": "latest",
+    "angular-mocks": "latest",
+    "jquery": "latest",
+    "jquery-ujs": "latest",
+    "lodash": "latest",
+    "font-awesome": "latest"
+  }
+}
