@@ -1,7 +1,31 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+require 'json'
+
+# Constants
+JSON_PATH = 'lib/wikipedia_colours.json'
+
+
+# Create colors from Wikipedia JSON
+def reset_colours
+  Colour.destroy_all
+  colour_array = JSON.parse(File.open(JSON_PATH, 'r').read)
+
+  colour_array.each do |colour|
+
+    Colour.create({
+      r:     colour["x"],
+      g:     colour["y"],
+      b:     colour["z"],
+      hex:   get_hex_value(colour),
+      label: colour["label"]
+    })
+  end
+end
+
+def get_hex_value(colour)
+  colour_array = [ colour["x"], colour["y"], colour["z"] ]
+  colour_array.inject("") do |result, elem|
+    result += elem.to_s(16) # Convert to base 16 (hex)
+  end
+end
+
+reset_colours
