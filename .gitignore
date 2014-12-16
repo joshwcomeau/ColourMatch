@@ -19,3 +19,6 @@
 # Remove fucking DS_Store
 .DS_Store
 **/.DS_Store
+
+# Ignore uploads
+/public/upload
