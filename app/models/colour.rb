@@ -11,7 +11,7 @@ class Colour < ActiveRecord::Base
 
   def get_hex_value(r, g, b)
     [r,g,b].inject("") do |result, elem|
-      result += elem.to_s(16) # Convert to base 16 (hex)
+      result += elem.to_hex # Defined in lib/ext/integer.rb
     end
   end
 
