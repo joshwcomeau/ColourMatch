@@ -11,9 +11,5 @@ end
 
 
 def get_colors_and_go
-  colors = Colour.all.map do |c|
-    "##{c.hex}"
-  end
-
-  start(colors)
+  start(Colour.pluck(:hex))
 end
