@@ -1,4 +1,12 @@
 class Colour < ActiveRecord::Base
+  RGB_VALIDATIONS = { presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 255 } }
+
+  validates :r, RGB_VALIDATIONS
+  validates :g, RGB_VALIDATIONS
+  validates :b, RGB_VALIDATIONS
+  validates :label, presence: true
+
+
   before_save :set_hex_value
 
   def get_hex_value(r, g, b)
@@ -10,7 +18,7 @@ class Colour < ActiveRecord::Base
   private
 
   def set_hex_value
-    self.hex = get_hex_value(r, g, b)
+    self.hex = get_hex_value(r, g, b) if r && g && b
   end
 
 end
