@@ -21,5 +21,8 @@ module ColourMatch
     # config.i18n.default_locale = :de
 
     config.assets.paths << Rails.root.join("vendor","assets","bower_components")
+
+    # Load our models and all our stuff in lib modules.
+    config.autoload_paths += %W(#{config.root}/lib)
   end
 end
