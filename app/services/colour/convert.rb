@@ -77,39 +77,12 @@ class Colour::Convert
       l: l
     }
   end
-# function RGBtoXYZ(R, G, B)
-# {
-#     var_R = parseFloat( R / 255 )        //R from 0 to 255
-#     var_G = parseFloat( G / 255 )        //G from 0 to 255
-#     var_B = parseFloat( B / 255 )        //B from 0 to 255
-
-#     if ( var_R > 0.04045 ) var_R = ( ( var_R + 0.055 ) / 1.055 ) ^ 2.4
-#     else                   var_R = var_R / 12.92
-#     if ( var_G > 0.04045 ) var_G = ( ( var_G + 0.055 ) / 1.055 ) ^ 2.4
-#     else                   var_G = var_G / 12.92
-#     if ( var_B > 0.04045 ) var_B = ( ( var_B + 0.055 ) / 1.055 ) ^ 2.4
-#     else                   var_B = var_B / 12.92
-
-#     var_R = var_R * 100
-#     var_G = var_G * 100
-#     var_B = var_B * 100
-
-#     //Observer. = 2°, Illuminant = D65
-#     X = var_R * 0.4124 + var_G * 0.3576 + var_B * 0.1805
-#     Y = var_R * 0.2126 + var_G * 0.7152 + var_B * 0.0722
-#     Z = var_R * 0.0193 + var_G * 0.1192 + var_B * 0.9505
-#     return [X, Y, Z]
-# }
 
   # this is typically the middle step between RGB and LAB.
   def self.rgb_to_xyz(colour)
-    r_prime = colour[:r] / 255.0
-    g_prime = colour[:g] / 255.0
-    b_prime = colour[:b] / 255.0
-
-    new_r = r_prime > 0.04045 ? ( ( r_prime + 0.055 ) / 1.055 ) ** 2.4 : r_prime / 12.92
-    new_g = g_prime > 0.04045 ? ( ( g_prime + 0.055 ) / 1.055 ) ** 2.4 : g_prime / 12.92
-    new_b = b_prime > 0.04045 ? ( ( b_prime + 0.055 ) / 1.055 ) ** 2.4 : b_prime / 12.92
+    new_r = pivot_for_xyz(colour[:r])
+    new_g = pivot_for_xyz(colour[:g])
+    new_b = pivot_for_xyz(colour[:b])
 
     {
       x: (new_r * 0.4124 + new_g * 0.3576 + new_b * 0.1805) * 100,
@@ -119,50 +92,29 @@ class Colour::Convert
   end
 
   def self.rgb_to_lab(colour)
+    xyz = rgb_to_xyz(colour)
 
+    new_x = pivot_for_lab(xyz[:x] / 95.047)
+    new_y = pivot_for_lab(xyz[:y] / 100.000)
+    new_z = pivot_for_lab(xyz[:z] / 108.883)
 
+    l = [ 116 * new_y - 16, 0 ].max
+    a = 500 * ( new_x - new_y )
+    b = 200 * ( new_y - new_z )
+
+    {
+      l: l,
+      a: a,
+      b: b
+    }
+  end
+
+  def self.pivot_for_lab(n)
+    n > 0.008856 ? (n ** (1.0 / 3.0)) : (( 903.3 * n + 16) / 116)
+  end
+
+  def self.pivot_for_xyz(n)
+    n /= 255.0
+    n > 0.04045 ? ( ( n + 0.055 ) / 1.055 ) ** 2.4 : n / 12.92
   end
 end
-
-# // user colour
-# var Red   = 56;
-# var Green = 79;
-# var Blue  = 132;
-
-# // user colour converted to XYZ space
-# XYZ = RGBtoXYZ(Red,Green,Blue)
-# var colX = XYZ[0];
-# var colY = XYZ[1];
-# var colZ = XYZ[2];
-
-# // alert(XYZ)
-
-# LAB = XYZtoLAB(colX, colY, colZ)
-
-# alert(LAB)
-
-
-
-# function XYZtoLAB(x, y, z)
-# {
-#     var ref_X =  95.047;
-#     var ref_Y = 100.000;
-#     var ref_Z = 108.883;
-
-#     var_X = x / ref_X          //ref_X =  95.047   Observer= 2°, Illuminant= D65
-#     var_Y = y / ref_Y          //ref_Y = 100.000
-#     var_Z = z / ref_Z          //ref_Z = 108.883
-
-#     if ( var_X > 0.008856 ) var_X = var_X ^ ( 1/3 )
-#     else                    var_X = ( 7.787 * var_X ) + ( 16 / 116 )
-#     if ( var_Y > 0.008856 ) var_Y = var_Y ^ ( 1/3 )
-#     else                    var_Y = ( 7.787 * var_Y ) + ( 16 / 116 )
-#     if ( var_Z > 0.008856 ) var_Z = var_Z ^ ( 1/3 )
-#     else                    var_Z = ( 7.787 * var_Z ) + ( 16 / 116 )
-
-#     CIE_L = ( 116 * var_Y ) - 16
-#     CIE_a = 500 * ( var_X - var_Y )
-#     CIE_b = 200 * ( var_Y - var_Z )
-
-# return [CIE_L, CIE_a, CIE_b]
-# }
