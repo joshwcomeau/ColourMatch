@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-03/schema",
+  "properties": {
+    "r": { "type": "integer", "required": true },
+    "g": { "type": "integer", "required": true },
+    "b": { "type": "integer", "required": true }
+  }
+}

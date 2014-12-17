@@ -1,7 +1,7 @@
 class Colour::Convert
   def self.call(colour, to_type)
     # Colour ought to be a hash with the keys as r/g/b, h/s/l or l/a/b. This is how we'll tell them apart.
-    from_type = get_type(colour)
+    from_type = Colour::GetType.call(colour)
 
     # There are 6 possible conversion paths. For now, I'm going to stick to RGB to HSL and RGB to LAB.
     if from_type == :rgb
@@ -18,24 +18,6 @@ class Colour::Convert
   end
 
   private
-
-  def self.get_type(colour)
-    type = nil
-
-    if colour.key?(:r) && colour.key?(:g) && colour.key?(:b) 
-      type = :rgb
-    elsif colour.key(:h) && colour.key(:s) && colour.key?(:l)
-      type = :hsl
-    elsif colour.key(:l) && colour.key(:a) && colour.key?(:b)
-      type = :lab
-    elsif colour.key(:x) && colour.key(:y) && colour.key?(:z)
-      type = :xyz
-    else
-      raise "Invalid color type (colour needs to have keys for either :r, :g, :b OR :h, :s, :l OR :l, :a, :b)"
-    end
-
-    type
-  end
 
   def self.rgb_to_hsl(colour)
     r_prime = colour[:r] / 255.0
