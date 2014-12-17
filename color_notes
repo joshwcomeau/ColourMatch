@@ -136,29 +136,6 @@ Screen Shot 2014-12-16 at 3.13.26 PM.png
 [2014-12-16, 3:17:19 PM] Joshu: although, thats why I have 5-6 colors per image. they don't ALL have to be important
 [2014-12-16, 3:17:31 PM] Joey: and run the same algorithm over them, see what it isolates for each, then tweak it
 [2014-12-16, 3:17:35 PM] Joshu: yeah, thats the plan
-[2014-12-16, 3:18:07 PM] Joshu: I actually started working on something using the 500px API a week ago, I made a trivia game (essentially Earthy, if you remember that, but coded way better)
-[2014-12-16, 3:18:13 PM] Joey: maybe see what information you get with outliers (z > 2, maybe?) in each dimension
-[2014-12-16, 3:18:16 PM] Joey: and work from there
-[2014-12-16, 3:18:26 PM] Joshu: got 90% through it before realizing its the opposite of what I should be making to get this job
-[2014-12-16, 3:18:28 PM] Joey: earthy? nope
-[2014-12-16, 3:18:45 PM] Joshu: a name-that-place trivia game, we used NASA satellite images for a hackathon
-[2014-12-16, 3:18:52 PM] Joey: ohh, yeah
-[2014-12-16, 3:18:54 PM] Joshu: this was the same thing but with 'urban exploration' images
-[2014-12-16, 3:19:11 PM] Joshu: but yeah a) it was all front-end work, it was more of a design thing than a hard-to-program thing, and Im going for a back-end job
-[2014-12-16, 3:19:25 PM] Joey: always going for the back-end
-[2014-12-16, 3:19:27 PM] Joshu: b) I decided to do it in Node (a javascript server) instead of rails, even though 500px is a rails dev shop
-[2014-12-16, 3:19:33 PM] Joshu: lmao shush
-[2014-12-16, 3:19:53 PM] Joshu: and c) I don't think I have a C, but the first two are pretty significant
-[2014-12-16, 3:20:05 PM] Joshu: so Im starting over with this, and this is way more fun and (i think) way more impressive if I can pull it off
-[2014-12-16, 3:20:13 PM] Joshu: there was nothing challenging about the other thing, it was just a lot of work
-[2014-12-16, 3:21:36 PM] Joey: yeah, it seems like a really cool project
-[2014-12-16, 3:21:46 PM] Joey: stealing my math to get your job.. do i get commission?
-[2014-12-16, 3:21:53 PM] Joshu: also, nothing like it exists, as far as I can find. and I've spent a while searching
-[2014-12-16, 3:22:06 PM] Joshu: lol if I use bayesian saliency I'll give you a cut
-[2014-12-16, 3:22:45 PM] Joshu: actually there might be something in a language other than ruby/javascript. Ive mostly been searching for those languages. Really I should search for it in any language, I could adapt it easily enough
-[2014-12-16, 3:23:09 PM] Joey: lol, or the authors :P
-[2014-12-16, 3:23:24 PM] Joey: you might be able to look for their software online?
-[2014-12-16, 3:23:32 PM] Joey: it must be open source
 [2014-12-16, 3:23:38 PM] Joshu: I thought I found something that did exactly that (https://github.com/ewlarson/kolors) but it doesn't at all
 [2014-12-16, 3:24:10 PM] Joey: "dominant colours" though
 [2014-12-16, 3:24:13 PM] Joey: not specific
