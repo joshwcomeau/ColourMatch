@@ -1,7 +1,7 @@
 require 'json'
 
 # Constants
-JSON_PATH = 'lib/wikipedia_colours.json'
+JSON_PATH = 'lib/wikipedia_colours_rgb.json'
 
 
 # Create colors from Wikipedia JSON
@@ -12,9 +12,11 @@ def reset_colours
   colour_array.each do |colour|
 
     Colour.create({
-      r:     colour["x"],
-      g:     colour["y"],
-      b:     colour["z"],
+      rgb: { 
+        r: colour["r"],
+        g: colour["g"],
+        b: colour["b"]
+      },
       label: colour["label"]
     })
   end
