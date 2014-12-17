@@ -26,7 +26,7 @@ RSpec.describe Colour::Convert do
     end
     describe "Converts RGB to XYZ" do
       it "converts when RGB are all over 11" do
-        expect(Colour::Convert.call({r: 211, g: 200, b: 50 }, :xyz)).to eq({x: 48.09396843392571, y: 55.38772630986121, z: 11.173689673731442})
+        expect(Colour::Convert.call({r: 211, g: 200, b: 50}, :xyz)).to eq({x: 48.09396843392571, y: 55.38772630986121, z: 11.173689673731442})
       end
 
       it "converts when red is less than 11" do
@@ -44,7 +44,41 @@ RSpec.describe Colour::Convert do
       it "converts when RGB are all under 11" do
         expect(Colour::Convert.call({r: 2, g: 4, b: 6},  :xyz)).to eq({x: 0.10132337764827293, y: 0.11288775572148363, z: 0.1887452194500091})
       end
+
+      it "converts white" do
+        expect(Colour::Convert.call({r: 255, g: 255, b: 255},  :xyz)).to eq({x: 95.05, y: 100, z: 108.89999999999999})
+      end
+
+      it "converts black" do
+        expect(Colour::Convert.call({r: 0, g: 0, b: 0},  :xyz)).to eq({x: 0, y: 0, z: 0})
+      end
       
+    end
+
+    describe "Converts RGB to LAB" do
+      it "converts a primary (red)" do
+        expect(Colour::Convert.call({r: 255, g: 0, b: 0}, :lab)).to eq({l: 53.23288178584245, a: 80.10930952982204, b: 67.22006831026425})
+      end
+
+      it "converts a secondary (magenta)" do
+        expect(Colour::Convert.call({r: 255, g: 0, b: 255}, :lab)).to eq({l: 60.319933664076004, a: 98.25421868616114, b: -60.84298422386232})
+      end
+
+      it "converts white" do
+        expect(Colour::Convert.call({r: 255, g: 255, b: 255}, :lab)).to eq({l: 100, a: 0.00526049995830391, b: -0.010408184525267927})
+      end
+
+      it "converts black" do
+        expect(Colour::Convert.call({r: 0, g: 0, b: 0},  :lab)).to eq({l: 0, a: 0, b: 0})
+      end
+
+      it "converts a random green" do
+        expect(Colour::Convert.call({r: 100, g: 230, b: 25}, :lab)).to eq({l: 81.49626923929404, a: -66.25612887139681, b: 76.08546572431982})
+      end
+
+      it "converts a random blue" do
+        expect(Colour::Convert.call({r: 33, g: 66, b: 99}, :lab)).to eq({l: 27.075668696502454, a: -0.5029666821680379, b: -23.033897562365745})
+      end      
     end
 
   end
