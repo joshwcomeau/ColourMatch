@@ -1,5 +1,7 @@
 class Colour::Convert
   def self.call(colour, to_type)
+    colour.symbolize_keys!
+
     # Colour ought to be a hash with the keys as r/g/b, h/s/l or l/a/b. This is how we'll tell them apart.
     from_type = Colour::GetType.call(colour)
 

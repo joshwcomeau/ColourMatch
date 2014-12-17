@@ -103,6 +103,3 @@ RSpec.describe Colour::Convert do
 
   end
 end
-
-
-0.00007460197442004518

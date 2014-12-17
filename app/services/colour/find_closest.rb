@@ -8,8 +8,20 @@ class Colour::FindClosest
       colour = Colour::Convert(colour, :lab)
     end
 
-    
+    get_nearest_colour(colour.lab)
+
   end
 
   private
+
+  def get_nearest_colour(c1)
+    closest_color = 1_000_000
+
+    Colour.pluck(:lab).each do |c2|
+      distance = Colour::CalculateDistance.call(c1, c2)
+      closest_color = c2 if distance < closest_color
+    end
+
+    closest_color
+  end
 end

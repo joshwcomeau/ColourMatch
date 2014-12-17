@@ -1,8 +1,9 @@
 class Colour::GetType
   def self.call(colour)
+    colour.symbolize_keys!
+
     type = nil
 
-    colour.symbolize_keys!
 
     if    colour.key?(:r) && colour.key?(:g) && colour.key?(:b) 
       type = :rgb

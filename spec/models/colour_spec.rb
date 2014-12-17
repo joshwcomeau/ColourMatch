@@ -30,15 +30,15 @@ RSpec.describe Colour, :type => :model do
       it { is_expected.to be_a Hash  }
       
       it "has an r key" do
-        expect(subject.key?('r')).to eq(true)
+        expect(subject.key?(:r)).to eq(true)
       end
 
       it "has an g key" do
-        expect(subject.key?('g')).to eq(true)
+        expect(subject.key?(:g)).to eq(true)
       end
 
       it "has an b key" do
-        expect(subject.key?('b')).to eq(true)
+        expect(subject.key?(:b)).to eq(true)
       end
     end
     
