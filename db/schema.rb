@@ -11,19 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216010115) do
+ActiveRecord::Schema.define(version: 20141217154137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "colours", force: true do |t|
-    t.integer  "r"
-    t.integer  "g"
-    t.integer  "b"
     t.string   "label"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "hex"
+    t.json     "lab"
+    t.json     "rgb"
   end
 
 end

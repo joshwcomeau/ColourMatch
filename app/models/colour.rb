@@ -1,24 +1,33 @@
-class Colour < ActiveRecord::Base
-  RGB_VALIDATIONS = { presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 255 } }
+# == Schema Information
+#
+# Table name: colours
+#
+#  id         :integer          not null, primary key
+#  label      :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#  hex        :string(255)
+#  lab        :json
+#  rgb        :json
+#
 
-  validates :r, RGB_VALIDATIONS
-  validates :g, RGB_VALIDATIONS
-  validates :b, RGB_VALIDATIONS
+class Colour < ActiveRecord::Base
+  validates :rgb,   presence: true
+  validates :hex,   presence: true
   validates :label, presence: true
 
 
-  before_save :set_hex_value
+  before_validation :set_hex_value
 
-  def get_hex_value(r, g, b)
-    [r,g,b].inject("") do |result, elem|
-      result += elem.to_hex # Defined in lib/ext/integer.rb
+  def get_hex_value(rgb)
+    rgb.inject("") do |result, elem|
+      result += elem[1].to_hex # Defined in lib/ext/integer.rb
     end
   end
 
-  private
 
   def set_hex_value
-    self.hex = get_hex_value(r, g, b) if r && g && b
+    self.hex = get_hex_value(rgb)
   end
 
 end
