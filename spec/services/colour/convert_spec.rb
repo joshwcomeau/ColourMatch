@@ -61,7 +61,7 @@ RSpec.describe Colour::Convert do
       end
 
       it "converts a secondary (magenta)" do
-        expect(Colour::Convert.call({r: 255, g: 0, b: 255}, :lab)).to eq({l: 60.319933664076004, a: 98.25421868616114, b: -60.84298422386232})
+        expect(Colour::Convert.call({r: 255, g: 0, b: 255}, :lab)).to eq({l: 60.319933664076004, a: 98.25421868616108, b: -60.84298422386232})
       end
 
       it "converts white" do
@@ -79,7 +79,30 @@ RSpec.describe Colour::Convert do
       it "converts a random blue" do
         expect(Colour::Convert.call({r: 33, g: 66, b: 99}, :lab)).to eq({l: 27.075668696502454, a: -0.5029666821680379, b: -23.033897562365745})
       end      
+
+      it "converts a dark color" do
+        expect(Colour::Convert.call({r: 10, g: 12, b: 14}, :lab)).to eq({l: 3.244471603373057, a: -0.2243908092490754, b: -1.0871101782008397})
+      end
+
+      it "converts a very dark color" do
+        expect(Colour::Convert.call({r: 2, g: 3, b: 4}, :lab)).to eq({l: 0.7840334729557448, a: -0.12230357495557342, b: -0.47087271909480033})
+      end     
+
+      it "converts a very dark grey" do
+        expect(Colour::Convert.call({r: 2, g: 2, b: 2}, :lab)).to eq({l: 0.5483518484793315, a: 0.00007460263512504284, b: -0.00014761148908193356})
+      end      
+
+      it "converts a color with L just under 16" do
+        expect(Colour::Convert.call({r: 80, g: 12, b: 14}, :lab)).to eq({l: 15.487891901713468, a: 30.92316361949307, b: 17.891489434737224})
+      end     
+
+      it "converts a color with L just over 16" do
+        expect(Colour::Convert.call({r: 84, g: 12, b: 14}, :lab)).to eq({l: 16.402223020890524, a: 32.30204765409172, b: 19.235045842544267})
+      end
     end
 
   end
 end
+
+
+0.00007460197442004518
