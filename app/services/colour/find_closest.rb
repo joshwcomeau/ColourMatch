@@ -12,5 +12,4 @@ class Colour::FindClosest
   end
 
   private
-
 end
