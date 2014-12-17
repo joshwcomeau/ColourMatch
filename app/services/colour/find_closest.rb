@@ -5,21 +5,26 @@ class Colour::FindClosest
     # Then, do some pythagorean math.
 
     if Colour::GetType.call(colour) != :lab
-      colour = Colour::Convert(colour, :lab)
+      colour = Colour::Convert.call(colour, :lab)
     end
 
-    get_nearest_colour(colour.lab)
+    get_nearest_colour(colour)
 
   end
 
   private
 
-  def get_nearest_colour(c1)
-    closest_color = 1_000_000
+  def self.get_nearest_colour(c1)
+    closest_color = nil
+    closest_distance = 1_000_000
 
-    Colour.pluck(:lab).each do |c2|
-      distance = Colour::CalculateDistance.call(c1, c2)
-      closest_color = c2 if distance < closest_color
+    Colour.all.each do |c2|
+      distance = Colour::CalculateDistance.call(c1, c2[:lab])
+
+      if distance < closest_distance
+        closest_distance = distance
+        closest_color = c2 
+      end
     end
 
     closest_color
