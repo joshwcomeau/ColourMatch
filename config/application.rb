@@ -22,7 +22,9 @@ module ColourMatch
 
     config.assets.paths << Rails.root.join("vendor","assets","bower_components")
 
-    # Load our models and all our stuff in lib modules.
-    config.autoload_paths += %W(#{config.root}/lib)
+    # Load our modules in lib and our service objects in services
+    config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/services)
+
+    
   end
 end

@@ -15,7 +15,7 @@ RSpec.describe Colour, :type => :model do
       subject { colour.hex }
       it { is_expected.not_to be_empty }
       it { is_expected.to be_a String  }
-      it { is_expected.to eq('76ff7a') }
+      it { is_expected.to eq('76FF7A') }
     end
   end
 
