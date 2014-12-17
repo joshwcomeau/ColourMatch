@@ -18,6 +18,7 @@ class Colour < ActiveRecord::Base
 
 
   before_validation :set_hex_value
+  before_validation :set_lab_value
 
   def get_hex_value(rgb)
     rgb.inject("") do |result, elem|
@@ -25,9 +26,14 @@ class Colour < ActiveRecord::Base
     end
   end
 
-
+  private
+  
   def set_hex_value
     self.hex = get_hex_value(rgb)
+  end
+
+  def set_lab_value
+    self.lab = Colour::Convert.call(rgb, :lab)
   end
 
 end
