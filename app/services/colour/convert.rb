@@ -1,17 +1,17 @@
 class Colour::Convert
   def self.call(colour, to_type)
-    colour.symbolize_keys!
+    @colour = colour.symbolize_keys
 
     # Colour ought to be a hash with the keys as r/g/b, h/s/l or l/a/b. This is how we'll tell them apart.
     from_type = Colour::GetType.call(colour)
 
     # There are 6 possible conversion paths. For now, I'm going to stick to RGB to HSL and RGB to LAB.
     if from_type == :rgb
-      new_color = rgb_to_hsl(colour) if to_type == :hsl
-      new_color = rgb_to_lab(colour) if to_type == :lab
-      new_color = rgb_to_xyz(colour) if to_type == :xyz 
+      new_color = rgb_to_hsl if to_type == :hsl
+      new_color = rgb_to_lab if to_type == :lab
+      new_color = rgb_to_xyz if to_type == :xyz 
     elsif from_type == :hsl
-      new_color = hsl_to_rgb(colour) if to_type == :rgb
+      new_color = hsl_to_rgb if to_type == :rgb
     elsif from_type == :lab
       # do me too
     end
@@ -23,20 +23,23 @@ class Colour::Convert
 
   
 
-  def self.hsl_to_rgb(colour)
-    h = colour[:h] / 360.0
-    s = colour[:s] / 100.0
-    l = colour[:l] / 100.0
+  def self.hsl_to_rgb
+    h = @colour[:h] / 360.0
+    s = @colour[:s] / 100.0
+    l = @colour[:l] / 100.0
 
-    # If there's no saturation, we're done! Lightness is the only thing we need to know, because hue is irrelevant.
-    if s == 0
+
+    if s == 0 # If it's completely unsaturated, lightness is our value (from 0 to 1, still needs 8bit conversion)
       r = g = b = l 
+    elsif l <= 0
+      r = g = b = 0
+    elsif l >= 1
+      r = g = b = 1
     else
-      q = l < 0.5 ? l * (1 + s) : l + s - l * s
-      p = 2 * l - q
-      r = hue_to_rgb(p, q, h + 1/3)
-      g = hue_to_rgb(p, q, h)
-      b = hue_to_rgb(p, q, h - 1/3)
+      temp1, temp2 = mix_lummy_sat(l, s)
+      r, g, b = [ h + (1 / 3.0), h, h - (1 / 3.0) ].map { |v|
+        hue_to_rgb(rotate_hue(v), temp1, temp2)
+      }
     end
 
     {
@@ -46,24 +49,33 @@ class Colour::Convert
     }
   end
 
-  def self.hue_to_rgb(p, q, t)
-    t += 1 if t < 0
-    t -= 1 if t > 1 
-    if t < 1/6
-      return p + (q - p) * 6 * t 
-    elsif t < 1/2
-      return q
-    elsif t < 2/3
-      return p + (q - p) * (2/3 - t) * 6
+  def self.mix_lummy_sat(l, s)
+    t = l <= 0.5 ? l * (1.0 + s.to_f) : l + s - (l * s.to_f)
+    [ 2.0 * l - t, t]
+  end
+
+  def self.hue_to_rgb(h, t1, t2)
+    if ((6.0 * h) - 1.0) <= 0
+      t1 + ((t2 - t1) * h * 6.0)
+    elsif ((2.0 * h) - 1.0) <= 0
+      t2
+    elsif ((3.0 * h) - 2.0) <= 0
+      t1 + (t2 - t1) * ((2 / 3.0) - h) * 6.0
     else
-      return p
+      t1
     end
   end
 
-  def self.rgb_to_hsl(colour)
-    r_prime = colour[:r] / 255.0
-    g_prime = colour[:g] / 255.0
-    b_prime = colour[:b] / 255.0
+  def self.rotate_hue(h)
+    h += 1.0 if h < 0
+    h -= 1.0 if h > 1
+    h
+  end
+
+  def self.rgb_to_hsl
+    r_prime = @colour[:r] / 255.0
+    g_prime = @colour[:g] / 255.0
+    b_prime = @colour[:b] / 255.0
 
     c_min   = [r_prime, g_prime, b_prime].min
     c_max   = [r_prime, g_prime, b_prime].max
@@ -102,10 +114,10 @@ class Colour::Convert
   end
 
   # this is typically the middle step between RGB and LAB.
-  def self.rgb_to_xyz(colour)
-    new_r = pivot_for_xyz(colour[:r])
-    new_g = pivot_for_xyz(colour[:g])
-    new_b = pivot_for_xyz(colour[:b])
+  def self.rgb_to_xyz
+    new_r = pivot_for_xyz(@colour[:r])
+    new_g = pivot_for_xyz(@colour[:g])
+    new_b = pivot_for_xyz(@colour[:b])
 
     {
       x: (new_r * 0.4124 + new_g * 0.3576 + new_b * 0.1805) * 100,
@@ -114,8 +126,8 @@ class Colour::Convert
     }
   end
 
-  def self.rgb_to_lab(colour)
-    xyz = rgb_to_xyz(colour)
+  def self.rgb_to_lab
+    xyz = rgb_to_xyz
 
     new_x = pivot_for_lab(xyz[:x] / 95.047)
     new_y = pivot_for_lab(xyz[:y] / 100.000)
