@@ -2,25 +2,37 @@ class PhotosController < ApplicationController
 
   # POST /photos
   def create
-    # Write the photo to our uploads photo
-    if path = save_photo_to_disk(params[:photo])
-      # Let's make a histogram at 64 colours.
-      histogram_string = `
-        convert #{path}   \
-        -format %c        \
-        -colors 64        \
-        histogram:info:- | sort -n -r`
+    
+    return render json: {status: 'error', message: "Couldn't save photo to disk."} unless path = save_photo_to_disk(params[:photo])
+
+    # Let's make a histogram at 64 colours.
+    histogram_string = `
+      convert #{path}   \
+      -format %c        \
+      -colors 64        \
+      histogram:info:- | sort -n -r`
 
 
-      colour_list = get_colour_list(histogram_string)
-      # Returns an array of arrays, with occurance and RGB:
-      # [  [20000, 255,255,255], [19000, 128,52,66], [18000, 0,0,0]  ]
+    colour_list = get_colour_list(histogram_string)
+    # Returns an array of arrays, with occurance and RGB:
+    # [  [20000, 255,255,255], [19000, 128,52,66], [18000, 0,0,0]  ]
 
-      hsl_colour_list = get_hsl_colours(colour_list)
+    hsl_colour_list = get_hsl_colours(colour_list)
 
-      puts hsl_colour_list
-    end
+    hues        = get_channel_stats(hsl_colour_list, :h)
+    saturations = get_channel_stats(hsl_colour_list, :s)
+    lightnesses = get_channel_stats(hsl_colour_list, :l)
 
+
+    
+    puts "SATURATION OUTLIERS:"
+    puts saturations[:outliers]
+
+    puts "HUE OUTLIERS:"
+    puts hues[:outliers]
+
+    puts "LIGHTNESS OUTLIERS:"
+    puts lightnesses[:outliers]
 
     
 
@@ -29,6 +41,42 @@ class PhotosController < ApplicationController
   end
 
   private
+
+  def get_channel_stats(all_colours, channel)
+    ### DESIRED FORMAT - 
+    # {
+    #   deviation: 25,
+    #   mean:      49,
+    #   colours: [
+    #     {
+    #       value:   75,
+    #       z_score: 3.45
+    #     },
+    #     {
+    #       value:   34,
+    #       z_score: 0.25
+    #     }
+    #   ]
+    # }
+    
+    colours   = all_colours.map { |c| c[channel]}
+    mean      = Maths.mean(colours)
+    deviation = Maths.standard_deviation(colours)
+    outliers  = get_outliers(colours, mean, deviation)
+
+    return {
+      colours:   colours,
+      mean:      mean,
+      deviation: deviation,
+      outliers:  outliers
+    }
+
+  end
+
+  def get_outliers(colours, mean, deviation, threshold=2)
+    colours.select { |c| Maths.z_score(c, colours, mean, deviation).abs > threshold}
+  end
+
 
   def get_colour_list(histogram)
     hex_colour_regex = /(?<occurances>[\d]{1,8}):[\s\(\d,\)]+#[\dA-F]{6}\ssrgb\((?<c1>[\d]{1,3}),(?<c2>[\d]{1,3}),(?<c3>[\d]{1,3})\)/
