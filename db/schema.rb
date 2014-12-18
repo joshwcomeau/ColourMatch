@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141217154137) do
+ActiveRecord::Schema.define(version: 20141218205937) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,5 +24,25 @@ ActiveRecord::Schema.define(version: 20141217154137) do
     t.json     "lab"
     t.json     "rgb"
   end
+
+  create_table "photos", force: true do |t|
+    t.string   "px_images",         array: true
+    t.integer  "px_id"
+    t.string   "px_name"
+    t.text     "px_description"
+    t.integer  "px_category"
+    t.json     "px_user"
+    t.decimal  "px_rating"
+    t.integer  "px_status"
+    t.boolean  "px_for_sale"
+    t.boolean  "px_store_download"
+    t.integer  "px_license_type"
+    t.boolean  "px_privacy"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "photos", ["px_id"], name: "index_photos_on_px_id", using: :btree
+  add_index "photos", ["px_images"], name: "index_photos_on_px_images", using: :gin
 
 end
