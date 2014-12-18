@@ -7,7 +7,7 @@ class Colour::Convert
 
     # There are 6 possible conversion paths. For now, I'm going to stick to RGB to HSL and RGB to LAB.
     if from_type == :rgb
-      new_color = rgb_to_hsl if to_type == :hsl
+      new_color = rgb_to_hsv if to_type == :hsl
       new_color = rgb_to_lab if to_type == :lab
       new_color = rgb_to_xyz if to_type == :xyz 
     elsif from_type == :hsl
@@ -72,7 +72,8 @@ class Colour::Convert
     h
   end
 
-  def self.rgb_to_hsl
+
+  def self.rgb_to_hsv
     r_prime = @colour[:r] / 255.0
     g_prime = @colour[:g] / 255.0
     b_prime = @colour[:b] / 255.0
@@ -80,18 +81,18 @@ class Colour::Convert
     c_min   = [r_prime, g_prime, b_prime].min
     c_max   = [r_prime, g_prime, b_prime].max
 
-    # Start with L. L is easy
-    l = ((c_min + c_max)/2 * 100).round
+    # Start with V. V is easy
+    v = (c_max * 100).round
 
-    # If min and max are the same, we have a greyscale color, which means hue and saturation are both 0
-    if c_min == c_max
-      return {h: 0, s: 0, l: l}
+    if c_max == 0
+      return {h: 0, s: 0, v: v}
     end
 
     # Next up, S
-    delta = c_max - c_min
-    s = l > 50 ? delta / (2 - c_max - c_min) : delta / (c_max + c_min)
-    s = (s * 100).round
+    delta = (c_max - c_min)
+    s = (delta / c_max * 100).round
+    # s = l > 50 ? delta / (2 - c_max - c_min) : delta / (c_max + c_min)
+    # s = (s * 100).round
 
     # Finally, H
     case c_max
@@ -109,7 +110,7 @@ class Colour::Convert
     {
       h: h,
       s: s,
-      l: l
+      l: v
     }
   end
 

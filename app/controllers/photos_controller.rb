@@ -40,12 +40,13 @@ class PhotosController < ApplicationController
     
     # For saturations, we only want outliers ABOVE the mean.
     saturations[:outliers].each do |s|
-      final_colours.push(s) if s[:hsl][:s] > saturations[:mean]
+      binding.pry
+      final_colours.push(s) if s[:color][:hsl][:s] > saturations[:mean]
     end
 
     # Same for lightness
     lightnesses[:outliers].each do |l|
-      final_colours.push(l) if l[:hsl][:l] > lightnesses[:mean]
+      final_colours.push(l) if l[:color][:hsl][:l] > lightnesses[:mean]
     end
 
     # For hue, we'll just take them all
