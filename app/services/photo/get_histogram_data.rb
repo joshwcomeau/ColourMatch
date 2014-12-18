@@ -11,6 +11,7 @@ class Photo::GetHistogramData
   def self.make_histogram(path, colours)
     `convert #{path}   \
     -format %c         \
+    -resize 250x250    \
     -colors #{colours} \
     histogram:info:- | sort -n -r`
   end
