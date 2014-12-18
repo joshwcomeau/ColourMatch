@@ -11,7 +11,7 @@ class Colour::Convert
       new_color = rgb_to_lab(colour) if to_type == :lab
       new_color = rgb_to_xyz(colour) if to_type == :xyz 
     elsif from_type == :hsl
-      # do me
+      new_color = hsl_to_rgb(colour) if to_type == :rgb
     elsif from_type == :lab
       # do me too
     end
@@ -20,6 +20,45 @@ class Colour::Convert
   end
 
   private
+
+  
+
+  def self.hsl_to_rgb(colour)
+    h = colour[:h] / 360.0
+    s = colour[:s] / 100.0
+    l = colour[:l] / 100.0
+
+    # If there's no saturation, we're done! Lightness is the only thing we need to know, because hue is irrelevant.
+    if s == 0
+      r = g = b = l 
+    else
+      q = l < 0.5 ? l * (1 + s) : l + s - l * s
+      p = 2 * l - q
+      r = hue_to_rgb(p, q, h + 1/3)
+      g = hue_to_rgb(p, q, h)
+      b = hue_to_rgb(p, q, h - 1/3)
+    end
+
+    {
+      r: (r * 255).round,
+      g: (g * 255).round,
+      b: (b * 255).round,
+    }
+  end
+
+  def self.hue_to_rgb(p, q, t)
+    t += 1 if t < 0
+    t -= 1 if t > 1 
+    if t < 1/6
+      return p + (q - p) * 6 * t 
+    elsif t < 1/2
+      return q
+    elsif t < 2/3
+      return p + (q - p) * (2/3 - t) * 6
+    else
+      return p
+    end
+  end
 
   def self.rgb_to_hsl(colour)
     r_prime = colour[:r] / 255.0

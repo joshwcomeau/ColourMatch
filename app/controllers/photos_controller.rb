@@ -64,6 +64,12 @@ class PhotosController < ApplicationController
     deviation = Maths.standard_deviation(colours)
     outliers  = get_outliers(colours, mean, deviation)
 
+    # Let's find the color(s) associated with our outliers and turn 'em back to RGB.
+    outliers.map! do |o|
+      matching_colours = all_colours.select { |c| c[channel] == o }
+      matching_colours.map { |c| Colour::Convert.call(c, :rgb)}
+    end
+
     return {
       colours:   colours,
       mean:      mean,
@@ -74,7 +80,7 @@ class PhotosController < ApplicationController
   end
 
   def get_outliers(colours, mean, deviation, threshold=2)
-    colours.select { |c| Maths.z_score(c, colours, mean, deviation).abs > threshold}
+    outliers = colours.select { |c| Maths.z_score(c, colours, mean, deviation).abs > threshold}
   end
 
 
