@@ -7,7 +7,7 @@ class Colour::Convert
 
     # There are 6 possible conversion paths. For now, I'm going to stick to RGB to HSL and RGB to LAB.
     if from_type == :rgb
-      new_color = rgb_to_hsv if to_type == :hsl
+      new_color = rgb_to_hsb if to_type == :hsb
       new_color = rgb_to_lab if to_type == :lab
       new_color = rgb_to_xyz if to_type == :xyz 
     elsif from_type == :hsl
@@ -22,58 +22,7 @@ class Colour::Convert
   private
 
   
-
-  def self.hsl_to_rgb
-    h = @colour[:h] / 360.0
-    s = @colour[:s] / 100.0
-    l = @colour[:l] / 100.0
-
-
-    if s == 0 # If it's completely unsaturated, lightness is our value (from 0 to 1, still needs 8bit conversion)
-      r = g = b = l 
-    elsif l <= 0
-      r = g = b = 0
-    elsif l >= 1
-      r = g = b = 1
-    else
-      temp1, temp2 = mix_lummy_sat(l, s)
-      r, g, b = [ h + (1 / 3.0), h, h - (1 / 3.0) ].map { |v|
-        hue_to_rgb(rotate_hue(v), temp1, temp2)
-      }
-    end
-
-    {
-      r: (r * 255).round,
-      g: (g * 255).round,
-      b: (b * 255).round,
-    }
-  end
-
-  def self.mix_lummy_sat(l, s)
-    t = l <= 0.5 ? l * (1.0 + s.to_f) : l + s - (l * s.to_f)
-    [ 2.0 * l - t, t]
-  end
-
-  def self.hue_to_rgb(h, t1, t2)
-    if ((6.0 * h) - 1.0) <= 0
-      t1 + ((t2 - t1) * h * 6.0)
-    elsif ((2.0 * h) - 1.0) <= 0
-      t2
-    elsif ((3.0 * h) - 2.0) <= 0
-      t1 + (t2 - t1) * ((2 / 3.0) - h) * 6.0
-    else
-      t1
-    end
-  end
-
-  def self.rotate_hue(h)
-    h += 1.0 if h < 0
-    h -= 1.0 if h > 1
-    h
-  end
-
-
-  def self.rgb_to_hsv
+  def self.rgb_to_hsb
     r_prime = @colour[:r] / 255.0
     g_prime = @colour[:g] / 255.0
     b_prime = @colour[:b] / 255.0
@@ -82,10 +31,10 @@ class Colour::Convert
     c_max   = [r_prime, g_prime, b_prime].max
 
     # Start with V. V is easy
-    v = (c_max * 100).round
+    b = (c_max * 100).round
 
-    if c_max == 0
-      return {h: 0, s: 0, v: v}
+    if c_max == 0 || c_max == c_min
+      return {h: 0, s: 0, b: b}
     end
 
     # Next up, S
@@ -104,26 +53,13 @@ class Colour::Convert
       h = (r_prime - g_prime) / delta + 4
     end
 
-    # Get a rounded value for H in degrees
+    # get h in degrees
     h = (h * 60).round
 
     {
       h: h,
       s: s,
-      l: v
-    }
-  end
-
-  # this is typically the middle step between RGB and LAB.
-  def self.rgb_to_xyz
-    new_r = pivot_for_xyz(@colour[:r])
-    new_g = pivot_for_xyz(@colour[:g])
-    new_b = pivot_for_xyz(@colour[:b])
-
-    {
-      x: (new_r * 0.4124 + new_g * 0.3576 + new_b * 0.1805) * 100,
-      y: (new_r * 0.2126 + new_g * 0.7152 + new_b * 0.0722) * 100,
-      z: (new_r * 0.0193 + new_g * 0.1192 + new_b * 0.9505) * 100
+      b: b
     }
   end
 
@@ -144,6 +80,21 @@ class Colour::Convert
       b: b
     }
   end
+
+  # this is typically the middle step between RGB and LAB.
+  def self.rgb_to_xyz
+    new_r = pivot_for_xyz(@colour[:r])
+    new_g = pivot_for_xyz(@colour[:g])
+    new_b = pivot_for_xyz(@colour[:b])
+
+    {
+      x: (new_r * 0.4124 + new_g * 0.3576 + new_b * 0.1805) * 100,
+      y: (new_r * 0.2126 + new_g * 0.7152 + new_b * 0.0722) * 100,
+      z: (new_r * 0.0193 + new_g * 0.1192 + new_b * 0.9505) * 100
+    }
+  end
+
+  #### HELPER METHODS ####
 
   def self.pivot_for_lab(n)
     n > 0.008856 ? (n ** (1.0 / 3.0)) : (( 903.3 * n + 16) / 116)

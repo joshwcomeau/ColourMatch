@@ -1,49 +1,28 @@
 require 'rails_helper'
 
 RSpec.describe Colour::Convert do
-  context "when converting from RGB to HSL" do
+  context "when converting from RGB to hsb" do
     it "converts when red is max, and green is more than blue" do
-      expect(Colour::Convert.call({r: 211, g: 200, b: 50 }, :hsl)).to eq({h: 56,  s: 65,  l: 51}) 
+      expect(Colour::Convert.call({r: 211, g: 200, b: 50 }, :hsb)).to eq({h: 56,  s: 76,  b: 83}) 
     end
 
     it "converts when red is max, and green is less than blue" do
-      expect(Colour::Convert.call({r: 211, g: 36,  b: 125}, :hsl)).to eq({h: 329, s: 71,  l: 48}) 
+      expect(Colour::Convert.call({r: 211, g: 36,  b: 125}, :hsb)).to eq({h: 329, s: 83,  b: 83}) 
     end
 
     it "converts when green is max" do
-      expect(Colour::Convert.call({r: 60,  g: 178, b: 125}, :hsl)).to eq({h: 153, s: 50,  l: 47}) 
+      expect(Colour::Convert.call({r: 60,  g: 178, b: 125}, :hsb)).to eq({h: 153, s: 66,  b: 70}) 
     end
 
     it "converts when blue is max" do
-      expect(Colour::Convert.call({r: 11,  g: 0,   b: 157}, :hsl)).to eq({h: 244, s: 100, l: 31}) 
+      expect(Colour::Convert.call({r: 11,  g: 0,   b: 157}, :hsb)).to eq({h: 244, s: 100, b: 62}) 
     end
 
     it "converts when greyscale" do
-      expect(Colour::Convert.call({r: 60,  g: 60,  b: 60},  :hsl)).to eq({h: 0,   s: 0,   l: 24}) 
+      expect(Colour::Convert.call({r: 60,  g: 60,  b: 60},  :hsb)).to eq({h: 0,   s: 0,   b: 24}) 
     end
   end
 
-  context "when converting from HSL to RGB" do
-    it "converts when red is max, and green is more than blue" do
-      expect(Colour::Convert.call({h: 56,  s: 65,  l: 51}, :rgb)).to eq({r: 211, g: 200, b: 49 }) 
-    end
-
-    it "converts when red is max, and green is less than blue" do
-      expect(Colour::Convert.call({h: 329, s: 71,  l: 48}, :rgb)).to eq({r: 209, g: 35,  b: 125}) 
-    end
-
-    it "converts when green is max" do
-      expect(Colour::Convert.call({h: 153, s: 50,  l: 47}, :rgb)).to eq({r: 60,  g: 180, b: 126}) 
-    end
-
-    it "converts when blue is max" do
-      expect(Colour::Convert.call({h: 244, s: 100, l: 31}, :rgb)).to eq({r: 11,  g: 0,   b: 158}) 
-    end
-
-    it "converts when greyscale" do
-      expect(Colour::Convert.call({h: 0,   s: 0,   l: 24},  :rgb)).to eq({r: 61,  g: 61,  b: 61},) 
-    end
-  end
 
   context "When converting from RGB to XYZ" do
     it "converts when RGB are all over 11" do

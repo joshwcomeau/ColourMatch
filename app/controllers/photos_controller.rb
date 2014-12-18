@@ -10,16 +10,18 @@ class PhotosController < ApplicationController
     # Let's make a histogram at 64 colours.
     histogram = make_histogram(path, 64)
 
-    colour_list = get_colour_list(histogram)
-
-    # Returns an array of arrays, with occurance and RGB:
+    # Let's format it into an array of arrays, with occurance and RGB:
     # [  [20000, 255,255,255], [19000, 128,52,66], [18000, 0,0,0]  ]
+    formatted_histogram = parse_histogram(histogram)
+    
+    
 
-    hsl_colour_list = get_hsl_colours(colour_list)
+    colour_list = get_hsb_colours(formatted_histogram)
 
-    hues            = get_channel_stats(hsl_colour_list, :h)
-    saturations     = get_channel_stats(hsl_colour_list, :s)
-    lightnesses     = get_channel_stats(hsl_colour_list, :l)
+
+    hues            = get_channel_stats(colour_list, :h)
+    saturations     = get_channel_stats(colour_list, :s)
+    brightnesses    = get_channel_stats(colour_list, :b)
 
 
     
@@ -30,10 +32,10 @@ class PhotosController < ApplicationController
     puts hues[:outliers]
 
     puts "LIGHTNESS OUTLIERS:"
-    puts lightnesses[:outliers]
+    puts brightnesses[:outliers]
 
     eight_colour_histogram = make_histogram(path, 8)
-    eight_colour_list      = get_colour_list(eight_colour_histogram)
+    eight_colour_list      = parse_histogram(eight_colour_histogram)
 
     # For now: Make an image with the top 4 colors + outliers
     final_colours = eight_colour_list
@@ -41,12 +43,12 @@ class PhotosController < ApplicationController
     # For saturations, we only want outliers ABOVE the mean.
     saturations[:outliers].each do |s|
       binding.pry
-      final_colours.push(s) if s[:color][:hsl][:s] > saturations[:mean]
+      final_colours.push(s) if s[:color][:hsb][:s] > saturations[:mean]
     end
 
-    # Same for lightness
-    lightnesses[:outliers].each do |l|
-      final_colours.push(l) if l[:color][:hsl][:l] > lightnesses[:mean]
+    # Same for brightness
+    brightnesses[:outliers].each do |b|
+      final_colours.push(b) if b[:color][:hsb][:b] > brightnesses[:mean]
     end
 
     # For hue, we'll just take them all
@@ -68,7 +70,7 @@ class PhotosController < ApplicationController
   end
 
   def get_channel_stats(all_colours, channel)
-    colours   = all_colours.map { |c| c[:hsl][channel]}
+    colours   = all_colours.map { |c| c[:hsb][channel]}
     mean      = Maths.mean(colours)
     deviation = Maths.standard_deviation(colours)
     outliers  = get_outliers(all_colours, colours, channel, mean, deviation)
@@ -86,7 +88,7 @@ class PhotosController < ApplicationController
   def get_outliers(all_colours, measuring_colours, channel, mean, deviation, threshold=2)
     outliers = []
     all_colours.each do |c| 
-      z_score = Maths.z_score(c[:hsl][channel], measuring_colours, mean, deviation)
+      z_score = Maths.z_score(c[:hsb][channel], measuring_colours, mean, deviation)
       if z_score > threshold
         outliers.push({
           color: c,
@@ -98,13 +100,13 @@ class PhotosController < ApplicationController
   end
 
 
-  def get_colour_list(histogram)
+  def parse_histogram(histogram)
     hex_colour_regex = /(?<occurances>[\d]{1,8}):[\s\(\d,\)]+#[\dA-F]{6}\ssrgb\((?<c1>[\d]{1,3}),(?<c2>[\d]{1,3}),(?<c3>[\d]{1,3})\)/
 
     histogram.scan(hex_colour_regex)
   end
 
-  def get_hsl_colours(colour_list)
+  def get_hsb_colours(colour_list)
     colour_list.map! do |color_array|
       # First, we need to get this in the right format.
       # From  ['255','255','255'] 
@@ -116,12 +118,12 @@ class PhotosController < ApplicationController
       }
 
       # Next, we do the conversion
-      hsl = Colour::Convert.call(rgb, :hsl)
+      hsb = Colour::Convert.call(rgb, :hsb)
 
       {
         occurances: color_array[0].to_i,
         rgb:        rgb,
-        hsl:        hsl
+        hsb:        hsb
       }
     end
   end
