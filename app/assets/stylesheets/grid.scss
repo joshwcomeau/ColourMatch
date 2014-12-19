@@ -19,10 +19,11 @@
   float: left;
   padding-left: $gutter_size / 2;
   padding-right: $gutter_size / 2;
-  .grid &:first-of-type {
+  
+  &:first-of-type {
     padding-left: 0;
   }
-  .grid &:last-of-type {
+  &:last-of-type {
     padding-right: 0;
   }
 }

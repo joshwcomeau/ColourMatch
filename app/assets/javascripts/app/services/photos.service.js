@@ -3,7 +3,7 @@ function Photos($upload) {
 
   this.upload = function(photo, token) {
     return $upload.upload({
-      url: '/photos/', // upload.php script, node.js route, or servlet url
+      url: '/photos/',
       method: 'POST',
       data: {photo: photo, authenticity_token: token},
       file: photo, 

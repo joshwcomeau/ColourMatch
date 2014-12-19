@@ -17,6 +17,10 @@
       color: lighten($beige, 10%);
     }
   }
+  [class*='column_'], .c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8, .c9, .c10, .c11, .c12 {
+    transition: $transition_length;
+  }
+
 
   .width-wrapper {
     margin: 0 auto;
@@ -30,6 +34,11 @@
   .content-wrapper {
     margin-top: 4rem;
     @extend .width-wrapper;
+
+    &.widemode {
+      transition: $transition_length;
+      max-width: $max-width;
+    }
 
     .or {
       position: absolute;

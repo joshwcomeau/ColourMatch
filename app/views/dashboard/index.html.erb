@@ -6,34 +6,42 @@
     </div>
   </header>
 
-  <div class="content-wrapper grid padded-grid">
-  <div class="or">OR</div>
-    <div class="c6">
-      <section class="photo-upload card">
-        <h3>Upload a Photo</h3>
+  <div class="content-wrapper" ng-class="{widemode: photos.state !== 'idle'}">
+    <div class="grid padded-grid">
+      <div ng-class="{c6: photos.state === 'idle', c3: photos.state !== 'idle'}">
+        <section class="photo-upload card">
+          <h3>Upload a Photo</h3>
 
-        <div class="upload_drag_box" 
-          ng-file-drop ng-model="photos.photo" 
-          ng-file-change="fileDropped($files, $event, $rejectedFiles)" 
-          accept="image/*"
-          ng-rejected-file-model="rejected"
-          allowDir="true"
-          dropAvailable="dropSupported"
-        >
-          <i class="fa fa-cloud-upload"></i>
-          <p>Drag Photo Here</p>
-        </div>
-        <div ng-no-file-drop>File Drag/drop is not supported</div> 
+          <div class="upload_drag_box" 
+            ng-file-drop ng-model="photos.photo" 
+            ng-file-change="fileDropped($files, $event, $rejectedFiles)" 
+            accept="image/*"
+            ng-rejected-file-model="rejected"
+            allowDir="true"
+            dropAvailable="dropSupported"
+          >
+            <i class="fa fa-cloud-upload"></i>
+            <p>Drag Photo Here</p>
+          </div>
+          <div ng-no-file-drop>File Drag/drop is not supported</div> 
 
-      </section>
-    </div>
+          {{photos.state}}
+
+        </section>
+      </div>
+      
+
+
+      <div ng-class="{c6: photos.state === 'idle', c9: photos.state !== 'idle'}">
+        <section class="colour-select card">
+          <h3>Choose a Colour</h3>
+          <p>blablabal</p>
+        </section> 
+      </div>
+
+    </div>  
+    <div class="or">OR</div>
     
-    <div class="c6">
-      <section class="colour-select card">
-        <h3>Choose a Colour</h3>
-        <p>blablabal</p>
-      </section> 
-    </div>
   </div>
 
 </div>
