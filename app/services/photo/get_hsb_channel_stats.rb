@@ -25,13 +25,13 @@ class Photo::GetHSBChannelStats
 
   end
 
-  def self.get_outliers(all_colours, measuring_colours, channel, mean, deviation, threshold=2)
+  def self.get_outliers(all_colours, measuring_colours, channel, mean, deviation, threshold=1.4)
     outliers = []
     all_colours.each do |c| 
-      z_score = Maths.z_score(c[:hsb][channel], measuring_colours, mean, deviation)
+      z_score = Maths.z_score(c[:hsb][channel], measuring_colours, mean, deviation).abs
       if z_score > threshold
 
-        # We only care about outliers above the mean for saturation and brightness
+        # For saturation and brightness, we only want colors ABOVE the mean (positive z-score)
         if channel == :h || c[:hsb][channel] > mean
           c[:z_score] = z_score
           outliers.push(c)
