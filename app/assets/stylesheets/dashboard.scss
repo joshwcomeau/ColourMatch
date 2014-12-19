@@ -1,15 +1,45 @@
 @import 'variables';
 
-.content-wrapper {
+body > header {
+  text-align: center;
+  margin: 2rem 0;
+
+  h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    color: $orange;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    color: $lightgrey;
+  }
+}
+
+.width-wrapper {
   margin: 0 auto;
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: $max_width;
+  max-width: $starting_width;
+}
+
+
+.content-wrapper {
+  @extend .width-wrapper;
 
   .card {
     @extend .card_with_border; // From _components.scss
     
+    h3 {
+      margin: 0;
+      padding: 1rem;
+      background: $turqoise;
+      font-size: 2rem;
+      font-weight: 500;
+      color: #FFF;
+    }
 
   }
 }

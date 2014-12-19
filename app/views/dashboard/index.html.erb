@@ -1,12 +1,15 @@
 <header>
-  <h1>ColourMatch</h1>
-  <p>Find beautiful photos from 500px, using colour.</p>
+  <div class="header-text">
+    <h1>ColourMatch</h1>
+    <p>Find beautiful photos from 500px, using colour.</p>
+  </div>
 </header>
 
 <div class="content-wrapper grid padded-grid">
   <div class="c6">
     <section class="colour-select card">
-        <%= form_tag photos_path, multipart: true do |f| %>
+    <h3>Upload a Photo</h3>
+      <%= form_tag photos_path, multipart: true do |f| %>
         <%= file_field_tag "photo" %>
         <%= submit_tag "Upload" %>
       <% end %>
@@ -15,6 +18,7 @@
   
   <div class="c6">
     <section class="photo-upload card">
+      <h3>Choose a Colour</h3>
       <p>blablabal</p>
     </section> 
   </div>

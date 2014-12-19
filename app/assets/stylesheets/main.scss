@@ -14,22 +14,5 @@ body {
   background:   $darkgrey;
   font-family:  'Whitney';
   font-weight:  300;
-  color:        #FFF;  
 
-  & > header {
-    text-align: center;
-    margin: 2rem 0;
-
-    h1 {
-      font-size: 3rem;
-      font-weight: 900;
-      color: $orange;
-    }
-
-    p {
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      color: $lightgrey;
-    }
-  }
 }
