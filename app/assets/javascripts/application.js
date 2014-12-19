@@ -11,11 +11,14 @@
 // about supported directives.
 //
 //= require jquery/dist/jquery
-//= require jquery-ujs/src/rails.js
+//= require jquery-ujs/src/rails
 //= require angular/angular
 //= require angular-animate/angular-animate
 //= require angular-mocks/angular-mocks
 //= require angular-resource/angular-resource
 //= require angular-route/angular-route
+//= require ng-file-upload/angular-file-upload-shim
+//= require ng-file-upload/angular-file-upload
 //= require lodash/dist/lodash
+//= require app/app.js
 //= require_tree .
