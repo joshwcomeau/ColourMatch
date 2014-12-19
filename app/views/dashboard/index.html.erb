@@ -1,4 +1,4 @@
-<div class="photos-wrapper" ng-controller="PhotosController as photos">
+<div class="photos-wrapper" ng-controller="PhotosController as photos" data-auth-token="<%= form_authenticity_token %>">
   <header>
     <div class="header-text">
       <h1>ColourMatch</h1>
@@ -13,7 +13,7 @@
         <h3>Upload a Photo</h3>
 
         <div class="upload_drag_box" 
-          ng-file-drop ng-model="photo" 
+          ng-file-drop ng-model="photos.photo" 
           ng-file-change="fileDropped($files, $event, $rejectedFiles)" 
           accept="image/*"
           ng-rejected-file-model="rejected"
@@ -24,8 +24,6 @@
           <p>Drag Photo Here</p>
         </div>
         <div ng-no-file-drop>File Drag/drop is not supported</div> 
-
-        <input id="authenticity_token" name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">  
 
       </section>
     </div>
