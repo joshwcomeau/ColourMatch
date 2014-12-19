@@ -17,7 +17,11 @@
 // Apply float and gutters to all columns in one easy selector.
 [class*='column_'], .c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8, .c9, .c10, .c11, .c12 {
   float: left;
-  padding-right: $gutter_size;
+  padding-left: $gutter_size / 2;
+  padding-right: $gutter_size / 2;
+  .grid &:first-of-type {
+    padding-left: 0;
+  }
   .grid &:last-of-type {
     padding-right: 0;
   }

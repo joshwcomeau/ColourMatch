@@ -6,18 +6,23 @@
 </header>
 
 <div class="content-wrapper grid padded-grid">
+<div class="or">OR</div>
   <div class="c6">
-    <section class="colour-select card">
+    <section class="photo-upload card">
     <h3>Upload a Photo</h3>
-      <%= form_tag photos_path, multipart: true do |f| %>
-        <%= file_field_tag "photo" %>
-        <%= submit_tag "Upload" %>
-      <% end %>
+    <%= form_tag photos_path, multipart: true do |f| %>
+      <div class="upload_drag_box">
+        <i class="fa fa-cloud-upload"></i>
+        <p>Drag Photo Here</p>
+      </div>
+      <%= file_field_tag "photo" %>
+      <%= submit_tag "Upload" %>
+    <% end %>
     </section>
   </div>
   
   <div class="c6">
-    <section class="photo-upload card">
+    <section class="colour-select card">
       <h3>Choose a Colour</h3>
       <p>blablabal</p>
     </section> 

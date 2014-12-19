@@ -7,13 +7,13 @@ body > header {
   h1 {
     font-size: 4rem;
     font-weight: 900;
-    color: $orange;
+    color: $red;
   }
 
   p {
     font-size: 1.2rem;
     margin-top: 1rem;
-    color: $lightgrey;
+    color: lighten($beige, 10%);
   }
 }
 
@@ -27,19 +27,62 @@ body > header {
 
 
 .content-wrapper {
+  margin-top: 4rem;
   @extend .width-wrapper;
+
+  .or {
+    position: absolute;
+    z-index: 2;
+    width: 3rem;
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    font-weight: 500;
+    border-radius: 100%;
+    background: $red;
+    color: #FFF;
+    top: 2.5rem;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
 
   .card {
     @extend .card_with_border; // From _components.scss
+    padding: 5rem 1rem 1rem 1rem; // top is offset from the absolutely-positioned heading.
     
     h3 {
+      position: absolute;
+      text-align: center;
+      width: 100%;
+      top: 0;
+      left: 0;
       margin: 0;
-      padding: 1rem;
+      height: 4rem;
+      line-height: 4rem;
       background: $turqoise;
       font-size: 2rem;
       font-weight: 500;
       color: #FFF;
     }
 
+  }
+
+  .photo-upload {
+    .upload_drag_box {
+      width: 100%;
+      height: 8rem;
+      border: 2px dashed #CCC;
+      background: rgba(0,0,0,0.05);
+      text-align: center;
+
+      i {
+        font-size: 3rem;
+      }
+
+      p {
+        font-size: 2rem;
+      }
+    }
   }
 }
