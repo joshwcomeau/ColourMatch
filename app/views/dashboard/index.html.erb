@@ -10,15 +10,23 @@
   <div class="or">OR</div>
     <div class="c6">
       <section class="photo-upload card">
-      <h3>Upload a Photo</h3>
-      <%= form_tag photos_path, multipart: true do |f| %>
-        <div class="upload_drag_box">
+        <h3>Upload a Photo</h3>
+
+        <div class="upload_drag_box" 
+          ng-file-drop ng-model="photo" 
+          ng-file-change="fileDropped($files, $event, $rejectedFiles)" 
+          accept="image/*"
+          ng-rejected-file-model="rejected"
+          allowDir="true"
+          dropAvailable="dropSupported"
+        >
           <i class="fa fa-cloud-upload"></i>
           <p>Drag Photo Here</p>
         </div>
-        <%= file_field_tag "photo" %>
-        <%= submit_tag "Upload" %>
-      <% end %>
+        <div ng-no-file-drop>File Drag/drop is not supported</div> 
+
+        <input id="authenticity_token" name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">  
+
       </section>
     </div>
     

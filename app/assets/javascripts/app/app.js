@@ -1,1 +1,1 @@
-angular.module('colourMatch', ['ngAnimate', 'ngRoute', 'ngResource']);
+angular.module('colourMatch', ['ngAnimate', 'ngRoute', 'ngResource', 'angularFileUpload']);
