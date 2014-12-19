@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'Whitney';
+  src: font-url('whitney/whitney_light-webfont.eot');
+  src: font-url('whitney/whitney_light-webfont.eot?#iefix') format('embedded-opentype'),
+       font-url('whitney/whitney_light-webfont.woff2') format('woff2'),
+       font-url('whitney/whitney_light-webfont.woff') format('woff'),
+       font-url('whitney/whitney_light-webfont.ttf') format('truetype'),
+       font-url('whitney/whitney_light-webfont.svg#whitney_lightregular') format('svg');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Whitney';
+  src: font-url('whitney/whitney_book-webfont.eot');
+  src: font-url('whitney/whitney_book-webfont.eot?#iefix') format('embedded-opentype'),
+       font-url('whitney/whitney_book-webfont.woff2') format('woff2'),
+       font-url('whitney/whitney_book-webfont.woff') format('woff'),
+       font-url('whitney/whitney_book-webfont.ttf') format('truetype'),
+       font-url('whitney/whitney_book-webfont.svg#whitney_bookregular') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Whitney';
+  src: font-url('whitney/whitney_semibold-webfont.eot');
+  src: font-url('whitney/whitney_semibold-webfont.eot?#iefix') format('embedded-opentype'),
+       font-url('whitney/whitney_semibold-webfont.woff2') format('woff2'),
+       font-url('whitney/whitney_semibold-webfont.woff') format('woff'),
+       font-url('whitney/whitney_semibold-webfont.ttf') format('truetype'),
+       font-url('whitney/whitney_semibold-webfont.svg#whitney_semiboldregular') format('svg');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Whitney';
+  src: font-url('whitney/whitney_black-webfont.eot');
+  src: font-url('whitney/whitney_black-webfont.eot?#iefix') format('embedded-opentype'),
+       font-url('whitney/whitney_black-webfont.woff2') format('woff2'),
+       font-url('whitney/whitney_black-webfont.woff') format('woff'),
+       font-url('whitney/whitney_black-webfont.ttf') format('truetype'),
+       font-url('whitney/whitney_black-webfont.svg#whitney_blackregular') format('svg');
+  font-weight: 900;
+  font-style: normal;
+}
