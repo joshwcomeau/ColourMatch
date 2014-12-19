@@ -1,0 +1,78 @@
+// CUSTOM GRID SYSTEM
+// Written by Joshua Comeau, polished using tips from css-tricks.com
+
+// Compatibility: IE8+
+
+// Requires variables for breakpoints and gutter sizes. Include them in this file:
+@import 'variables';
+
+
+// Avoid the overflow issue with floated elements with a pseudoelement.
+.grid:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+// Apply float and gutters to all columns in one easy selector.
+[class*='column_'], .c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8, .c9, .c10, .c11, .c12 {
+  float: left;
+  padding-right: $gutter_size;
+  .grid &:last-of-type {
+    padding-right: 0;
+  }
+}
+
+// Optional outer gutters
+.padded_grid {
+  padding: $gutter_size;
+}
+
+// GRID TIME. All possible sizes, with multiple labels for convenience.
+
+.column_1-12, .c1 {
+  width: 8.33%
+}
+.column_2-12, .c2, .column_1-6 {
+  width: 16.66%;
+}
+.column_3-12, .c3, .column_1-4 {
+  width: 25%;
+}
+.column_4-12, .c4, .column_1-3, .column_2-6 {
+  width: 33.33%;
+}
+.column_5-12, .c5 {
+  width: 41.66%;
+}
+.column_6-12, .c6, .column_1-2, .column_3-6 {
+  width: 50%;
+}
+.column_7-12, .c7 {
+  width: 58.33%;
+}
+.column_8-12, .c8, .column_2-3, .column_4-6 {
+  width: 66.66%;
+}
+.column_9-12, .c9, .column_3-4,  {
+  width: 75%;
+}
+.column_10-12, .c10, .column_5-6 {
+  width: 83.33%;
+}
+.column_11-12, .c11 {
+  width: 91.66%;
+}
+.column_12-12, .c12, .column_6-6, .column_4-4, .column_2-2 { // Seems unnecessary, but could be useful for gutters.
+  width: 100%;
+}
+
+
+
+@media screen and (max-width: $column_breakpoint) {
+  [class*='column_'], .c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8, .c9, .c10, .c11, .c12 {
+    width: 100%;
+    padding-right: 0;
+    padding-top: $gutter_size;
+  }
+}

@@ -1,0 +1,20 @@
+@import 'colours';
+@import 'sizes';
+
+.card_with_border {
+  background: $lightgrey;
+  border-bottom: 1px solid rgba(0,0,0,0.8);
+  border-right: 1px solid rgba(0,0,0,0.8);
+
+  &:before {
+    content: " ";
+    position: absolute;
+    z-index: -1;
+    top: -$card_border;
+    left: -$card_border;
+    right: -$card_border;
+    bottom: -$card_border;
+    border: $card_border solid darken($lightgrey, 15%);
+  }
+
+}

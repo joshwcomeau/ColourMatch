@@ -1,0 +1,15 @@
+@import 'variables';
+
+.content-wrapper {
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: $max_width;
+
+  .card {
+    @extend .card_with_border; // From _components.scss
+    
+
+  }
+}
