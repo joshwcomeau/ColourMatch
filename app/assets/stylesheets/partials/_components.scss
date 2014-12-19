@@ -2,19 +2,21 @@
 @import 'sizes';
 
 .card_with_border {
+  position: relative;
   background: $lightgrey;
   border-bottom: 1px solid rgba(0,0,0,0.8);
   border-right: 1px solid rgba(0,0,0,0.8);
+  min-height: 400px;
+  padding:$card_border;
 
   &:before {
     content: " ";
     position: absolute;
-    z-index: -1;
-    top: -$card_border;
-    left: -$card_border;
-    right: -$card_border;
-    bottom: -$card_border;
-    border: $card_border solid darken($lightgrey, 15%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border: $card_border solid $lightborder;
   }
 
 }
