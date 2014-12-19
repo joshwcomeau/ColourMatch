@@ -9,6 +9,7 @@
     "jquery": "latest",
     "jquery-ujs": "latest",
     "lodash": "latest",
+    "ng-file-upload": "latest",
     "font-awesome": "latest"
   }
 }
