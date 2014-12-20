@@ -6,9 +6,11 @@
     "angular-resource": "latest",
     "angular-route": "latest",
     "angular-mocks": "latest",
+    "animate.css": "latest",
     "jquery": "latest",
     "jquery-ujs": "latest",
     "lodash": "latest",
+    "ngAnimate-animate.css": "latest",
     "ng-file-upload": "latest",
     "font-awesome": "latest"
   }

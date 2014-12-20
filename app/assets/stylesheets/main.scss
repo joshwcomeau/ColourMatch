@@ -5,9 +5,11 @@
 }
 
 html, body {
-  height: 100%;
   width: 100%;
 }
+
+html { height: 100%; }
+body { min-height: 100%; }
 
 body {
   border:       1rem solid darken($darkgrey, 4%);

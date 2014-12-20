@@ -6,25 +6,27 @@
     </div>
   </header>
 
-  <div class="content-wrapper" ng-class="{widemode: photos.state !== 'idle'}">
+  <div class="content-wrapper" ng-class="{widemode: photos.photoData.state !== 0}">
     <div class="grid padded-grid">
-      <div ng-class="{c6: photos.state === 'idle', c3: photos.state !== 'idle'}">
-        <section class="photo-upload card">
+      <div ng-class="{c6: photos.photoData.state === 0, c3: photos.photoData.state !== 0}">
+        <section class="photo-upload card animated fadeInUp">
           <h3>Upload a Photo</h3>
 
-          <div class="photo_box" 
-            ng-class="{with_image: photos.state !== 'idle'}"
-            ng-file-drop ng-model="photos.photo" 
+          <button class="photo_box" 
+            ng-class="{with_image: photos.photoData.state !== 0}"
+            ng-file-drop 
+            ng-file-change="photos.uploadPhoto.call(photos.photo, photos.auth)"
+            ng-model="photos.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
             allowDir="true"
             dropAvailable="dropSupported"
           >
-            <div class="upload-text" ng-show="photos.state === 'idle'">
+            <div class="upload-text" ng-show="photos.photoData.state === 0">
               <i class="fa fa-cloud-upload"></i>
-              <p>Drag Photo Here</p>
+              <h4>Click or Drag Photo</h4>
             </div>
-          </div>
+          </button>
           <div class="palette" ng-show="photos.photoData.palette">
             <ul>
               <li ng-repeat="colour in photos.photoData.palette" ng-style="{'background-color': 'rgb('+colour.rgb.r+','+colour.rgb.g+','+colour.rgb.b+')'}"></li>
@@ -32,22 +34,22 @@
           </div>
           <div ng-no-file-drop>File Drag/drop is not supported</div> 
 
-          {{photos.state}}
+          {{photos.photoData.state}}
 
         </section>
       </div>
       
 
 
-      <div ng-class="{c6: photos.state === 'idle', c9: photos.state !== 'idle'}">
-        <section class="colour-select card">
+      <div ng-class="{c6: photos.photoData.state === 0, c9: photos.photoData.state !== 0}">
+        <section class="colour-select card animated fadeInUp">
           <h3>Choose a Colour</h3>
           <p>blablabal</p>
         </section> 
       </div>
 
     </div>  
-    <div class="or">OR</div>
+    <div class="or animated rotateIn" ng-show="photos.photoData.state === 0">OR</div>
 
   </div>
 

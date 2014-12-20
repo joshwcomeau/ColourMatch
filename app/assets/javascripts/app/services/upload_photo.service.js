@@ -3,6 +3,8 @@ function UploadPhoto($upload, SetImagePreview, PhotoData) {
 
   this.call = function(photo, token) {
     SetImagePreview.call(photo);
+    PhotoData.state = PhotoData.states.uploading;
+    
     return $upload.upload({
       url: '/photos/',
       method: 'POST',
