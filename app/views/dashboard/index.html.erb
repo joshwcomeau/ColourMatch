@@ -59,7 +59,8 @@
       <div ng-class="{c6: photos.photoData.state === 0, c9: photos.photoData.state !== 0}">
         <section class="colour-select card animated fadeInUp">
           <h3>Choose a Colour</h3>
-          <p>blablabal</p>
+          <input type="text" minicolor-picker ng-model="photos.colour">
+          {{photos.colour}}
         </section> 
       </div>
 

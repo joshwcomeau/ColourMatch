@@ -19,7 +19,7 @@ class PhotosController < ApplicationController
 
 
     # Create a png palette for testing
-    Photo::CreatePaletteImage.call(results, name)
+    Photo::CreatePaletteImage.call(results, name) unless Rails.env.production?
 
 
     render json: results
