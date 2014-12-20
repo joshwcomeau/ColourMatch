@@ -3,8 +3,6 @@ class Photo::GetHistogramData
     histogram   = make_histogram(path, colours)
     rgb_data    = parse_histogram(histogram)
 
-    binding.pry
-
     get_all_colorspaces(rgb_data)
   end
 
