@@ -1,8 +1,10 @@
 function deferClickTo() {
   return {
     restrict: 'A',
-    link: function(destination) {
-      $(destination).click();
+    link: function(scope, element, attrs) {
+      $(element).click(function() {
+        $(attrs.destination).click();
+      });
     }
   };
 }

@@ -97,22 +97,38 @@
         background-size: cover;
         background-position: center;
 
-        &:hover {
-          background: rgba(0,0,0,0.1);
-          border: 2px dashed #BBB;
-          .upload-text i, .upload-text h4 { opacity: 1 }
+        &.clickable-area {
+          position: absolute;
+          width: 100%;
+          top: 100%;
+          left: 0;
+          top: 0;
         }
 
-        &.dragover {
-          background: $blue;
-          border: 2px dashed darken($blue, 10%);
-          color: #FFF;
+        &.without-image {
 
-          .upload-text i, .upload-text h4 { opacity: 1 }
+          &:hover {
+            background-color: rgba(0,0,0,0.1);
+            border: 2px dashed #BBB;
+            .upload-text i, .upload-text h4 { opacity: 1 }
+          }
+
+          &.dragover {
+            background: $blue;
+            border: 2px dashed darken($blue, 10%);
+            color: #FFF;
+
+            .upload-text i, .upload-text h4 { opacity: 1 }
+          }
+
         }
 
-        &.with_image {
+        &.with-image {
           border: 0px;
+
+          .upload-text {
+            display: none;
+          }
         }
 
 

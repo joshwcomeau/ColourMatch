@@ -13,7 +13,7 @@
           <h3>Upload a Photo</h3>
 
           <button class="photo_box" 
-            ng-class="{with_image: photos.photoData.state !== 0}"
+            ng-class="{'with-image': photos.photoData.state !== 0, 'without-image': photos.photoData.state === 0 }"
             ng-file-drop 
             ng-file-change="photos.uploadPhoto.call(photos.photo, photos.auth)"
             ng-model="photos.photo" 
@@ -21,12 +21,14 @@
             ng-rejected-file-model="rejected"
             allowDir="true"
             dropAvailable="dropSupported"
+            defer-click-to destination="#click-handler"
           >
-            <div class="upload-text" ng-show="photos.photoData.state === 0">
+            <div class="upload-text">
               <i class="fa fa-cloud-upload"></i>
               <h4>Click or Drag Photo</h4>
             </div>
           </button>
+
           <div class="palette" ng-show="photos.photoData.palette">
             <ul>
               <li ng-repeat="colour in photos.photoData.palette" ng-style="{'background-color': 'rgb('+colour.rgb.r+','+colour.rgb.g+','+colour.rgb.b+')'}"></li>
@@ -35,6 +37,19 @@
           <div ng-no-file-drop>File Drag/drop is not supported</div> 
 
           {{photos.photoData.state}}
+  
+          <!-- 
+            This invisible div holds our click-to-upload logic. 
+            Clicking on our photo-box causes the event to be sent here. 
+          -->
+          <div id="click-handler"
+            ng-file-select 
+            ng-file-change="photos.uploadPhoto.call(photos.photo, photos.auth)"
+            ng-model="photos.photo" 
+            accept="image/*"
+            ng-rejected-file-model="rejected"
+            allowDir="true">
+          </div>
 
         </section>
       </div>
