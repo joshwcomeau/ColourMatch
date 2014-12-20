@@ -34,10 +34,7 @@
               <li ng-repeat="colour in photos.photoData.palette" ng-style="{'background-color': 'rgb('+colour.rgb.r+','+colour.rgb.g+','+colour.rgb.b+')'}"></li>
             </ul>
           </div>
-          <div ng-no-file-drop>File Drag/drop is not supported</div> 
-
-          {{photos.photoData.state}}
-  
+          <div ng-no-file-drop>File Drag/drop is not supported</div>   
           <!-- 
             This invisible div holds our click-to-upload logic. 
             Clicking on our photo-box causes the event to be sent here. 
@@ -59,7 +56,26 @@
       <div ng-class="{c6: photos.photoData.state === 0, c9: photos.photoData.state !== 0}">
         <section class="colour-select card animated fadeInUp">
           <h3>Choose a Colour</h3>
-          <input type="text" minicolor-picker ng-model="photos.colour">
+          <div class="minicolors minicolors-theme-default minicolors-position-top minicolors-position-left minicolors-inline">
+            <div class="minicolors-panel minicolors-slider-hue">
+              <div class="minicolors-slider minicolors-sprite">
+                <div class="minicolors-picker" style="top: 0px;"></div>
+              </div>
+              <div class="minicolors-grid minicolors-sprite" style="background-color: rgb(255, 0, 0);">
+                <div class="minicolors-grid-inner"></div>
+                <div class="minicolors-picker" style="top: 160px; left: 0px;">
+                  <div></div>
+                </div>
+              </div>
+            </div>
+            <div class="colour-details">
+              <div class="colour-preview"></div>
+              <input type="text" minicolor-picker="" ng-model="photos.colour" class="ng-pristine ng-untouched ng-valid minicolors-input" size="7">
+            </div>
+          </div>
+          <div class="submit-button-wrapper">
+            <button><i class="fa fa-check"></i></button>
+          </div>
 
         </section> 
       </div>

@@ -1,21 +1,27 @@
 // Custom additions
-.colour-preview {
-  position: absolute;
-  top: 161px;
-  left: 0;
-  width: 33%;
-  height: 2rem;
-  display: none;
-}
-.minicolors-theme-default .minicolors-input {
-  position: absolute;
-  top: 161px;
-  right: 0;
-  width: 67%;
-  height: 2rem;
-  vertical-align: top;
-  display: none;
-  padding: 0.3rem;
+.colour-details {
+  overflow: auto;
+  .colour-preview {
+    float: left;
+    width: 33%;
+    height: 2rem;
+    display: none;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+  }
+  .minicolors-input {
+    float: left;
+    width: 67%;
+    height: 2rem;
+    line-height: 2rem;
+    padding: 0 0.5rem;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    text-align: right;
+    font-size: 1.2em;
+    display: none;
+  }
 }
 
 // Modified CSS
@@ -100,7 +106,8 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 299px;
+    width: 300px;
+    border-right: 1px solid rgba(0,0,0,0.25);
     height: 160px;
     background-size: cover !important;
     background-image: image-url('colorpicker_sat_and_bri.png') !important;
@@ -111,7 +118,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 299px;
+    width: 300px;
     height: 160px;
 }
 
@@ -214,7 +221,7 @@
 
 /* Inline controls */
 .minicolors-inline {
-    display: inline-block;
+    display: block;
 }
 
 .minicolors-inline .minicolors-input {
@@ -227,7 +234,7 @@
     left: auto;
     box-shadow: none;
     z-index: auto;
-    display: inline-block;
+    display: block;
 }
 
 /* Default theme */
@@ -243,7 +250,6 @@
 }
 .minicolors-theme-default.minicolors {
     width: auto;
-    display: inline-block;
 }
 
 .minicolors-theme-default.minicolors-position-right .minicolors-input {

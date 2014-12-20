@@ -145,25 +145,8 @@ if(jQuery) (function($) {
 
         // The input
         input
-            .addClass('minicolors-input')
             .data('minicolors-initialized', false)
-            .data('minicolors-settings', settings)
-            .prop('size', 7)
-            .wrap(minicolors)
-            .before(
-                '<div class="minicolors-panel minicolors-slider-' + settings.control + '">' +
-                    '<div class="minicolors-slider minicolors-sprite">' +
-                        '<div class="minicolors-picker"></div>' +
-                    '</div>' +
-                    '<div class="minicolors-opacity-slider minicolors-sprite">' +
-                        '<div class="minicolors-picker"></div>' +
-                    '</div>' +
-                    '<div class="minicolors-grid minicolors-sprite">' +
-                        '<div class="minicolors-grid-inner"></div>' +
-                        '<div class="minicolors-picker"><div></div></div>' +
-                    '</div>' +
-                '</div>'
-            );
+            .data('minicolors-settings', settings);
 
         // The swatch
         if( !settings.inline ) {
@@ -175,10 +158,10 @@ if(jQuery) (function($) {
         }
 
         // Prevent text selection in IE
-        input.parent().find('.minicolors-panel').on('selectstart', function() { return false; }).end();
+        input.parent().parent().find('.minicolors-panel').on('selectstart', function() { return false; }).end();
 
         // Inline controls
-        if( settings.inline ) input.parent().addClass('minicolors-inline');
+        if( settings.inline ) input.parent().parent().addClass('minicolors-inline');
 
         updateFromInput(input, false);
 
@@ -189,7 +172,7 @@ if(jQuery) (function($) {
     // Returns the input back to its original state
     function destroy(input) {
 
-        var minicolors = input.parent();
+        var minicolors = input.parent().parent();
 
         // Revert the input element
         input
@@ -206,7 +189,7 @@ if(jQuery) (function($) {
     // Shows the specified dropdown panel
     function show(input) {
 
-        var minicolors = input.parent(),
+        var minicolors = input.parent().parent(),
             panel = minicolors.find('.minicolors-panel'),
             settings = input.data('minicolors-settings');
 
@@ -332,7 +315,7 @@ if(jQuery) (function($) {
             opacity = input.attr('data-opacity'),
 
             // Helpful references
-            minicolors = input.parent(),
+            minicolors = input.parent().parent(),
             settings = input.data('minicolors-settings'),
             swatch = minicolors.find('.minicolors-swatch'),
 
@@ -350,6 +333,9 @@ if(jQuery) (function($) {
             gridPos = getCoords(gridPicker, grid),
             sliderPos = getCoords(sliderPicker, slider),
             opacityPos = getCoords(opacityPicker, opacitySlider);
+
+            console.log(sliderPicker, slider)
+
 
         // Handle colors
         if( target.is('.minicolors-grid, .minicolors-slider') ) {
@@ -466,7 +452,7 @@ if(jQuery) (function($) {
             x, y, r, phi,
 
             // Helpful references
-            minicolors = input.parent(),
+            minicolors = input.parent().parent(),
             settings = input.data('minicolors-settings'),
             swatch = minicolors.find('.minicolors-swatch'),
 

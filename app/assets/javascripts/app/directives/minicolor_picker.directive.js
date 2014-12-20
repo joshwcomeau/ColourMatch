@@ -11,15 +11,15 @@ function minicolorPicker() {
         change:     function(hex) {
           $(".colour-preview").css("background-color", hex);
           if (clean) {
-            $(".colour-preview, .minicolors-input").slideDown();
+            $(".colour-preview, .minicolors-input").slideDown(500, function() {
+              $(".submit-button-wrapper").slideDown();
+            });
+            clean = false;
           }
         }
       };
 
       element.minicolors(settings);
-
-      // Create the color preview div
-      element.before('<div class="colour-preview"></div>')
     }
   };
 }
