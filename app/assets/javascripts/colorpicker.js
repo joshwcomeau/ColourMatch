@@ -150,7 +150,7 @@ if(jQuery) (function($) {
             .data('minicolors-settings', settings)
             .prop('size', 7)
             .wrap(minicolors)
-            .after(
+            .before(
                 '<div class="minicolors-panel minicolors-slider-' + settings.control + '">' +
                     '<div class="minicolors-slider minicolors-sprite">' +
                         '<div class="minicolors-picker"></div>' +

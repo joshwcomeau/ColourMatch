@@ -2,13 +2,24 @@ function minicolorPicker() {
   return {
     restrict: 'A',
     require: 'ngModel',
-    priority: 1,
     link: function(scope, element, attrs, ngModel) {
+      var clean = true;
       var settings = {
-        inline: true
-      }
+        inline:     true,
+        position:   'top left',
+        letterCase: 'uppercase',
+        change:     function(hex) {
+          $(".colour-preview").css("background-color", hex);
+          if (clean) {
+            $(".colour-preview, .minicolors-input").slideDown();
+          }
+        }
+      };
+
       element.minicolors(settings);
-      console.log("Minico");
+
+      // Create the color preview div
+      element.before('<div class="colour-preview"></div>')
     }
   };
 }
