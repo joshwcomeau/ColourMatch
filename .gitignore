@@ -20,5 +20,8 @@
 .DS_Store
 **/.DS_Store
 
-# Ignore uploads
-/public/upload
+# Ignore image in uploads folder
+/public/upload/*.png
+/public/upload/*.jpg
+/public/upload/*.jpeg
+/public/upload/*.gif

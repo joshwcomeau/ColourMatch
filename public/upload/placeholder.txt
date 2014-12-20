@@ -1,0 +1,2 @@
+--- Ignore me ---
+Just here so that when you git clone this repo, the 'upload' folder exists to hold uploaded photos.
