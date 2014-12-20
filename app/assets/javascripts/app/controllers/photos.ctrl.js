@@ -1,7 +1,8 @@
-function PhotosController($scope, $attrs, Photos) {
-  this.photo = null;
-  this.auth  = $attrs.authToken;
-  this.state = 'idle';
+function PhotosController($scope, $attrs, UploadPhoto, PhotoData) {
+  this.photo      = null;
+  this.auth       = $attrs.authToken;
+  this.state      = 'idle';
+  this.photoData  = PhotoData;
 
   var ctrl   = this;
 
@@ -11,7 +12,8 @@ function PhotosController($scope, $attrs, Photos) {
     console.log("Watch triggered with ", newVal);
     if (newVal) {
       ctrl.state = 'uploading';
-      $scope.upload = Photos.upload(newVal, ctrl.auth);
+      console.log(newVal);
+      $scope.upload = UploadPhoto.call(newVal, ctrl.auth);
     }
   });
 
@@ -22,5 +24,5 @@ function PhotosController($scope, $attrs, Photos) {
 
 
 
-PhotosController.$inject = ['$scope', '$attrs', 'Photos'];
-angular.module('colourMatch').controller('PhotosController', ['$scope', '$attrs', 'Photos', PhotosController]);
+PhotosController.$inject = ['$scope', '$attrs', 'UploadPhoto', 'PhotoData'];
+angular.module('colourMatch').controller('PhotosController', ['$scope', '$attrs', 'UploadPhoto', 'PhotoData', PhotosController]);

@@ -12,16 +12,23 @@
         <section class="photo-upload card">
           <h3>Upload a Photo</h3>
 
-          <div class="upload_drag_box" 
+          <div class="photo_box" 
+            ng-class="{with_image: photos.state !== 'idle'}"
             ng-file-drop ng-model="photos.photo" 
-            ng-file-change="fileDropped($files, $event, $rejectedFiles)" 
             accept="image/*"
             ng-rejected-file-model="rejected"
             allowDir="true"
             dropAvailable="dropSupported"
           >
-            <i class="fa fa-cloud-upload"></i>
-            <p>Drag Photo Here</p>
+            <div class="upload-text" ng-show="photos.state === 'idle'">
+              <i class="fa fa-cloud-upload"></i>
+              <p>Drag Photo Here</p>
+            </div>
+          </div>
+          <div class="palette" ng-show="photos.photoData.palette">
+            <ul>
+              <li ng-repeat="colour in photos.photoData.palette" ng-style="{'background-color': 'rgb('+colour.rgb.r+','+colour.rgb.g+','+colour.rgb.b+')'}"></li>
+            </ul>
           </div>
           <div ng-no-file-drop>File Drag/drop is not supported</div> 
 
@@ -41,7 +48,7 @@
 
     </div>  
     <div class="or">OR</div>
-    
+
   </div>
 
 </div>

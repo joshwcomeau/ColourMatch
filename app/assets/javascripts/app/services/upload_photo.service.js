@@ -1,7 +1,8 @@
-function Photos($upload) {
+function UploadPhoto($upload, SetImagePreview, PhotoData) {
   var serv = this;
 
-  this.upload = function(photo, token) {
+  this.call = function(photo, token) {
+    SetImagePreview.call(photo);
     return $upload.upload({
       url: '/photos/',
       method: 'POST',
@@ -16,8 +17,14 @@ function Photos($upload) {
     }).progress(function(evt) {
       console.log(evt);
     }).success(function(data, status, headers, config) {
+
       // file is uploaded successfully
+      PhotoData.photo   = config.file;
+      PhotoData.palette = data;
+      
       console.log('file ' + config.file.name + 'is uploaded successfully. Response: ' + data);
+      console.log(data[0]);
+      console.log(config);
     });
     //.error(...)
     //.then(success, error, progress); // returns a promise that does NOT have progress/abort/xhr functions
@@ -28,4 +35,4 @@ function Photos($upload) {
 
 }
 
-angular.module('colourMatch').service("Photos", ["$upload", Photos]);
+angular.module('colourMatch').service("UploadPhoto", ["$upload", "SetImagePreview", "PhotoData", UploadPhoto]);

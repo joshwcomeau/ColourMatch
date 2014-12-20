@@ -79,16 +79,23 @@
     }
 
     .photo-upload {
-      .upload_drag_box {
+      .photo_box {
         width: 100%;
         height: 8rem;
         border: 2px dashed #CCC;
         background: rgba(0,0,0,0.05);
         text-align: center;
+        background-size: cover;
+        background-position: center;
 
         &.dragover {
           background: $blue;
+          border: 2px dashed darken($blue, 20%);
           color: #FFF;
+        }
+
+        &.with_image {
+          border: 0px;
         }
 
 
@@ -99,6 +106,16 @@
         p {
           font-size: 2rem;
         }
+      }
+    }
+
+    .palette {
+      overflow: auto;
+      
+      li {
+        width: 16.666666666%;
+        height: 2rem;
+        float: left;
       }
     }
   }
