@@ -25,3 +25,6 @@
 /public/upload/*.jpg
 /public/upload/*.jpeg
 /public/upload/*.gif
+
+# Ignore bower packages
+/vendor/assets/bower_components
