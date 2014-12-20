@@ -13,6 +13,7 @@ gem 'spring',                   group: :development
 
 
 gem 'annotate'                      # Provides Schema-like annotations on the models' rb files.
+gem 'autoprefixer-rails'            # Adds CSS vendor prefixes.
 gem 'bower-rails'                   # Front-end package manager.
 gem 'image_sorcery'                 # Lightweight ImageMagick wrapper. Supposedly better than RMagick.
 gem 'quiet_assets'                  # Hides asset stuff from the console.
