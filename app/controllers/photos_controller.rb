@@ -24,6 +24,21 @@ class PhotosController < ApplicationController
     Photo::CreatePaletteImage.call(results, name) unless Rails.env.production?
 
 
+    response.headers['Content-Type'] = 'text/event-stream'
+    sse = Streamer::SSE.new(response.stream)
+    begin
+      10.times do
+        puts "writing"
+        sse.write({ :results => "woohoo, returning #{results}", event: 'message' })
+        sleep 1
+      end
+    rescue IOError
+    ensure
+      sse.close
+    end
+
+
+
     render json: results
   end
 

@@ -6,6 +6,7 @@ function Manager($timeout, UploadPhoto, SendColour) {
     uploading:     1,
     done:          2
   };
+  this.photos  = [];
 
   this.mode    = null; // Either 'photo' or 'colour'  
 
@@ -13,9 +14,15 @@ function Manager($timeout, UploadPhoto, SendColour) {
   this.palette = null;
 
   this.colour  = null;
-  this.colourChosen = false;
-
   this.closestColour = null;
+
+  this.source = new EventSource('/colours');
+  
+  this.source.onmessage = function(event) {
+    var data = event.data
+    console.log(data);
+    console.log(event);
+  }
 
   this.requestImages = function(search, token, type) {
     Manager.state = Manager.states.uploading;
