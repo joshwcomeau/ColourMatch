@@ -3,12 +3,13 @@
     <div class="header-text">
       <h1>ColourMatch</h1>
       <p>Find beautiful photos from 500px, using colour.</p>
+      {{dash.manager.state}}
     </div>
   </header>
 
   <div class="content-wrapper" ng-class="{widemode: dash.manager.state !== 0}">
     <div class="grid padded-grid">
-      <div ng-class="{c6: dash.manager.state === 0, c3: dash.manager.state !== 0 &amp;&amp; dash.manager.mode === 'photo', c9: dash.manager.state !== 0 &amp;&amp; dash.manager.mode === 'colour'}">
+      <div id="left-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'}">
         <section class="photo-upload card animated fadeInUp" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'photo'">
           <h3>Upload a Photo</h3>
 
@@ -45,7 +46,8 @@
             ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
-            allowDir="true">
+            allowDir="true"
+             move-to side="right">
           </div>
 
         </section>
@@ -53,7 +55,7 @@
       
 
 
-      <div ng-class="{c6: dash.manager.state === 0, c3: dash.manager.state !== 0 &amp;&amp; dash.manager.mode === 'colour', c9: dash.manager.state !== 0 &amp;&amp; dash.manager.mode === 'photo'}">
+      <div id="right-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'}">
         <section class="colour-select card animated fadeInUp" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'">
           <h3>Choose a Colour</h3>
           <div class="minicolors minicolors-theme-default minicolors-position-top minicolors-position-left minicolors-inline">
@@ -76,7 +78,7 @@
         </section> 
         
         <div class="submit-button-wrapper">
-          <button ng-click="dash.manager.requestImages(dash.manager.colour, dash.auth, 'colour')"><i class="fa fa-check"></i></button>
+          <button ng-click="dash.manager.requestImages(dash.manager.colour, dash.auth, 'colour')" move-to side="right"><i class="fa fa-check"></i></button>
         </div>        
 
       </div>

@@ -19,6 +19,7 @@
 //= require angular-route/angular-route
 //= require ng-file-upload/angular-file-upload-shim
 //= require ng-file-upload/angular-file-upload
+//= require ngAnimate-animate.css/animate.js
 //= require lodash/dist/lodash
 //= require app/app.js
 //= require_tree .
