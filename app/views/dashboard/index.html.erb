@@ -12,7 +12,6 @@
       <div id="left-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'}">
         <section class="photo-upload card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'photo'" ng-class="{fadeInUp: dash.manager.state === 0}">
           <h3>Upload a Photo</h3>
-
           <button class="photo_box" 
             ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
             ng-file-drop 
@@ -51,13 +50,18 @@
           </div>
 
         </section>
+
+        <div class="results" id="colour-results" ng-show="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'">
+          <%= render partial: 'results' %>
+        </div>
+
       </div>
       
 
 
       <div id="right-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'}">
         <section class="colour-select card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'" ng-class="{fadeInUp: dash.manager.state === 0, shortenedHeight: dash.manager.state > 0}">
-          <h3>Choose a Colour</h3>
+          <h3>{{ dash.manager.state > 1 ? "Your" : "Choose a"}} Colour</h3>
           <div class="minicolors minicolors-theme-default minicolors-position-top minicolors-position-left minicolors-inline" ng-class="{'move-off-canvas': dash.manager.state > 0 &amp;&amp; dash.manager.mode === 'colour'}">
             <div class="minicolors-panel minicolors-slider-hue">
               <div class="minicolors-slider minicolors-sprite">

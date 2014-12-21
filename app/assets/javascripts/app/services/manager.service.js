@@ -48,7 +48,7 @@ function Manager($timeout, UploadPhoto, SendColour) {
   };
 
   this.updateAfterInterval = function(desiredState) {
-    var minTimeToWait = 550;
+    var minTimeToWait = 700;
 
     $timeout(function() {
       Manager.state = desiredState;

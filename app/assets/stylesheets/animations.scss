@@ -21,6 +21,18 @@
   }
 }
 
+@keyframes fadeOutDrop {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 300%, 0);
+  }
+}
+
+
 @keyframes rotateIn {
   0% {
     transform-origin: center;
