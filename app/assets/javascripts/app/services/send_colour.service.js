@@ -1,6 +1,6 @@
 function SendColour($resource) {
   var serv      = this,
-      resource  = $resource('/colours');
+      resource  = $resource('/search');
 
 
   this.call = function(c, token) {    

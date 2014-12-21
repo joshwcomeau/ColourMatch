@@ -16,13 +16,7 @@ function Manager($timeout, UploadPhoto, SendColour) {
   this.colour  = null;
   this.closestColour = null;
 
-  this.source = new EventSource('/colours');
-  
-  this.source.onmessage = function(event) {
-    var data = event.data
-    console.log(data);
-    console.log(event);
-  }
+
 
   this.requestImages = function(search, token, type) {
     Manager.state = Manager.states.uploading;
@@ -34,6 +28,8 @@ function Manager($timeout, UploadPhoto, SendColour) {
         // file is uploaded successfully
         Manager.photo   = config.file;
         Manager.palette = data;
+
+        console.log(data);
 
         // Make sure this bit takes at least 500ms
         Manager.updateAfterInterval(Manager.states.done);
@@ -61,6 +57,16 @@ function Manager($timeout, UploadPhoto, SendColour) {
       Manager.state = desiredState;
     }, minTimeToWait)
   };
+
+  this.listenForResponse = function(link) {
+      this.source = new EventSource('/colours');
+  
+    this.source.onmessage = function(event) {
+      var data = event.data
+      console.log(data);
+      console.log(event);
+    }
+  }
 
 }
 
