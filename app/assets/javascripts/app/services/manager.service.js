@@ -13,13 +13,13 @@ function Manager($timeout, UploadPhoto, SendColour) {
   this.palette = null;
 
   this.colour  = null;
+  this.colourChosen = false;
+
+  this.closestColour = null;
 
   this.requestImages = function(search, token, type) {
-    var startTime;
-
     Manager.state = Manager.states.uploading;
     Manager.mode  = type;
-    startTime     = new Date().getTime();
 
     if (type == 'photo') {
       UploadPhoto.call(search, token)
@@ -29,7 +29,7 @@ function Manager($timeout, UploadPhoto, SendColour) {
         Manager.palette = data;
 
         // Make sure this bit takes at least 500ms
-        Manager.updateAfterInterval(startTime, Manager.states.done);
+        Manager.updateAfterInterval(Manager.states.done);
       });
       //.error(...)
       //.then(success, error, progress); // returns a promise that does NOT have progress/abort/xhr functions
@@ -37,31 +37,22 @@ function Manager($timeout, UploadPhoto, SendColour) {
     
     } else if (type == 'colour') {
       SendColour.call(search, token)
-      .$promise.then(function(success_result) {
-        console.log(success_result);
-        Manager.updateAfterInterval(startTime, Manager.states.done);
-      }, function(error_result) {
-        console.log(error_result);
+      .$promise.then(function(successResult) {
+        console.log(successResult);
+        Manager.updateAfterInterval(Manager.states.done);
+        Manager.closestColour = successResult.closest_colour;
+      }, function(errorResult) {
+        console.log(errorResult);
       });
     }
   };
 
-  this.updateAfterInterval = function(startTime, desiredState) {
-    var minTimeToWait = 1500,
-        endTime, intervalLength;
+  this.updateAfterInterval = function(desiredState) {
+    var minTimeToWait = 550;
 
-    endTime = new Date().getTime();
-    intervalLength = endTime - startTime;
-
-    console.log("Upload took ", intervalLength)
-
-    if (intervalLength < minTimeToWait) {
-      $timeout(function() {
-        Manager.state   = desiredState;
-      }, minTimeToWait - intervalLength);
-    } else { 
-      Manager.state   = desiredState; 
-    }
+    $timeout(function() {
+      Manager.state = desiredState;
+    }, minTimeToWait)
   };
 
 }

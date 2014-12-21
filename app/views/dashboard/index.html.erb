@@ -7,10 +7,10 @@
     </div>
   </header>
 
-  <div class="content-wrapper" ng-class="{widemode: dash.manager.state !== 0}">
+  <div class="content-wrapper" ng-class="{widemode: dash.manager.state > 1}" ng-cloak>
     <div class="grid padded-grid">
       <div id="left-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'}">
-        <section class="photo-upload card animated fadeInUp" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'photo'">
+        <section class="photo-upload card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'photo'" ng-class="{fadeInUp: dash.manager.state === 0}">
           <h3>Upload a Photo</h3>
 
           <button class="photo_box" 
@@ -56,9 +56,9 @@
 
 
       <div id="right-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'}">
-        <section class="colour-select card animated fadeInUp" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'">
+        <section class="colour-select card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'" ng-class="{fadeInUp: dash.manager.state === 0, shortenedHeight: dash.manager.state > 0}">
           <h3>Choose a Colour</h3>
-          <div class="minicolors minicolors-theme-default minicolors-position-top minicolors-position-left minicolors-inline">
+          <div class="minicolors minicolors-theme-default minicolors-position-top minicolors-position-left minicolors-inline" ng-class="{'move-off-canvas': dash.manager.state > 0 &amp;&amp; dash.manager.mode === 'colour'}">
             <div class="minicolors-panel minicolors-slider-hue">
               <div class="minicolors-slider minicolors-sprite">
                 <div class="minicolors-picker" style="top: 0px;"></div>
@@ -75,10 +75,18 @@
               <input type="text" minicolor-picker="" ng-model="dash.manager.colour" class="ng-pristine ng-untouched ng-valid minicolors-input" size="7">
             </div>
           </div>
+
+          <div class="colour-selection" ng-class="{white: dash.manager.closestColour.lab.l <= 69, black: dash.manager.closestColour.lab.l > 69, 'move-into-canvas': dash.manager.state > 0 &amp;&amp; dash.manager.mode === 'colour'}">
+            <h4>{{dash.manager.colour}}</h4> 
+            <h6>{{dash.manager.closestColour.label}}</h6>
+          </div>
         </section> 
         
-        <div class="submit-button-wrapper">
-          <button ng-click="dash.manager.requestImages(dash.manager.colour, dash.auth, 'colour')" move-to side="right"><i class="fa fa-check"></i></button>
+        <div class="submit-button-wrapper" ng-class="{'hide-behind-card': dash.manager.state > 1}">
+          <button ng-click="dash.manager.requestImages(dash.manager.colour, dash.auth, 'colour')" move-to side="right">
+            <i class="fa fa-check" ng-show="dash.manager.state === 0"></i>
+            <i class="fa fa-circle-o-notch loading-icon" ng-show="dash.manager.state === 1"></i>
+          </button>
         </div>        
 
       </div>

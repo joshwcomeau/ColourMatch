@@ -12,7 +12,7 @@ function minicolorPicker() {
         letterCase:     'uppercase',
         animationSpeed: 100,
         change: function(hex) {
-          $(".colour-preview").css("background-color", hex);
+          $(".colour-preview, .colour-selection").css("background-color", hex);
           if (clean && initialized) {
             $(".colour-preview, .minicolors-input").slideDown(500, function() {
               $(".submit-button-wrapper").slideDown();

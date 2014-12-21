@@ -12,7 +12,6 @@
  *
  *= require reset
  *= require font-awesome/css/font-awesome
- *= require animate.css/animate
  *= require_tree .
  *= require_self
  */

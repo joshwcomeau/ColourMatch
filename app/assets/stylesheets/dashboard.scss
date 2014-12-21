@@ -43,6 +43,8 @@
     .or {
       animation-delay: 1s;
       animation-duration: 0.5s !important;
+      animation-name: rotateIn;
+      animation-fill-mode:forwards;
       position: absolute;
       z-index: 2;
       width: 3rem;
@@ -64,11 +66,24 @@
     .card {
       @extend .card_with_border; // From _components.scss
       padding: 5rem 1rem 1rem 1rem; // top is offset from the absolutely-positioned heading.
-
-
+      z-index: 2;
       
+      &.fadeInUp {
+        animation-duration: 0.5s !important;  
+        animation-name: fadeInUp;    
+        animation-fill-mode: both;  
+      }
+
+      &.ng-hide {
+        animation-delay: 0s;
+        animation-duration: 0.5s !important;  
+        animation-name: fadeOutDown;
+        animation-fill-mode: both;
+      }
+
       h3 {
         position: absolute;
+        z-index: 2;
         text-align: center;
         width: 100%;
         top: 0;
@@ -87,6 +102,9 @@
 
     // First card - Upload a Photo
     .photo-upload {
+      &.fadeInUp {
+        animation-delay: 0.25s;
+      }
 
       .photo_box {
         position: relative;
@@ -166,12 +184,80 @@
 
     // Second card - Choose a Colour
     .colour-select {
+      overflow: hidden;
+
+      &.fadeInUp {
+        animation-delay: 0.4s;
+      }
+
+      &.shortenedHeight-add {
+        height: 290px;
+      }
+
+      &.shortenedHeight {
+        height: 186px;
+        transition: 0.55s;
+      }
+
+      .move-off-canvas {
+        margin-top: -208px;
+        transition: 0.55s;
+      }
+
+
+
+      .colour-selection {
+        position: absolute;
+        bottom: -6.5rem;
+        left: 1rem;
+        right: 1rem;
+        border-radius: 4px;
+        text-align: right;
+        padding: 1rem;
+        height: 5.5rem;
+        
+        &.move-into-canvas {
+          bottom: 1rem;
+          transition: 0.55s;
+        }
+
+        &.white {
+          color: #FFF;
+        }
+        &.black {
+          color: #000;
+        }
+
+        h4 {
+          position: absolute;
+          right: 0.9rem;
+          bottom: 0.75rem;
+          font-size: 1.5rem;
+          font-weight: 500;
+        }
+        h6 {
+          position: absolute;
+          right: 0.9rem;
+          bottom: 2.2rem;
+          font-size: 1rem;
+          font-weight: 100;
+          opacity: 0.85;
+        }
+      }
+
     }
     .submit-button-wrapper {
       position: relative;
+      z-index: 1;
       padding-top: 1rem;
       height: 4rem;
       display: none;
+      top: 0;
+
+      &.hide-behind-card {
+        top: -4rem;
+        transition: 0.55s;
+      }
 
       button {
         position: absolute;
@@ -194,6 +280,11 @@
           background: darken($green, 2%) !important;
           border-bottom: 1px solid darken($green, 15%);
           transition: 0.2s;
+        }
+
+        .loading-icon {
+          animation-duration: 1s;
+          animation-name: rotateOut;
         }
       }
     }
