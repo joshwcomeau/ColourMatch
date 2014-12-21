@@ -2,7 +2,6 @@ class Photo::GetHistogramData
   def self.call(path, colours)
     histogram   = make_histogram(path, colours)
     rgb_data    = parse_histogram(histogram)
-
     get_all_colorspaces(rgb_data)
   end
 
@@ -17,7 +16,7 @@ class Photo::GetHistogramData
   end
 
   def self.parse_histogram(histogram)
-    hex_colour_regex = /(?<occurances>[\d]{1,8}):[\s\(\d,\)]+#[\dA-F]{6,8}\ssrgb[a]*\((?<c1>[\d]{1,3}),(?<c2>[\d]{1,3}),(?<c3>[\d]{1,3})/
+    hex_colour_regex = /(?<occurances>[\d]{1,8}):\s\(\s*(?<c1>[\d]{1,3}),\s*(?<c2>[\d]{1,3}),\s*(?<c3>[\d]{1,3})/
     histogram.scan(hex_colour_regex)
   end
 
