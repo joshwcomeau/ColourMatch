@@ -3,6 +3,7 @@ class Colour::FindClosest
     # We want to find which of the colors in our DB is closest to the provided color.
     # So, we need start by converting to LAB if it isn't already, for accuracy.
     # Then, do some pythagorean math.
+    colour.symbolize_keys!
 
     if Colour::GetType.call(colour) != :lab
       colour = Colour::Convert.call(colour, :lab)

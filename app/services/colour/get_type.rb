@@ -1,11 +1,8 @@
 class Colour::GetType
   def self.call(colour)
-    colour.symbolize_keys!
-
-    type = nil
-
-
-    if    colour.key?(:r) && colour.key?(:g) && colour.key?(:b) 
+    if colour.key?(:hex)
+      type = :hex
+    elsif colour.key?(:r) && colour.key?(:g) && colour.key?(:b) 
       type = :rgb
     elsif colour.key?(:h) && colour.key?(:s) && colour.key?(:l)
       type = :hsl

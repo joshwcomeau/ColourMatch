@@ -1,7 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Colour::Convert do
-  context "when converting from RGB to hsb" do
+  context "when converting from HEX to RGB" do
+    it "converts when given a random color with the hashtag" do
+      expect(Colour::Convert.call("#123456", :rgb)).to eq({r: 18,  g: 52,  b: 86}) 
+    end
+    
+    it "converts when the hashtag is absent" do
+      expect(Colour::Convert.call("123456", :rgb)).to eq({r: 18,  g: 52,  b: 86}) 
+    end
+
+    it "converts 3-character hex codes" do
+      expect(Colour::Convert.call("369", :rgb)).to eq({r: 51,  g: 102,  b: 153}) 
+    end
+  end
+
+  context "when converting from RGB to HSB" do
     it "converts when red is max, and green is more than blue" do
       expect(Colour::Convert.call({r: 211, g: 200, b: 50 }, :hsb)).to eq({h: 56,  s: 76,  b: 83}) 
     end

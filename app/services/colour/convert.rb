@@ -1,19 +1,22 @@
 class Colour::Convert
   def self.call(colour, to_type)
-    @colour = colour.symbolize_keys
+    @colour = colour.is_a?(Hash) ? colour.symbolize_keys : { hex: colour }
 
     # Colour ought to be a hash with the keys as r/g/b, h/s/l or l/a/b. This is how we'll tell them apart.
-    from_type = Colour::GetType.call(colour)
+    from_type = Colour::GetType.call(@colour)
 
     # There are 6 possible conversion paths. For now, I'm going to stick to RGB to HSL and RGB to LAB.
-    if from_type == :rgb
+    case from_type
+    when :hex
+      new_color = hex_to_rgb if to_type == :rgb
+    when :hsl
+      # Do me
+    when :lab
+      # Do me
+    when :rgb
       new_color = rgb_to_hsb if to_type == :hsb
       new_color = rgb_to_lab if to_type == :lab
       new_color = rgb_to_xyz if to_type == :xyz 
-    elsif from_type == :hsl
-      new_color = hsl_to_rgb if to_type == :rgb
-    elsif from_type == :lab
-      # do me too
     end
 
     new_color
@@ -21,6 +24,25 @@ class Colour::Convert
 
   private
 
+  def self.hex_to_rgb
+    @colour = @colour[:hex]
+    
+    # strip '#' if provided
+    @colour.gsub!(/#/, '')
+    
+    # turn 3-char hex codes into 6-char ones
+    @colour.gsub!(/(\w)/, '\1\1') if @colour.length == 3
+
+    # Separate our 6-char string into 3 separate matches
+    rgb = @colour.match(/(..)(..)(..)/)
+
+    {
+      r: rgb[1].hex,
+      g: rgb[2].hex,
+      b: rgb[3].hex,
+    }
+
+  end
   
   def self.rgb_to_hsb
     r_prime = @colour[:r] / 255.0
@@ -93,6 +115,7 @@ class Colour::Convert
       z: (new_r * 0.0193 + new_g * 0.1192 + new_b * 0.9505) * 100
     }
   end
+
 
   #### HELPER METHODS ####
 
