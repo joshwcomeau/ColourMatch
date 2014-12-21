@@ -334,9 +334,6 @@ if(jQuery) (function($) {
             sliderPos = getCoords(sliderPicker, slider),
             opacityPos = getCoords(opacityPicker, opacitySlider);
 
-            console.log(sliderPicker, slider)
-
-
         // Handle colors
         if( target.is('.minicolors-grid, .minicolors-slider') ) {
 

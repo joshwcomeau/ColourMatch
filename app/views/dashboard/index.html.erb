@@ -8,14 +8,14 @@
 
   <div class="content-wrapper" ng-class="{widemode: dash.manager.state !== 0}">
     <div class="grid padded-grid">
-      <div ng-class="{c6: dash.manager.state === 0, c3: dash.manager.state !== 0}">
-        <section class="photo-upload card animated fadeInUp">
+      <div ng-class="{c6: dash.manager.state === 0, c3: dash.manager.state !== 0 &amp;&amp; dash.manager.mode === 'photo', c9: dash.manager.state !== 0 &amp;&amp; dash.manager.mode === 'colour'}">
+        <section class="photo-upload card animated fadeInUp" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'photo'">
           <h3>Upload a Photo</h3>
 
           <button class="photo_box" 
             ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
             ng-file-drop 
-            ng-file-change="dash.uploadPhoto.call(dash.manager.photo, dash.auth)"
+            ng-file-change="dash.requestImages(dash.manager.photo, dash.auth, 'photo')"
             ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
@@ -41,7 +41,7 @@
           -->
           <div id="click-handler"
             ng-file-select 
-            ng-file-change="dash.uploadPhoto.call(dash.manager.photo, dash.auth)"
+            ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
             ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
@@ -53,8 +53,8 @@
       
 
 
-      <div ng-class="{c6: dash.manager.state === 0, c9: dash.manager.state !== 0}">
-        <section class="colour-select card animated fadeInUp">
+      <div ng-class="{c6: dash.manager.state === 0, c3: dash.manager.state !== 0 &amp;&amp; dash.manager.mode === 'colour', c9: dash.manager.state !== 0 &amp;&amp; dash.manager.mode === 'photo'}">
+        <section class="colour-select card animated fadeInUp" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'">
           <h3>Choose a Colour</h3>
           <div class="minicolors minicolors-theme-default minicolors-position-top minicolors-position-left minicolors-inline">
             <div class="minicolors-panel minicolors-slider-hue">
@@ -76,7 +76,7 @@
         </section> 
         
         <div class="submit-button-wrapper">
-          <button ng-click="dash.sendColour.call(dash.manager.colour, dash.auth)"><i class="fa fa-check"></i></button>
+          <button ng-click="dash.manager.requestImages(dash.manager.colour, dash.auth, 'colour')"><i class="fa fa-check"></i></button>
         </div>        
 
       </div>

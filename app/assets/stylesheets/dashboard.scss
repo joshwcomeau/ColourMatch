@@ -64,6 +64,8 @@
     .card {
       @extend .card_with_border; // From _components.scss
       padding: 5rem 1rem 1rem 1rem; // top is offset from the absolutely-positioned heading.
+
+
       
       h3 {
         position: absolute;

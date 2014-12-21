@@ -1,10 +1,8 @@
-function UploadPhoto($upload, SetImagePreview, Manager) {
+function UploadPhoto($upload, SetImagePreview) {
   var serv = this;
 
   this.call = function(photo, token) {
-    SetImagePreview.call(photo);
-    Manager.state = Manager.states.uploading;
-    
+    SetImagePreview.call(photo);    
     return $upload.upload({
       url: '/photos/',
       method: 'POST',
@@ -16,22 +14,11 @@ function UploadPhoto($upload, SetImagePreview, Manager) {
         formData.append("photo", photo);
       } 
 
-    }).progress(function(evt) {
-      console.log(evt);
-    }).success(function(data, status, headers, config) {
-
-      // file is uploaded successfully
-      Manager.photo   = config.file;
-      Manager.palette = data;
-
     });
-    //.error(...)
-    //.then(success, error, progress); // returns a promise that does NOT have progress/abort/xhr functions
-    //.xhr(function(xhr){xhr.upload.addEventListener(...)}) // access or attach event listeners to the underlying XMLHttpRequest
 
   };
 
 
 }
 
-angular.module('colourMatch').service("UploadPhoto", ["$upload", "SetImagePreview", "Manager", UploadPhoto]);
+angular.module('colourMatch').service("UploadPhoto", ["$upload", "SetImagePreview", UploadPhoto]);
