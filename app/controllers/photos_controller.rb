@@ -1,7 +1,9 @@
 class PhotosController < ApplicationController
 
   # POST /photos
-  def create
+  # (This is kind of a weird one; The goal is to return a bunch of photos, so it's definitely an 'index' in terms of REST resources.
+  # BUT, it involves uploading a photo. The front-end can't issue a GET request with upload data.)
+  def index
     
     name = sanitize_name(params[:photo].original_filename)
     return render json: {status: 'error', message: "Couldn't save photo to disk."} unless path = Photo::SaveToDisk.call(params[:photo], name)

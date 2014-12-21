@@ -1,4 +1,4 @@
-<div class="photos-wrapper" ng-controller="PhotosController as photos" data-auth-token="<%= form_authenticity_token %>">
+<div class="photos-wrapper" ng-controller="DashboardController as dash" data-auth-token="<%= form_authenticity_token %>">
   <header>
     <div class="header-text">
       <h1>ColourMatch</h1>
@@ -6,17 +6,17 @@
     </div>
   </header>
 
-  <div class="content-wrapper" ng-class="{widemode: photos.photoData.state !== 0}">
+  <div class="content-wrapper" ng-class="{widemode: dash.manager.state !== 0}">
     <div class="grid padded-grid">
-      <div ng-class="{c6: photos.photoData.state === 0, c3: photos.photoData.state !== 0}">
+      <div ng-class="{c6: dash.manager.state === 0, c3: dash.manager.state !== 0}">
         <section class="photo-upload card animated fadeInUp">
           <h3>Upload a Photo</h3>
 
           <button class="photo_box" 
-            ng-class="{'with-image': photos.photoData.state !== 0, 'without-image': photos.photoData.state === 0 }"
+            ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
             ng-file-drop 
-            ng-file-change="photos.uploadPhoto.call(photos.photo, photos.auth)"
-            ng-model="photos.photo" 
+            ng-file-change="dash.uploadPhoto.call(dash.manager.photo, dash.auth)"
+            ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
             allowDir="true"
@@ -29,9 +29,9 @@
             </div>
           </button>
 
-          <div class="palette" ng-show="photos.photoData.palette">
+          <div class="palette" ng-show="dash.manager.palette">
             <ul>
-              <li ng-repeat="colour in photos.photoData.palette" ng-style="{'background-color': 'rgb('+colour.rgb.r+','+colour.rgb.g+','+colour.rgb.b+')'}"></li>
+              <li ng-repeat="colour in dash.manager.palette" ng-style="{'background-color': 'rgb('+colour.rgb.r+','+colour.rgb.g+','+colour.rgb.b+')'}"></li>
             </ul>
           </div>
           <div ng-no-file-drop>File Drag/drop is not supported</div>   
@@ -41,8 +41,8 @@
           -->
           <div id="click-handler"
             ng-file-select 
-            ng-file-change="photos.uploadPhoto.call(photos.photo, photos.auth)"
-            ng-model="photos.photo" 
+            ng-file-change="dash.uploadPhoto.call(dash.manager.photo, dash.auth)"
+            ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
             allowDir="true">
@@ -53,7 +53,7 @@
       
 
 
-      <div ng-class="{c6: photos.photoData.state === 0, c9: photos.photoData.state !== 0}">
+      <div ng-class="{c6: dash.manager.state === 0, c9: dash.manager.state !== 0}">
         <section class="colour-select card animated fadeInUp">
           <h3>Choose a Colour</h3>
           <div class="minicolors minicolors-theme-default minicolors-position-top minicolors-position-left minicolors-inline">
@@ -70,19 +70,19 @@
             </div>
             <div class="colour-details">
               <div class="colour-preview"></div>
-              <input type="text" minicolor-picker="" ng-model="photos.colour" class="ng-pristine ng-untouched ng-valid minicolors-input" size="7">
+              <input type="text" minicolor-picker="" ng-model="dash.manager.colour" class="ng-pristine ng-untouched ng-valid minicolors-input" size="7">
             </div>
           </div>
         </section> 
         
         <div class="submit-button-wrapper">
-          <button><i class="fa fa-check"></i></button>
+          <button ng-click="dash.findResultsByColour.call(dash.manager.colour, dash.auth)"><i class="fa fa-check"></i></button>
         </div>        
 
       </div>
 
     </div>  
-    <div class="or animated rotateIn" ng-show="photos.photoData.state === 0">OR</div>
+    <div class="or animated rotateIn" ng-show="dash.manager.state === 0">OR</div>
 
   </div>
 

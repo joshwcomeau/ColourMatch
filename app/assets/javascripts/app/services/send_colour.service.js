@@ -1,7 +1,9 @@
-function UploadPhoto($upload, SetImagePreview, Manager) {
-  var serv = this;
+function SendColour($resource, Manager) {
+  var serv      = this,
+      resource  = $resource('/colours')
 
-  this.call = function(photo, token) {
+
+  this.call = function(colour, token) {
     SetImagePreview.call(photo);
     Manager.state = Manager.states.uploading;
     
@@ -34,4 +36,4 @@ function UploadPhoto($upload, SetImagePreview, Manager) {
 
 }
 
-angular.module('colourMatch').service("UploadPhoto", ["$upload", "SetImagePreview", "Manager", UploadPhoto]);
+angular.module('colourMatch').service("SendColour", ["$resource", "Manager", SendColour]);
