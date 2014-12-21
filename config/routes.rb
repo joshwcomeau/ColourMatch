@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   root 'dashboard#index'
 
   post 'photos' => 'photos#index'
+
+  post 'colours' => 'photos#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
