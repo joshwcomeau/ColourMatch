@@ -19,6 +19,8 @@ function Manager($timeout, UploadPhoto, SendColour) {
 
 
   this.requestImages = function(search, token, type) {
+    var request_string;
+
     Manager.state = Manager.states.uploading;
     Manager.mode  = type;
 
@@ -29,10 +31,15 @@ function Manager($timeout, UploadPhoto, SendColour) {
         Manager.photo   = config.file;
         Manager.palette = data;
 
-        console.log(data);
-
         // Make sure this bit takes at least 500ms
         Manager.updateAfterInterval(Manager.states.done);
+
+        // We need to create a string to append to our server request. Like 333333,FF0000,123456.
+        request_string = "/photos?colours=" + _.map(data, function(colour) {
+          return colour.hex;
+        }).join(",");
+
+        Manager.listenForResponse(request_string);
       });
       //.error(...)
       //.then(success, error, progress); // returns a promise that does NOT have progress/abort/xhr functions
@@ -41,9 +48,13 @@ function Manager($timeout, UploadPhoto, SendColour) {
     } else if (type == 'colour') {
       SendColour.call(search, token)
       .$promise.then(function(successResult) {
-        console.log(successResult);
         Manager.updateAfterInterval(Manager.states.done);
         Manager.closestColour = successResult.closest_colour;
+
+        console.log(Manager.closestColour);
+
+        Manager.listenForResponse("/photos?colour="+Manager.closestColour.hex);
+
       }, function(errorResult) {
         console.log(errorResult);
       });
@@ -59,14 +70,20 @@ function Manager($timeout, UploadPhoto, SendColour) {
   };
 
   this.listenForResponse = function(link) {
-      this.source = new EventSource('/colours');
-  
-    this.source.onmessage = function(event) {
+    source = new EventSource(link);
+    
+    source.addEventListener('message', function(event) {
       var data = event.data
-      console.log(data);
-      console.log(event);
-    }
-  }
+      if (data === 'OVER') {
+        source.close();
+      } else {
+        Manager.photos.push(data);
+      }
+    
+    });
+
+    return true;
+  };
 
 }
 

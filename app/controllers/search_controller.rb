@@ -18,6 +18,9 @@ class SearchController < ApplicationController
     # Current strategy: Combine the 3-5 most popular 16-bit colors, as well as 0-2 outliers
     results = Photo::ExtractDominantColours.call(colour_data_16_bit, hsb_channel_data_64_bit)
 
+    # Find the database colours that match our results
+    results.map! { |c| Colour::FindClosest.call(c[:lab]) }
+
 
     # Create a png palette for testing
     Photo::CreatePaletteImage.call(results, name) unless Rails.env.production?
