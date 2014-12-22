@@ -9,7 +9,7 @@ class PhotosController < ApplicationController
   def index
 
     response.headers['Content-Type'] = 'text/event-stream'
-    sse = SSE.new(response.stream)
+    sse = SSE.new(response.stream, event: 'message')
     begin
       Colour.first(10).each do |c|
         puts "Now returning #{c.hex}"
