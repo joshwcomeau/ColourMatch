@@ -20,6 +20,7 @@ class PhotosController < ApplicationController
     ensure
       puts "OVER. Closing connection."
       sse.write("OVER")      
+      sse.close
     end
 
 
