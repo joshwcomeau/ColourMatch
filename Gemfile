@@ -37,3 +37,11 @@ group :test do
   gem 'selenium-webdriver'          # Allows feature tests to run in the browser. Slower, but you can see the magic.
 end
 
+
+# Deployment gems
+gem 'capistrano', '~> 3.1.0'
+gem 'capistrano-bundler', '~> 1.1.2'
+gem 'capistrano-rails', '~> 1.1.1'
+gem 'capistrano-rbenv', '~> 2.0'
+gem 'capistrano3-puma'
+
