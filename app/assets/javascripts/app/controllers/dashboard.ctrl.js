@@ -22,7 +22,7 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
 
 
   this.listenForResponse = function(link) {
-    source = new EventSource(link);
+    source = new EventSource("http://104.236.75.105/"+link);
     console.log("Listening for response from ", link)
     
     source.addEventListener('message', function(event) {
