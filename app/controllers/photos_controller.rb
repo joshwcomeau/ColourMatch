@@ -12,6 +12,7 @@ class PhotosController < ApplicationController
     sse = SSE.new(response.stream, event: 'message')
     begin
       Colour.first(10).each do |c|
+        puts "Now returning #{c.hex}"
         sse.write(c.hex)
         sleep 1
       end

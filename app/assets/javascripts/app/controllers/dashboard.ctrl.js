@@ -26,11 +26,14 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
     
     source.addEventListener('message', function(event) {
       var data = event.data
+      console.log("Received data: ", data);
       if (data === 'OVER') {
+        console.log("Closing.");
         source.close();
       } else {
         $scope.$apply(function() {
           Manager.photos.push(data);  
+          console.log("Manager.photos is now: ", Manager.photos)
         });
       }
     });
