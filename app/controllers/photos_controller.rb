@@ -13,7 +13,6 @@ class PhotosController < ApplicationController
     begin
       Colour.first(10).each do |c|
         sse.write(c.hex)
-        puts "#{response.stream}"
         sleep 1
       end
     rescue IOError

@@ -4,19 +4,43 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
   this.manager      = Manager;
   this.uploadPhoto  = UploadPhoto;
   this.sendColour   = SendColour;
+
   this.photos       = [];
 
+  // When we've finished uploading our photo or sending our color, Manager.state becomes '2'.
+  // At this point, we need to grab our colour(s) and open an SSE stream.
+  // Unfortunately, this needs to be done in the controller, since $scope.$apply needs to be called.
   $scope.$watch(angular.bind(this, function () {
-    return this.manager.photos; // `this` IS the `this` above!!
+    return this.manager.state
   }), function (newVal, oldVal) {
-    dash.manager.photos = newVal
-    console.log(newVal);
+    if (newVal === 2) {
+      dash.listenForResponse(Manager.requestPath);
+    }
   }, true);
 
+
+
+
+  this.listenForResponse = function(link) {
+    source = new EventSource(link);
+    
+    source.addEventListener('message', function(event) {
+      var data = event.data
+      if (data === 'OVER') {
+        console.log("Connection closing.");
+        source.close();
+      } else {
+        console.log("Received data: ", data);
+        Manager.photos.push(data);
+        $scope.$apply();
+        console.log("Photos are now ", Manager.photos);
+      }
+    
+    });
+
+    return true;
+  };
 }
-
-
-
 
 
 DashboardController.$inject = ['$scope', '$attrs', 'Manager', 'UploadPhoto', 'SendColour'];
