@@ -8,7 +8,7 @@
   <li>
     <div class="result-thumb" style="background-image: url('http://cdn.yoyoexpert.com/1168/category.jpg');"></div>
   </li>
-  <li ng-repeat="p in dash.manager.photos">
+  <li ng-repeat="p in dash.manager.photos track by $index">
         <div class="result-thumb" style="background: #{{p}};"></div>
   </li>
 </ul>
