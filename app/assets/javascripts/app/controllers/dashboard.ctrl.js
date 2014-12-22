@@ -23,6 +23,7 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
 
   this.listenForResponse = function(link) {
     source = new EventSource(link);
+    console.log("Listening for response from ", link)
     
     source.addEventListener('message', function(event) {
       var data = event.data
