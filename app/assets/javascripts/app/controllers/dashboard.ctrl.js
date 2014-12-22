@@ -22,10 +22,11 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
 
 
   this.listenForResponse = function(link) {
-    source = new EventSource("http://104.236.75.105/"+link);
+    source = new EventSource(link);
     console.log("Listening for response from ", link)
     
-    source.addEventListener('message', function(event) {
+
+    source.onmessage = function(event) {
       var data = event.data
       console.log("Received data: ", data);
       if (data === 'OVER') {
@@ -37,7 +38,10 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
           console.log("Manager.photos is now: ", Manager.photos)
         });
       }
-    });
+    };
+
+    console.log(source);
+    
   };
 }
 
