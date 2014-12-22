@@ -16,7 +16,7 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
     if (newVal === 2) {
       dash.listenForResponse(Manager.requestPath);
     }
-  }, true);
+  });
 
 
 
@@ -27,18 +27,13 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
     source.addEventListener('message', function(event) {
       var data = event.data
       if (data === 'OVER') {
-        console.log("Connection closing.");
         source.close();
       } else {
-        console.log("Received data: ", data);
-        Manager.photos.push(data);
-        $scope.$apply();
-        console.log("Photos are now ", Manager.photos);
+        $scope.$apply(function() {
+          Manager.photos.push(data);  
+        });
       }
-    
     });
-
-    return true;
   };
 }
 
