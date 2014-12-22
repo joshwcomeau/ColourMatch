@@ -14,7 +14,7 @@ class PhotosController < ApplicationController
       Colour.first(10).each do |c|
         puts "Now returning #{c.hex}"
         sse.write(c.hex)
-        sleep 1
+        sleep 10
       end
     rescue IOError
     ensure
