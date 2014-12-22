@@ -1,5 +1,3 @@
-require 'streamer/sse'
-
 class PhotosController < ApplicationController
   include ActionController::Live
 
@@ -11,17 +9,16 @@ class PhotosController < ApplicationController
   def index
 
     response.headers['Content-Type'] = 'text/event-stream'
-    sse = Streamer::SSE.new(response.stream)
+    sse = SSE.new(response.stream, event: 'message')
     begin
       Colour.first(10).each do |c|
-        sse.write(c.hex, event: 'message')
+        sse.write(c.hex)
         puts "#{response.stream}"
         sleep 1
       end
-
-      sse.write("OVER", event: 'message')
     rescue IOError
     ensure
+      sse.write("OVER")      
       sse.close
     end
 

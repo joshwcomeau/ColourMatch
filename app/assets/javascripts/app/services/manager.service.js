@@ -75,9 +75,12 @@ function Manager($timeout, UploadPhoto, SendColour) {
     source.addEventListener('message', function(event) {
       var data = event.data
       if (data === 'OVER') {
+        console.log("Connection closing.");
         source.close();
       } else {
+        console.log("Received data: ", data);
         Manager.photos.push(data);
+        console.log("Photos are now ", Manager.photos);
       }
     
     });
