@@ -12,17 +12,25 @@ class PhotosController < ApplicationController
     response.headers['Content-Type'] = 'text/event-stream'
 
     begin
+      sleep 10
       response.stream.write("data: #{Colour.first.hex}\n\n")
+      puts response
+      sleep 10
       response.stream.write("data: #{Colour.second.hex}\n\n")
+      puts response
+      sleep 10
       response.stream.write("data: #{Colour.third.hex}\n\n")
+      puts response
       # Colour.first(10).each do |c|
       #   puts "Now returning #{c.hex}"
       #   sse.write(c.hex)
       #   sleep 1
       # end
-    rescue IOError
+    rescue 
+      puts "Rescuing!"
+      IOError
     ensure
-      puts "OVER. Closing connection."
+      puts "Connection terminating."
       response.stream.write("data: OVER\n\n")      
       response.stream.close
     end
