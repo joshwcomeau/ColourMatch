@@ -8,33 +8,25 @@ class PhotosController < ApplicationController
   #        colours -> A comma-separated list of 6 hex colour codes
   def index
 
-
+    col = Colour.all.sample(30)
     response.headers['Content-Type']  = 'text/event-stream'
 
     begin
-      response.stream.write("data: #{Colour.third.hex}\n")
-      puts "Writing first colour"
-      sleep 0.5
-      response.stream.write("data: #{Colour.second.hex}\n")
-      puts "Writing second colour"
-      sleep 0.5
-      response.stream.write("data: #{Colour.first.hex}\n")
-      puts "Writing third colour"
+      col.each do |c|
+        response.stream.write("data: #{c.hex}\n\n")  
 
-      puts "response: #{response}"
-      puts "response headers: #{response.headers}"
+        # For now, we're faking computation time with some mathematics
+        (30_000_000 * Random.rand).to_i.times do |n|
+          n * 1000
+        end
+      end
 
-      # Colour.first(10).each do |c|
-      #   puts "Now returning #{c.hex}"
-      #   sse.write(c.hex)
-      #   sleep 1
-      # end
     rescue Exception => e
       puts "Rescuing! #{e}"
       IOError
     ensure
       puts "Connection terminating."
-      response.stream.write("data: OVER")      
+      response.stream.write("data: OVER\n\n")      
       response.stream.close
     end
 
