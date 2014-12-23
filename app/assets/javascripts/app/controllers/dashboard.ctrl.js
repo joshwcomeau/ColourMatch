@@ -14,7 +14,6 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
     return this.manager.state
   }), function (newVal, oldVal) {
     if (newVal === 2) {
-      console.log("State is now 2");
       dash.listenForResponse(Manager.requestPath);
     }
   });
@@ -28,9 +27,6 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
     
 
     source.onmessage = function(event) {
-      source.close();
-
-      console.log(event);
       var data = event.data
       console.log("Received data: ", data);
       if (data === 'OVER') {

@@ -8,19 +8,23 @@ class PhotosController < ApplicationController
   #        colours -> A comma-separated list of 6 hex colour codes
   def index
 
+
     response.headers['Content-Type'] = 'text/event-stream'
-    sse = SSE.new(response.stream)
+
     begin
-      Colour.first(10).each do |c|
-        puts "Now returning #{c.hex}"
-        sse.write(c.hex)
-        sleep 1
-      end
+      response.stream.write("data: #{Colour.first.hex}\n\n")
+      response.stream.write("data: #{Colour.second.hex}\n\n")
+      response.stream.write("data: #{Colour.third.hex}\n\n")
+      # Colour.first(10).each do |c|
+      #   puts "Now returning #{c.hex}"
+      #   sse.write(c.hex)
+      #   sleep 1
+      # end
     rescue IOError
     ensure
       puts "OVER. Closing connection."
-      sse.write("OVER")      
-      sse.close
+      response.stream.write("data: OVER\n\n")      
+      response.stream.close
     end
 
 
