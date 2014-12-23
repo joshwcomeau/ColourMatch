@@ -3,8 +3,13 @@ function deferClickTo() {
     restrict: 'A',
     link: function(scope, element, attrs) {
       element.click(function() {
-        $(attrs.destination).click();
+        if ( scope.dash.manager.state === 0 ) {
+          $(attrs.destination).click();
+        } else {
+          
+        }
       });
+    
     }
   };
 }

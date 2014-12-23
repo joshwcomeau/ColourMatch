@@ -1,11 +1,7 @@
-function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) {
+function DashboardController($scope, $attrs, Manager ) {
   var dash = this
   this.auth         = $attrs.authToken;
   this.manager      = Manager;
-  this.uploadPhoto  = UploadPhoto;
-  this.sendColour   = SendColour;
-
-  this.photos       = [];
 
   // When we've finished uploading our photo or sending our color, Manager.state becomes '2'.
   // At this point, we need to grab our colour(s) and open an SSE stream.
@@ -46,5 +42,5 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
 }
 
 
-DashboardController.$inject = ['$scope', '$attrs', 'Manager', 'UploadPhoto', 'SendColour'];
-angular.module('colourMatch').controller('DashboardController', ['$scope', '$attrs', 'Manager', 'UploadPhoto', 'SendColour', DashboardController]);
+DashboardController.$inject = ['$scope', '$attrs', 'Manager'];
+angular.module('colourMatch').controller('DashboardController', ['$scope', '$attrs', 'Manager', DashboardController]);
