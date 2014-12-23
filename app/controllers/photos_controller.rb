@@ -8,17 +8,17 @@ class PhotosController < ApplicationController
   #        colours -> A comma-separated list of 6 hex colour codes
   def index
 
-    col = Colour.all.sample(30)
+    col = Colour.all.sample(2)
     response.headers['Content-Type']  = 'text/event-stream'
 
     begin
       col.each do |c|
         response.stream.write("data: #{c.hex}\n\n")  
 
-        # For now, we're faking computation time with some mathematics
-        (30_000_000 * Random.rand).to_i.times do |n|
-          n * 1000
-        end
+        # Want them to stream in slowly? Uncomment to fake a database query with math.
+        # (30_000_000 * Random.rand).to_i.times do |n|
+        #   n * 1000
+        # end
       end
 
     rescue Exception => e

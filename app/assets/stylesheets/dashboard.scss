@@ -21,6 +21,12 @@
     transition: $transition_length;
   }
 
+  .white {
+    color: #FFF;
+  }
+  .black {
+    color: #000;
+  }
 
   .width-wrapper {
     margin: 0 auto;
@@ -55,7 +61,7 @@
       border-radius: 100%;
       background: $red;
       color: #FFF;
-      top: 2.5rem;
+      top: 0.5rem;
       left: 0;
       right: 0;
       margin: 0 auto;
@@ -73,6 +79,7 @@
       @extend .card_with_border; // From _components.scss
       padding: 5rem 1rem 1rem 1rem; // top is offset from the absolutely-positioned heading.
       z-index: 2;
+
       
       &.fadeInUp {
         animation-duration: 0.5s !important;  
@@ -86,6 +93,8 @@
         animation-name: fadeOutDown;
         animation-fill-mode: both;
       }
+
+
 
       h3 {
         position: absolute;
@@ -101,8 +110,26 @@
         font-size: 2rem;
         font-weight: 500;
         color: #FFF;
-      }
+        overflow: hidden;
+      
 
+        .card-header {
+          display: block;
+
+          &.ng-hide-add.ng-hide-add-active {
+            animation-delay: 0s;
+            animation-duration: 0.5s !important;  
+            animation-name: fadeOutUp;
+            animation-fill-mode: both;
+          }
+          &.ng-hide-remove.ng-hide-remove-active {
+            animation-delay: 0.5s;
+            animation-duration: 0.5s !important;  
+            animation-name: fadeInUp;
+            animation-fill-mode: both;
+          }
+        }
+      }
     }
 
 
@@ -174,7 +201,7 @@
           }
         }
 
-      }
+      }      
       .palette {
         overflow: auto;
         
@@ -183,6 +210,26 @@
           height: 2rem;
           float: left;
         }
+      }
+    }
+    .active-palette-colour {
+      position: relative;
+      top: 1rem;
+      padding: 0.75rem;
+      text-align: center;
+      margin-bottom: 4rem;
+      border-bottom: 2px solid rgba(0,0,0,0.6);
+      border-radius: 0 0 2px 2px;
+
+      
+      h4 {
+        font-size: 1.4rem;
+        font-weight: 300;
+        margin-bottom: 0.25rem;
+      }
+      h6 {
+        font-weight: 500;
+        opacity: 0.8;
       }
     }
 
@@ -227,24 +274,19 @@
           transition: 0.55s;
         }
 
-        &.white {
-          color: #FFF;
-        }
-        &.black {
-          color: #000;
-        }
+
 
         h4 {
           position: absolute;
           right: 0.9rem;
-          bottom: 0.75rem;
+          bottom: 2rem;
           font-size: 1.5rem;
           font-weight: 500;
         }
         h6 {
           position: absolute;
           right: 0.9rem;
-          bottom: 2.2rem;
+          bottom: 0.75rem;
           font-size: 1rem;
           font-weight: 100;
           opacity: 0.85;

@@ -8,9 +8,12 @@
 
   <div class="content-wrapper" ng-class="{widemode: dash.manager.state > 1}" ng-cloak>
     <div class="grid padded-grid">
-      <div id="left-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'}">
+      <div id="left-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'}" ng-mouseleave="dash.manager.active = null">
         <section class="photo-upload card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'photo'" ng-class="{fadeInUp: dash.manager.state === 0}">
-          <h3>Upload a Photo</h3>
+          <h3>
+            <span class="card-header" ng-show="dash.manager.state <= 1">Upload a Photo</span>
+            <span class="card-header" ng-show="dash.manager.state > 1 ">Your Photo</span>
+          </h3>
           <button class="photo_box" 
             ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
             ng-file-drop 
@@ -30,9 +33,14 @@
 
           <div class="palette" ng-show="dash.manager.palette">
             <ul>
-              <li ng-repeat="colour in dash.manager.palette" ng-style="{'background-color': 'rgb('+colour.rgb.r+','+colour.rgb.g+','+colour.rgb.b+')'}"></li>
+              <li ng-repeat="colour in dash.manager.palette" 
+                ng-style="{'background-color': 'rgb('+colour.rgb.r+','+colour.rgb.g+','+colour.rgb.b+')'}"
+                ng-mouseenter="dash.manager.active = colour"
+                
+              ></li>
             </ul>
           </div>
+
           <div ng-no-file-drop>File Drag/drop is not supported</div>   
           <!-- 
             This invisible div holds our click-to-upload logic. 
@@ -47,10 +55,21 @@
             allowDir="true"
              move-to side="right">
           </div>
-
         </section>
 
-        <div class="results" id="colour-results" ng-show="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'">
+        <div class="active-palette-colour" 
+          ng-class="{white: dash.manager.active.lab.l <= 69, black: dash.manager.active.lab.l > 69}"
+          ng-show="dash.manager.active" 
+          ng-style="{
+            'background-color': 'rgb('+dash.manager.active.rgb.r+','+dash.manager.active.rgb.g+','+dash.manager.active.rgb.b+')',
+            color: dash.manager.active.lab.l <= 69 ? 'white' : 'black'
+          }"
+        >
+          <h4>{{dash.manager.active.label}}</h4>
+          <h6>#{{dash.manager.active.hex}}</h6>
+        </div>
+
+        <div class="results" id="colour-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'">
           <%= render partial: 'results' %>
         </div>
 
@@ -60,7 +79,10 @@
 
       <div id="right-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'}">
         <section class="colour-select card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'" ng-class="{fadeInUp: dash.manager.state === 0, shortenedHeight: dash.manager.state > 0}">
-          <h3>{{ dash.manager.state > 1 ? "Your" : "Choose a"}} Colour</h3>
+          <h3>
+            <span class="card-header" ng-show="dash.manager.state <= 1">Choose a Colour</span>
+            <span class="card-header" ng-show="dash.manager.state > 1 ">Your Colour</span>
+          </h3>
           <div class="minicolors minicolors-theme-default minicolors-position-top minicolors-position-left minicolors-inline" ng-class="{'move-off-canvas': dash.manager.state > 0 &amp;&amp; dash.manager.mode === 'colour'}">
             <div class="minicolors-panel minicolors-slider-hue">
               <div class="minicolors-slider minicolors-sprite">
@@ -85,12 +107,16 @@
           </div>
         </section> 
         
-        <div class="submit-button-wrapper" ng-class="{'hide-behind-card': dash.manager.state > 1}">
+        <div class="submit-button-wrapper" ng-class="{'hide-behind-card': dash.manager.state > 1}" ng-hide="dash.manager.mode === 'photo'">
           <button ng-click="dash.manager.requestImages(dash.manager.colour, dash.auth, 'colour')" move-to side="right">
             <i class="fa fa-check" ng-show="dash.manager.state === 0"></i>
             <i class="fa fa-circle-o-notch loading-icon" ng-show="dash.manager.state === 1"></i>
           </button>
-        </div>        
+        </div>    
+
+        <div class="results" id="photo-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'">
+          <%= render partial: 'results' %>
+        </div>    
 
       </div>
 

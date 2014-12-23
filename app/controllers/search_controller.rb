@@ -19,14 +19,14 @@ class SearchController < ApplicationController
     results = Photo::ExtractDominantColours.call(colour_data_16_bit, hsb_channel_data_64_bit)
 
     # Find the database colours that match our results
-    results.map! { |c| Colour::FindClosest.call(c[:lab]) }
+    lab_results = results.map { |c| Colour::FindClosest.call(c[:lab]) }
 
 
     # Create a png palette for testing
     Photo::CreatePaletteImage.call(results, name) unless Rails.env.production?
 
 
-    render json: results
+    render json: lab_results
   end
 
   # GET /search
