@@ -9,25 +9,26 @@ class PhotosController < ApplicationController
   def index
 
 
-    response.headers['Content-Type'] = 'text/event-stream'
+    response.headers['Content-Type']  = 'text/event-stream'
 
     begin
-      sleep 10
-      response.stream.write("data: #{Colour.first.hex}\n\n")
-      puts response
-      sleep 10
-      response.stream.write("data: #{Colour.second.hex}\n\n")
-      puts response
-      sleep 10
+      sleep 2
       response.stream.write("data: #{Colour.third.hex}\n\n")
-      puts response
+      sleep 0.5
+      response.stream.write("data: #{Colour.second.hex}\n\n")
+      sleep 0.5
+      response.stream.write("data: #{Colour.first.hex}\n\n")
+
+      puts "response: #{response}"
+      puts "\n\nresponse headers: #{response.headers}"
+
       # Colour.first(10).each do |c|
       #   puts "Now returning #{c.hex}"
       #   sse.write(c.hex)
       #   sleep 1
       # end
-    rescue 
-      puts "Rescuing!"
+    rescue Exception => e
+      puts "Rescuing! #{e}"
       IOError
     ensure
       puts "Connection terminating."
