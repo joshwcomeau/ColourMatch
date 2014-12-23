@@ -9,7 +9,7 @@ class Photo::ExtractDominantColours
 
     num_left_to_add = total_to_extract - results.length
 
-    results += colors16.first(num_left_to_add)
+    results += colors16.first(num_left_to_add).reverse
 
 
     results.reverse
