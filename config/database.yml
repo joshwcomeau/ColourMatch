@@ -80,6 +80,4 @@ test:
 #
 production:
   <<: *default
-  database: ColourMatch_production
-  username: <%= ENV['COLOURMATCHPOSTGRESUSER'] %>
-  password: <%= ENV['COLOURMATCHPOSTGRESPASS'] %>
+  database: ColourMatch_development

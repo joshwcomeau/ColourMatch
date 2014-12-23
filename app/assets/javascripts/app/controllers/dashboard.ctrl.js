@@ -37,6 +37,9 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
           Manager.photos.push(data);  
           console.log("Manager.photos is now: ", Manager.photos)
         });
+        console.log("And now its time to close");
+        source.close();
+        console.log("We're closed now");
       }
     };
 
