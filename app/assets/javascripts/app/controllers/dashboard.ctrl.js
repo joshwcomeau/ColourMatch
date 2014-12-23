@@ -28,6 +28,7 @@ function DashboardController($scope, $attrs, Manager, UploadPhoto, SendColour ) 
     
 
     source.onmessage = function(event) {
+      source.close();
 
       console.log(event);
       var data = event.data
