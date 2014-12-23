@@ -11,10 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141218205937) do
+ActiveRecord::Schema.define(version: 20141223214532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bins", force: true do |t|
+    t.integer  "exemplar_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "colours", force: true do |t|
     t.string   "label"
@@ -23,6 +29,7 @@ ActiveRecord::Schema.define(version: 20141218205937) do
     t.string   "hex"
     t.json     "lab"
     t.json     "rgb"
+    t.integer  "bin_id"
   end
 
   create_table "photos", force: true do |t|

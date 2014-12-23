@@ -12,6 +12,8 @@
 #
 
 class Colour < ActiveRecord::Base
+  belongs_to :bin
+
   validates :rgb,   presence: true
   validates :hex,   presence: true
   validates :label, presence: true
