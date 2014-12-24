@@ -1,15 +1,7 @@
 class Colour::CalculateDistance
   def self.call(c1, c2)
-    c1.symbolize_keys!
-    c2.symbolize_keys!
-
-    if Colour::GetType.call(c1) != :lab
-      c1 = Colour::Convert.call(c1, :lab)
-    end
-
-    if Colour::GetType.call(c2) != :lab
-      c2 = Colour::Convert.call(c2, :lab)
-    end
+    c1 = Colour::GetLabColour.call(c1)
+    c2 = Colour::GetLabColour.call(c2)
 
     calculate_distance(c1, c2)
 

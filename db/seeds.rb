@@ -22,7 +22,10 @@ def reset_colours
   end
 end
 
-def create_bins
+reset_colours
+
+def reset_bins
+  Bin.destroy_all
   # Current strategy: 6 bins for hue, 2 for saturation (at 25% and 75%), 2 for lightness (at 25% and 75% as well).
   # 24 bins total.
 
@@ -33,10 +36,19 @@ def create_bins
   hues.each do |h|
     sats.each do |s|
       brits.each do |b|
-        lab_color = Colour::Convert({h: h, s: s, b: b}, :lab)
+        # Let's find our exemplar
+        closest_colour = Colour::FindClosest({h: h, s: s, b: b})
+        Bin.create(exemplar_id: closest_colour.id)
       end
     end
   end 
+
+
+  # Let's assign all of our colors to the closest bin.
+  bins = Bin.includes(:exemplar).all
+  Colours.each do |c|
+    
+  end
 end
 
-reset_colours
+reset_bins
