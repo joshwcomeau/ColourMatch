@@ -1,6 +1,15 @@
 class Colour::Convert
   def self.call(colour, to_type)
-    @colour = colour.is_a?(Hash) ? colour.symbolize_keys : { hex: colour }
+    if colour.is_a? Colour
+      return colour[to_type]
+    elsif colour.is_a? Hash 
+      @colour = colour.symbolize_keys
+    elsif colour.is_a?(String) && /#?([\d]{3}|[\d]{6})/ =~ colour
+      @colour = { hex: colour }
+    else
+      raise "Invalid colour input to Colour::Convert (Needs to be a Hash, hex string or colour object). You provided a #{colour.class}"
+    end
+    
 
     # Colour ought to be a hash with the keys as r/g/b, h/s/l or l/a/b. This is how we'll tell them apart.
     from_type = Colour::GetType.call(@colour)

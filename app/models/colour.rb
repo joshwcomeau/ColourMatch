@@ -20,6 +20,7 @@ class Colour < ActiveRecord::Base
 
 
   before_validation :set_hex_value
+  before_validation :set_hsb_value
   before_validation :set_lab_value
 
   def get_hex_value(rgb)
@@ -37,5 +38,9 @@ class Colour < ActiveRecord::Base
   def set_lab_value
     self.lab = Colour::Convert.call(rgb, :lab)
   end
+
+  def set_hsb_value
+    self.hsb = Colour::Convert.call(rgb, :hsb)
+  end  
 
 end

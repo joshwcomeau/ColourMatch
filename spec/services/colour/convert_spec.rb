@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe Colour::Convert do
+  context "when not providing valid input" do
+    it "raises an error when provided a random string" do
+      expect{Colour::Convert.call("yahoo!", :rgb)}.to raise_exception
+    end
+    
+    it "raises an error when provided an array" do
+      expect{Colour::Convert.call(["#123456"], :rgb)}.to raise_exception
+    end
+    
+    it "raises an error when not provided a to_type" do
+      expect{Colour::Convert.call({r: 2, g: 5, b: 59})}.to raise_exception
+    end
+  end
+
   context "when converting from HEX to RGB" do
     it "converts when given a random color with the hashtag" do
       expect(Colour::Convert.call("#123456", :rgb)).to eq({r: 18,  g: 52,  b: 86}) 

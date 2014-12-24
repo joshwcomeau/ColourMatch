@@ -37,7 +37,7 @@ def reset_bins
     sats.each do |s|
       brits.each do |b|
         # Let's find our exemplar
-        closest_colour = Colour::FindClosest({h: h, s: s, b: b})
+        closest_colour = Colour::FindClosest.call({h: h, s: s, b: b})
         Bin.create(exemplar_id: closest_colour.id)
       end
     end
@@ -45,10 +45,10 @@ def reset_bins
 
 
   # Let's assign all of our colors to the closest bin.
-  bins = Bin.includes(:exemplar).all
-  Colours.each do |c|
-    
-  end
+  # bins = Bin.includes(:exemplar).all
+  # Colours.each do |c|
+
+  # end
 end
 
 reset_bins

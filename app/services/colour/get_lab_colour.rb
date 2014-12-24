@@ -1,7 +1,7 @@
 class Colour::GetLabColour
   def self.call(colour)
     if colour.is_a? Colour 
-      colour = colour[:lab]
+      colour = colour[:lab].symbolize_keys
     elsif colour.is_a? Hash
       colour.symbolize_keys!
       if Colour::GetType.call(colour) != :lab
