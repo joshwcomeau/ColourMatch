@@ -1,0 +1,1 @@
+Used in testing to make sure SearchController won't accept a non-image as an input.

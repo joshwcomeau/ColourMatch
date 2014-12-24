@@ -4,8 +4,11 @@ class SearchController < ApplicationController
   # Used when searching by photo.
   # Param: photo -> HttpUpload object
   def upload
+    return render json: {error: "Missing necessary parameter 'photo'"}, status: 422 unless params[:photo]
+    
     name = sanitize_name(params[:photo].original_filename)
-    return render json: {status: 'error', message: "Couldn't save photo to disk."} unless path = Photo::SaveToDisk.call(params[:photo], name)
+
+    return render json: {error: "Couldn't save photo to disk."}, status: 415 unless path = Photo::SaveToDisk.call(params[:photo], name)
 
     # Let's get 6-bit (64-colour) data
     colour_data_64_bit      = Photo::GetHistogramData.call(path, 64)
@@ -32,7 +35,7 @@ class SearchController < ApplicationController
   # Used when searching by colour.
   # Param: colour -> string hex code eg. '#123456'
   def show
-    return render json: {status: 'error', message: "Missing necessary parameter Colour"} unless params[:colour]
+    return render json: {error: "Missing necessary parameter 'colour'"}, status: 422 unless params[:colour]
 
     # Convert hex to RGB
     rgb_color = Colour::Convert.call(params[:colour], :rgb)
