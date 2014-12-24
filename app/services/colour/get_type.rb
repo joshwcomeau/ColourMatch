@@ -4,8 +4,8 @@ class Colour::GetType
       type = :hex
     elsif colour.key?(:r) && colour.key?(:g) && colour.key?(:b) 
       type = :rgb
-    elsif colour.key?(:h) && colour.key?(:s) && colour.key?(:l)
-      type = :hsl
+    elsif colour.key?(:h) && colour.key?(:s) && colour.key?(:b)
+      type = :hsb
     elsif colour.key?(:l) && colour.key?(:a) && colour.key?(:b)
       type = :lab
     elsif colour.key?(:x) && colour.key?(:y) && colour.key?(:z)

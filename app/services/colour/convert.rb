@@ -4,7 +4,6 @@ class Colour::Convert
 
     # Colour ought to be a hash with the keys as r/g/b, h/s/l or l/a/b. This is how we'll tell them apart.
     from_type = Colour::GetType.call(@colour)
-
     case from_type
     when :hex
       new_color = hex_to_rgb if to_type == :rgb
@@ -23,10 +22,6 @@ class Colour::Convert
   end
 
   private
-
-  def self.hsb_to_lab
-
-  end
 
   def self.hex_to_rgb
     @colour = @colour[:hex]
@@ -52,30 +47,35 @@ class Colour::Convert
     # Make sure our values are in the range 0-1 instead of 0-360 or 0-100
     h = @colour[:h] / 360.0
     s = @colour[:s] / 100.0
-    b = @colour[:b] / 100.0
+    v = @colour[:b] / 100.0
+    # We're using V instead of B to avoid name conflicts with Blue in RGB.
 
     i = (h * 6).floor
     f = h * 6 - i
-    p = b * (1 - s)
-    q = b * (1 - f * s)
-    t = b * (1 - (1 - f) * s)
+    p = v * (1 - s)
+    q = v * (1 - f * s)
+    t = v * (1 - (1 - f) * s)
 
     case i % 6
     when 0
       r, g, b = v, t, p
-      # FINISH ME
+    when 1
+      r, g, b = q, v, p
+    when 2
+      r, g, b = p, v, t
+    when 3
+      r, g, b = p, q, v
+    when 4
+      r, g, b = t, p, v
+    when 5
+      r, g, b = v, p, q
+    end
 
-    # switch(i % 6){
-    #     case 0: r = v, g = t, b = p; break;
-    #     case 1: r = q, g = v, b = p; break;
-    #     case 2: r = p, g = v, b = t; break;
-    #     case 3: r = p, g = q, b = v; break;
-    #     case 4: r = t, g = p, b = v; break;
-    #     case 5: r = v, g = p, b = q; break;
-    # }
-
-    # return [r * 255, g * 255, b * 255];
-
+    {
+      r: (r * 255).floor,
+      g: (g * 255).floor,
+      b: (b * 255).floor
+    }
   end
   
   def self.rgb_to_hsb
@@ -148,6 +148,12 @@ class Colour::Convert
       y: (new_r * 0.2126 + new_g * 0.7152 + new_b * 0.0722) * 100,
       z: (new_r * 0.0193 + new_g * 0.1192 + new_b * 0.9505) * 100
     }
+  end
+
+  def self.hsb_to_lab
+    # Let's first convert HSB to RGB, and then RGB to LAB
+    @colour = hsb_to_rgb
+    rgb_to_lab
   end
 
 

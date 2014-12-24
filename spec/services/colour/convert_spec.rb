@@ -35,8 +35,54 @@ RSpec.describe Colour::Convert do
     it "converts when greyscale" do
       expect(Colour::Convert.call({r: 60,  g: 60,  b: 60},  :hsb)).to eq({h: 0,   s: 0,   b: 24}) 
     end
+
+    it "converts black" do
+      expect(Colour::Convert.call({r: 0,  g: 0,  b: 0}, :hsb)).to eq({h: 0,   s: 0,   b: 0}) 
+    end
+
+    it "converts white" do
+      expect(Colour::Convert.call({r: 255,  g: 255,  b: 255}, :hsb)).to eq({h: 0,   s: 0,   b: 100}) 
+    end
+
+    it "converts pure red (#F00)" do
+      expect(Colour::Convert.call({r: 255,  g: 0,  b: 0}, :hsb)).to eq({h: 0,   s: 100,   b: 100}) 
+    end
+
   end
 
+  context "when converting from HSB to RGB" do
+    it "converts when red is max, and green is more than blue" do
+      expect(Colour::Convert.call({h: 56,  s: 76,  b: 83}, :rgb)).to eq({r: 211, g: 200, b: 50 }) 
+    end
+
+    it "converts when red is max, and green is less than blue" do
+      expect(Colour::Convert.call({h: 329, s: 83,  b: 83}, :rgb)).to eq({r: 211, g: 35,  b: 126}) 
+    end
+
+    it "converts when green is max" do
+      expect(Colour::Convert.call({h: 153, s: 66,  b: 70}, :rgb)).to eq({r: 60,  g: 178, b: 125}) 
+    end
+
+    it "converts when blue is max" do
+      expect(Colour::Convert.call({h: 244, s: 100, b: 62}, :rgb)).to eq({r: 10,  g: 0,   b: 158}) 
+    end
+
+    it "converts when greyscale" do
+      expect(Colour::Convert.call({h: 0,   s: 0,   b: 24}, :rgb)).to eq({r: 61,  g: 61,  b: 61}) 
+    end
+
+    it "converts black" do
+      expect(Colour::Convert.call({h: 0,   s: 0,   b: 0}, :rgb)).to eq({r: 0,  g: 0,  b: 0}) 
+    end
+
+    it "converts white" do
+      expect(Colour::Convert.call({h: 0,   s: 0,   b: 100}, :rgb)).to eq({r: 255,  g: 255,  b: 255}) 
+    end
+
+    it "converts pure red (#F00)" do
+      expect(Colour::Convert.call({h: 0,   s: 100,   b: 100}, :rgb)).to eq({r: 255,  g: 0,  b: 0}) 
+    end
+  end
 
   context "When converting from RGB to XYZ" do
     it "converts when RGB are all over 11" do
@@ -114,4 +160,52 @@ RSpec.describe Colour::Convert do
       expect(Colour::Convert.call({r: 84, g: 12, b: 14}, :lab)).to eq({l: 16.402223020890524, a: 32.30204765409172, b: 19.235045842544267})
     end
   end
+
+  context "when converting from HSB to LAB" do
+    it "converts a primary (red)" do
+      expect(Colour::Convert.call({h: 0, s: 100, b: 100}, :lab)).to eq({l: 53.23288178584245, a: 80.10930952982204, b: 67.22006831026425})
+    end
+
+    it "converts a secondary (magenta)" do
+      expect(Colour::Convert.call({h: 300, s: 100, b: 100}, :lab)).to eq({l: 60.319933664076004, a: 98.25421868616108, b: -60.84298422386232})
+    end
+
+    it "converts white" do
+      expect(Colour::Convert.call({h: 0, s: 0, b: 100}, :lab)).to eq({l: 100, a: 0.00526049995830391, b: -0.010408184525267927})
+    end
+
+    it "converts black" do
+      expect(Colour::Convert.call({h: 0, s: 0, b: 0},  :lab)).to eq({l: 0, a: 0, b: 0})
+    end
+
+    it "converts a random green" do
+      expect(Colour::Convert.call({h: 98, s: 89, b: 90}, :lab)).to eq({l: 81.19152714654479, a: -65.91609361859568, b: 75.82842056597488})
+    end
+
+    it "converts a random blue" do
+      expect(Colour::Convert.call({h: 210, s: 67, b: 39}, :lab)).to eq({l: 27.03003489954316, a: -0.7103420860123666, b: -23.1087587383615})
+    end      
+
+    it "converts a dark color" do
+      expect(Colour::Convert.call({h: 210, s: 29, b: 5}, :lab)).to eq({l: 2.7252898341538874, a: 0.03272774304315107, b: -0.8925506509624037})
+    end
+
+    it "converts a very dark color" do
+      expect(Colour::Convert.call({h: 210, s: 50, b: 2}, :lab)).to eq({l: 0.8038289746858496, a: 0.01680058057405842, b: -0.8494034859714505})
+    end     
+
+    it "converts a very dark grey" do
+      expect(Colour::Convert.call({h: 0, s: 0, b: 1}, :lab)).to eq({l: 0.5483518484793315, a: 0.00007460263512504284, b: -0.00014761148908193356})
+    end      
+
+    it "converts a color with L just under 16" do
+      expect(Colour::Convert.call({h: 358, s: 85, b: 31}, :lab)).to eq({l: 15.133326928269312, a: 30.928243219036837, b: 17.392536227637166})
+    end     
+
+    it "converts a color with L just over 16" do
+      expect(Colour::Convert.call({h: 358, s: 86, b: 33}, :lab)).to eq({l: 16.28484648454583, a: 32.632884523338454, b: 19.088932112300792})
+    end
+  end
 end
+
+
