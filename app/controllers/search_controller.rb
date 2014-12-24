@@ -7,7 +7,6 @@ class SearchController < ApplicationController
     name = sanitize_name(params[:photo].original_filename)
     return render json: {status: 'error', message: "Couldn't save photo to disk."} unless path = Photo::SaveToDisk.call(params[:photo], name)
 
-
     # Let's get 6-bit (64-colour) data
     colour_data_64_bit      = Photo::GetHistogramData.call(path, 64)
     hsb_channel_data_64_bit = Photo::GetHSBChannelStats.call(colour_data_64_bit)
