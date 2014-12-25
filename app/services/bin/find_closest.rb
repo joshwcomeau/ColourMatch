@@ -12,19 +12,17 @@ class Bin::FindClosest
   private
 
   def self.get_nearest_bin(colour, bins)
+    closest = 1_000_000_000
+    nearest_bin = nil
 
-    closest_color = nil
-    closest_distance = 1_000_000
-
-    Colour.all.each do |c2|
-      distance = Colour::CalculateDistance.call(c1, c2[:lab])
-
-      if distance < closest_distance
-        closest_distance = distance
-        closest_color = c2 
+    bins.each do |b|
+      dist = Colour::CalculateDistance.call(colour, b.exemplar)
+      if dist < closest
+        closest = dist
+        nearest_bin = b
       end
     end
 
-    closest_color
+    nearest_bin
   end
 end
