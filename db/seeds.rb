@@ -3,6 +3,9 @@ require 'json'
 # Constants
 JSON_PATH = 'lib/wikipedia_colours_rgb.json'
 
+# Reset all the IDs so we aren't perpetually climbing up
+ActiveRecord::Base.connection.tables.each { |t| ActiveRecord::Base.connection.reset_pk_sequence!(t) }
+
 
 # Create colors from Wikipedia JSON
 def reset_colours
@@ -45,10 +48,11 @@ def reset_bins
 
 
   # Let's assign all of our colors to the closest bin.
-  # bins = Bin.includes(:exemplar).all
-  # Colours.each do |c|
-
-  # end
+  bins = Bin.includes(:exemplar).all
+  Colour.all.each do |c|
+    c.bin = Bin::FindClosest.call(c, bins)
+    c.save!
+  end
 end
 
 reset_bins
