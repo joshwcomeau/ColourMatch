@@ -28,7 +28,7 @@ class SearchController < ApplicationController
     # Because we've used our database as the 'colormap', we really just need to do a simple DB lookup
     lab_results = match_colours_to_db(results)
 
-    render json: results
+    render json: lab_results
 
   end
 
@@ -54,7 +54,7 @@ class SearchController < ApplicationController
   private
 
   def match_colours_to_db(results)
-    results.map { |c| Colour.where("rgb->>'r' = ? AND rgb->>'g' = ? AND rgb->>'b' = ?", c[:rgb][:r].to_s, c[:rgb][:g].to_s, c[:rgb][:b].to_s).take }
+    results.map { |c| Colour.lookup(c[:rgb]) }
   end
 
 

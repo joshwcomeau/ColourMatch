@@ -29,6 +29,10 @@ class Colour < ActiveRecord::Base
     end
   end
 
+  def self.lookup(c)
+    Colour.where("rgb->>'r' = ? AND rgb->>'g' = ? AND rgb->>'b' = ?", c[:r].to_s, c[:g].to_s, c[:b].to_s).take
+  end
+
   private
   
   def set_hex_value
