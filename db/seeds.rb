@@ -4,12 +4,13 @@ require 'json'
 JSON_PATH = 'lib/wikipedia_colours_rgb.json'
 
 # Reset all the IDs so we aren't perpetually climbing up
+Colour.destroy_all
+Bin.destroy_all
 ActiveRecord::Base.connection.tables.each { |t| ActiveRecord::Base.connection.reset_pk_sequence!(t) }
 
 
 # Create colors from Wikipedia JSON
 def reset_colours
-  Colour.destroy_all
   colour_array = JSON.parse(File.open(JSON_PATH, 'r').read)
 
   colour_array.each do |colour|
@@ -28,7 +29,6 @@ end
 reset_colours
 
 def reset_bins
-  Bin.destroy_all
   # Current strategy: 6 bins for hue, 2 for saturation (at 25% and 75%), 2 for lightness (at 25% and 75% as well).
   # 24 bins total.
 
@@ -40,7 +40,7 @@ def reset_bins
     sats.each do |s|
       brits.each do |b|
         # Let's find our exemplar
-        closest_colour = Colour::FindClosest.call({h: h, s: s, b: b})
+        closest_colour = Colour::FindClosest.call({h: h, s: s, b: b}, false)
         Bin.create(exemplar_id: closest_colour.id)
       end
     end

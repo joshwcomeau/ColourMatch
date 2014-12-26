@@ -17,8 +17,16 @@ class SearchController < ApplicationController
     colour_data_16_bit      = Photo::GetHistogramData.call(path, 16)
     # hsb_channel_data_16_bit = Photo::GetHSBChannelStats.call(colour_data_16_bit)
 
-    # Current strategy: Combine the 3-5 most popular 16-bit colors, as well as 0-2 outliers
-    results = Photo::ExtractDominantColours.call(colour_data_16_bit, hsb_channel_data_64_bit)
+
+
+    ####### Current strategy:  #########################################################
+    ####### Combine the 3-5 most popular 16-bit colors, as well as 0-2 outliers ########
+
+    # Start by getting the 3-5 most popular
+    populars = Photo::ExtractMostCommonColours.call(colour_data_16_bit)
+    outliers = Photo::ExtractOutliers.call(hsb_channel_data_64_bit)
+
+    results  = Photo::CompileToDominant.call(populars, outliers)
 
 
     # Create a png palette for testing
@@ -53,9 +61,7 @@ class SearchController < ApplicationController
 
   private
 
-  def match_colours_to_db(results)
-    results.map { |c| Colour::FindClosest.call(c[:lab]) }
-  end
+
 
 
   def sanitize_name(name)
