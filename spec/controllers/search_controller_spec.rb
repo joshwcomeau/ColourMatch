@@ -28,6 +28,11 @@ RSpec.describe SearchController, :type => :controller do
       rgb:   { r: 85,  g: 107, b: 47 },
       label: "Dark olive green"
     }])
+
+    @bin  = Bin.create(exemplar_id: Colour.first.id)
+
+    Colour.all.each { |c| c.update(bin_id: @bin.id) }
+
   end
 
   describe "POST :upload" do
