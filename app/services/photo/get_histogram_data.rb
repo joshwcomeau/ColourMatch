@@ -13,7 +13,6 @@ class Photo::GetHistogramData
     -format %c         \
     -resize 250x250    \
     -colors #{colours} \
-    -remap #{colormap} \
     histogram:info:- | sort -n -r`
   end
 

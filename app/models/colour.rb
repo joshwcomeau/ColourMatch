@@ -25,7 +25,7 @@ class Colour < ActiveRecord::Base
 
   def get_hex_value(rgb)
     rgb.inject("") do |result, elem|
-      result += elem[1].to_hex # Defined in lib/ext/integer.rb
+      result += elem[1].to_hex # 'to_hex' Defined in lib/ext/integer.rb
     end
   end
 

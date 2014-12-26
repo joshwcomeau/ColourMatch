@@ -54,7 +54,7 @@ class SearchController < ApplicationController
   private
 
   def match_colours_to_db(results)
-    results.map { |c| Colour.lookup(c[:rgb]) }
+    results.map { |c| Colour::FindClosest.call(c[:lab]) }
   end
 
 
