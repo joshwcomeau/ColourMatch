@@ -5,7 +5,7 @@ RSpec.describe Colour::FindClosest do
 
   before(:all) do
     # Create some colors for us to play with
-    create_colours_and_bins
+    create_some_colours_and_bins
   end
   describe "finds the closest colour to a given colour" do
     context "when not given a subset" do

@@ -1,5 +1,5 @@
 module ColourSupport
-  def create_colours_and_bins
+  def create_some_colours_and_bins
     @c1   = Colour.create(label: "Bright lavender", rgb: {r: 191, g: 148, b: 228})
     @c2   = Colour.create(label: "Pale brown", rgb: {r: 152, g: 118, b: 84})
     @c3   = Colour.create(label: "Tangelo", rgb: {r: 249, g: 77, b: 0})
