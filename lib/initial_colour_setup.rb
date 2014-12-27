@@ -37,6 +37,17 @@ module InitialColourSetup
       end
     end 
 
+    # Add a couple greyscale bins
+    greyscale = [
+      Colour::FindClosest.call({h: 0, s: 0, b: 0}, false),
+      Colour::FindClosest.call({h: 0, s: 0, b: 50}, false),
+      Colour::FindClosest.call({h: 0, s: 0, b: 100}, false)
+    ]
+    
+    greyscale.each do |s|
+      Bin.create(exemplar_id: s.id)
+    end
+
 
     # Let's assign all of our colors to the closest bin.
     bins = Bin.includes(:exemplar).all
