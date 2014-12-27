@@ -18,25 +18,20 @@ class SearchController < ApplicationController
     # hsb_channel_data_16_bit = Photo::GetHSBChannelStats.call(colour_data_16_bit)
 
 
-
     ####### Current strategy:  #########################################################
-    ####### Combine the 3-5 most popular 16-bit colors, as well as 0-2 outliers ########
+    ####### Combine the 4-6 most popular 16-bit colors, as well as 0-2 outliers ########
 
-    # Start by getting the 3-5 most popular
-    populars = Photo::ExtractMostCommonColours.call(colour_data_16_bit)
+    commons  = Photo::ExtractMostCommonColours.call(colour_data_16_bit)
     outliers = Photo::ExtractOutliers.call(hsb_channel_data_64_bit)
 
-    results  = Photo::CompileToDominant.call(populars, outliers)
+    results  = Photo::CompileToDominant.call(commons, outliers)
 
 
     # Create a png palette for testing
     Photo::CreatePaletteImage.call(results, name) unless Rails.env.production?
 
-    # Find the database objects that match the colors.
-    # Because we've used our database as the 'colormap', we really just need to do a simple DB lookup
-    lab_results = match_colours_to_db(results)
 
-    render json: lab_results
+    render json: results
 
   end
 

@@ -1,38 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe SearchController, :type => :controller do
+  include ColourSupport
   before(:all) do
-    Colour.create([
-    {
-      rgb:   { r: 169, g: 169, b: 169},
-      label: "Dark gray"
-    }, {
-      rgb:   { r: 201, g: 192, b: 187},
-      label: "Pale silver"
-    }, {
-      rgb:   { r: 190, g: 190, b: 190},
-      label: "Gray (X11 gray)"
-    }, {
-      rgb:   { r: 220, g: 220, b: 220},
-      label: "Gainsboro"
-    }, {
-      rgb:   { r: 0,   g: 122, b: 165},
-      label: "CG Blue"
-    }, {
-      rgb:   { r: 230, g: 232, b: 250},
-      label: "Glitter"
-    }, {
-      rgb:   { r: 245, g: 245, b: 245},
-      label: "White smoke"
-    }, {
-      rgb:   { r: 85,  g: 107, b: 47 },
-      label: "Dark olive green"
-    }])
-
-    @bin  = Bin.create(exemplar_id: Colour.first.id)
-
-    Colour.all.each { |c| c.update(bin_id: @bin.id) }
-
+    create_some_colours_and_bins  
   end
 
   describe "POST :upload" do
