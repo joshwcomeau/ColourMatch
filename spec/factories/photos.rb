@@ -17,6 +17,7 @@
 #  px_privacy        :boolean
 #  created_at        :datetime
 #  updated_at        :datetime
+#  px_link           :string(255)
 #
 
 FactoryGirl.define do

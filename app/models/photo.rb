@@ -17,6 +17,7 @@
 #  px_privacy        :boolean
 #  created_at        :datetime
 #  updated_at        :datetime
+#  px_link           :string(255)
 #
 
 class Photo < ActiveRecord::Base
@@ -24,5 +25,6 @@ class Photo < ActiveRecord::Base
   has_many :colours, through: :photo_colours
 
 
+  validates :px_id, uniqueness: true
 
 end

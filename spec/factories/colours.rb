@@ -9,6 +9,8 @@
 #  hex        :string(255)
 #  lab        :json
 #  rgb        :json
+#  bin_id     :integer
+#  hsb        :json
 #
 
 FactoryGirl.define do
