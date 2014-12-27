@@ -17,7 +17,7 @@
           <button class="photo_box" 
             ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
             ng-file-drop 
-            ng-file-change="dash.requestImages(dash.manager.photo, dash.auth, 'photo')"
+            ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
             ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
