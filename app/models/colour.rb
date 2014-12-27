@@ -13,6 +13,8 @@
 
 class Colour < ActiveRecord::Base
   belongs_to :bin
+  has_many :photo_colours
+  has_many :photos, through: :photo_colours
 
   validates :rgb,   presence: true
   validates :hex,   presence: true

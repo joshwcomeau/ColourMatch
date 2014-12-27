@@ -20,7 +20,8 @@
 #
 
 class Photo < ActiveRecord::Base
-
+  has_many :photo_colours
+  has_many :colours, through: :photo_colours
 
 
 
