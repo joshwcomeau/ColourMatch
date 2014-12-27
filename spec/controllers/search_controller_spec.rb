@@ -23,18 +23,14 @@ RSpec.describe SearchController, :type => :controller do
       end
 
       it "contains the right data" do
-        # Breaking the rule of one-expect-per-spec, because each spec involves a fair bit of processing.
-        # Should save significant time by bundling them.
         data   = JSON.parse(response.body)
-        colors = data.map { |c| c["label"] }
-
-        expect(data.count).to eq(6)
         
-        expect(colors).to eq(["Dark gray", "Pale silver", "Gray (X11 gray)", "Gainsboro", "CG Blue", "Glitter"])
-        expect(colors).not_to include("White smoke")
-        expect(colors).not_to include("Dark olive green")
-        expect(colors).not_to include(nil)
+        expect(data).to be_a Array
+        expect(data.first).to be_a Hash
+        expect(data.first["type"]).to eq("common")
+        expect(data.first["occurances"]).not_to be_nil
 
+        expect(Colour.find(data.first["colour"]["id"])).to eq(Colour.find_by(label: 'Pale brown'))
       end
     end
 

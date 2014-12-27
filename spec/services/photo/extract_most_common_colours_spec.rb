@@ -19,7 +19,7 @@ RSpec.describe Photo::ExtractMostCommonColours do
     end
 
     it "returns Colour objects" do
-      expect(results.first).to be_a Colour
+      expect(results.first[:colour]).to be_a Colour
     end
 
     it "returns 6 things" do
@@ -27,15 +27,23 @@ RSpec.describe Photo::ExtractMostCommonColours do
     end
 
     it "returns the most common colour first ('Orange (RYB)')" do
-      expect(results.first).to eq(Colour.find_by(label: 'Orange (RYB)'))
+      expect(results.first[:colour]).to eq(Colour.find_by(label: 'Orange (RYB)'))
     end
 
     it "returns the second most common colour second ('Guppie green')" do
-      expect(results.second).to eq(Colour.find_by(label: 'Guppie green'))
+      expect(results.second[:colour]).to eq(Colour.find_by(label: 'Guppie green'))
     end
 
     it "returns the 6th most common colour last ('Dim gray')" do
-      expect(results.last).to eq(Colour.find_by(label: 'Dim gray'))
+      expect(results.last[:colour]).to eq(Colour.find_by(label: 'Davy\'s grey'))
+    end
+
+    it "returns the type of the colour (common or outlier)" do
+      expect(results.first[:type]).to eq("common")
+    end
+
+    it "returns the number of occurances as an int" do
+      expect(results.first[:occurances]).to be_a Integer
     end
   end
 end
