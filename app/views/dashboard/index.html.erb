@@ -33,9 +33,9 @@
 
           <div class="palette" ng-show="dash.manager.palette">
             <ul>
-              <li ng-repeat="colour in dash.manager.palette" 
-                ng-style="{'background-color': 'rgb('+colour.rgb.r+','+colour.rgb.g+','+colour.rgb.b+')'}"
-                ng-mouseenter="dash.manager.active = colour"
+              <li ng-repeat="item in dash.manager.palette" 
+                ng-style="{'background-color': 'rgb('+item.colour.rgb.r+','+item.colour.rgb.g+','+item.colour.rgb.b+')'}"
+                ng-mouseenter="dash.manager.active = item"
               ></li>
             </ul>
           </div>
@@ -57,15 +57,15 @@
         </section>
 
         <div class="active-palette-colour" 
-          ng-class="{white: dash.manager.active.lab.l <= 69, black: dash.manager.active.lab.l > 69}"
+          ng-class="{white: dash.manager.active.colour.lab.l <= 69, black: dash.manager.active.colour.lab.l > 69}"
           ng-show="dash.manager.active" 
           ng-style="{
-            'background-color': 'rgb('+dash.manager.active.rgb.r+','+dash.manager.active.rgb.g+','+dash.manager.active.rgb.b+')',
-            color: dash.manager.active.lab.l <= 69 ? 'white' : 'black'
+            'background-color': 'rgb('+dash.manager.active.colour.rgb.r+','+dash.manager.active.colour.rgb.g+','+dash.manager.active.colour.rgb.b+')',
+            color: dash.manager.active.colour.lab.l <= 69 ? 'white' : 'black'
           }"
         >
-          <h4>{{dash.manager.active.label}}</h4>
-          <h6>#{{dash.manager.active.hex}}</h6>
+          <h4>{{dash.manager.active.colour.label}}</h4>
+          <h6>#{{dash.manager.active.colour.hex}}</h6>
         </div>
 
         <div class="results" id="colour-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'">

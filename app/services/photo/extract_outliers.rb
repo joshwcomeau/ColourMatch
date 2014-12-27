@@ -5,9 +5,9 @@ class Photo::ExtractOutliers
 
     outliers += get_highest_saturation_and_brightness(all_outliers, 8) if all_outliers.any?
 
-    outliers = match_colours_to_db(outliers)
+    outliers = limit_outliers_by_bins(outliers)
 
-    limit_outliers_by_bins(outliers)
+    match_colours_to_db(outliers)
   end
 
   
@@ -34,7 +34,10 @@ class Photo::ExtractOutliers
 
   def self.match_colours_to_db(colour_data)
     colour_data.map do |c|
-      Colour::FindClosest.call(c[:lab], false)
+      {
+        type:   "outlier",
+        colour: Colour::FindClosest.call(c[:lab], false)
+      }
     end
   end
 
