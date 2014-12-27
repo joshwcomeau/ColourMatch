@@ -25,7 +25,7 @@ class Photo::GetHSBChannelStats
 
   end
 
-  def self.get_outliers(all_colours, measuring_colours, channel, mean, deviation, threshold=1.4)
+  def self.get_outliers(all_colours, measuring_colours, channel, mean, deviation, threshold=3)
     outliers = []
     all_colours.each do |c| 
       z_score = Maths.z_score(c[:hsb][channel], measuring_colours, mean, deviation).abs

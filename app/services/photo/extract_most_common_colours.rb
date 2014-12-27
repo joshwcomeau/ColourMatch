@@ -21,7 +21,8 @@ class Photo::ExtractMostCommonColours
     colours.select do |first_colour|
       distinct = true
       colours.each do |second_colour|
-        if Colour::CalculateDistance.call(first_colour, second_colour) < 0.75 && first_colour != second_colour
+        if Colour::CalculateDistance.call(first_colour, second_colour) < 4 && first_colour != second_colour
+          binding.pry
           distinct = false if (first_colour[:hsb]['s'] + first_colour[:hsb]['b']) <= (second_colour[:hsb]['s'] + second_colour[:hsb]['b'])
         end
       end
