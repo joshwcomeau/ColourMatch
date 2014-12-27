@@ -21,10 +21,29 @@
 #
 
 class Photo < ActiveRecord::Base
-  has_many :photo_colours
+  has_many :photo_colours, dependent: :destroy
   has_many :colours, through: :photo_colours
 
 
   validates :px_id, uniqueness: true
+
+  after_create :analyze_photograph
+
+
+  private
+
+  def analyze_photograph
+    colour_data = Photo::CreatePaletteFromPhoto.call(px_image)
+
+    colour_data.each do |colo|
+      self.photo_colours.create({
+        outlier: colo[:type] == 'outlier',
+        colour_id: colo[:colour][:id],
+        occurances: colo[:occurances]
+      })
+    end
+
+    Photo::CreatePaletteImage.call(colour_data, px_name.underscore)
+  end
 
 end

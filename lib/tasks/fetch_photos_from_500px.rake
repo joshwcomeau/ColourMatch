@@ -16,7 +16,12 @@ end
 
 
 def fetch_fresh_today
-  photos = fetch
-  
+  data = fetch
+  photos = data["photos"]
+
+  photos.first(2).each do |p|
+    Photo::SaveToDb.call(p)
+  end
+
   
 end
