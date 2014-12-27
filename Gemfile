@@ -17,6 +17,7 @@ gem 'autoprefixer-rails'            # Adds CSS vendor prefixes.
 gem 'bower-rails'                   # Front-end package manager.
 gem 'puma'                          # App server that handles concurrency better than WEBrick.
 gem 'quiet_assets'                  # Hides asset stuff from the console.
+gem 'rest-client'                   # A simple HTTP and REST client for Ruby (used for API calls)
 
 
 group :development, :test do 

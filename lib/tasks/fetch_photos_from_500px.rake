@@ -1,8 +1,9 @@
+require 'fetch_photos'
+include FetchPhotos
 
-
-namespace :fivehundredpx do 
+namespace :fhpx do 
   desc "Create a png featuring all the colors we'll be using"
-  task fetch_fresh_today: :environment do
+  task fresh: :environment do
     # Strategy: run this task at 11:30pm every day, pulling 'fresh' photos from 500px api one page at a time.
     # Iterate through the photos in each page of 100, and if the ID doesnt exist in the DB, add it.
     # (maybe don't even check if it already exists, but create it in a try/catch block, with a validation on px_id uniqueness?)
@@ -15,6 +16,7 @@ end
 
 
 def fetch_fresh_today
-  date = Date.today
-  # Call the module method that doesn't exist yet.
+  photos = fetch
+  
+  
 end
