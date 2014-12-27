@@ -1,17 +1,17 @@
 class Photo::GetHistogramData
-  def self.call(path, colours, colormap=nil)
-    colormap  ||= 'lib/assets/images/colormap.png'
-    histogram   = make_histogram(path, colours, colormap)
+  def self.call(path, colours, resize=false)
+    histogram   = make_histogram(path, colours, resize)
     rgb_data    = parse_histogram(histogram)
     get_all_colorspaces(rgb_data)
   end
 
   private
 
-  def self.make_histogram(path, colours, colormap)
+  def self.make_histogram(path, colours, resize)
+    resize_str = resize ? "-resize 250x250" : ""
     `convert #{path}   \
     -format %c         \
-    -resize 250x250    \
+    #{resize_str}      \
     -colors #{colours} \
     histogram:info:- | sort -n -r`
   end

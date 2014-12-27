@@ -15,6 +15,7 @@ gem 'spring',                   group: :development
 gem 'annotate'                      # Provides Schema-like annotations on the models' rb files.
 gem 'autoprefixer-rails'            # Adds CSS vendor prefixes.
 gem 'bower-rails'                   # Front-end package manager.
+gem 'fastimage'
 gem 'puma'                          # App server that handles concurrency better than WEBrick.
 gem 'quiet_assets'                  # Hides asset stuff from the console.
 gem 'rest-client'                   # A simple HTTP and REST client for Ruby (used for API calls)

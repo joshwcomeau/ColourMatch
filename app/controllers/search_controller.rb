@@ -10,7 +10,7 @@ class SearchController < ApplicationController
 
     return render json: {error: "Couldn't save photo to disk."}, status: 415 unless path = Photo::SaveToDisk.call(params[:photo], name)
 
-    results = Photo::CreatePaletteFromPhoto.call(path)
+    results = Photo::CreatePaletteFromPhoto.call(path, true)
 
     # Create a png palette for testing
     Photo::CreatePaletteImage.call(results, name) unless Rails.env.production?

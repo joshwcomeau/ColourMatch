@@ -35,11 +35,14 @@ class Photo < ActiveRecord::Base
   def analyze_photograph
     colour_data = Photo::CreatePaletteFromPhoto.call(px_image)
 
+    resolution = FastImage.size(px_image)
+    pixels = resolution[0] * resolution[1]
+
     colour_data.each do |colo|
       self.photo_colours.create({
         outlier: colo[:type] == 'outlier',
         colour_id: colo[:colour][:id],
-        occurances: colo[:occurances]
+        coverage: colo[:type] == 'common' ? colo[:occurances] / pixels.to_f * 100 : nil
       })
     end
 
