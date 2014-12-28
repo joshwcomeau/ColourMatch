@@ -8,22 +8,9 @@ class Photo::ExtractMostCommonColours
 
     matched_colours = remove_duplicates(matched_colours)
 
-    puts "\n\n\nMATCHED BUT NOT DISTINCTIFIED\n"
-    matched_colours.each do |s|
-      puts "Colour #{s[:colour][:label]} occurs #{s[:occurances]} times."
-    end    
-
     distinct_colours = remove_very_similar(matched_colours)
 
-    sorted = sort_by_occurances(distinct_colours).first(6)
-
-    puts "\n\n\nSORTED AND DISTINCT\n"
-    sorted.each do |s|
-      puts "Colour #{s[:colour][:label]} occurs #{s[:occurances]} times."
-    end
-
-    sorted
-
+    sort_by_occurances(distinct_colours).first(6)
 
   end
 
