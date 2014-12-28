@@ -10,11 +10,10 @@ class Photo::GetHSBChannelStats
   private
 
   def self.get_channel_stats(all_colours, channel)
-    colours   = all_colours.map { |c| c[:hsb][channel]}
+    colours   = all_colours.map { |c| [c[:hsb][channel]] * (c[:occurances] / 500.0).ceil}.flatten
     mean      = Maths.mean(colours)
     deviation = Maths.standard_deviation(colours)
     outliers  = get_outliers(all_colours, colours, channel, mean, deviation)
-
 
     return {
       colours:   colours,
