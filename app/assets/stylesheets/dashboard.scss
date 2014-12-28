@@ -414,8 +414,10 @@
         position: absolute;
         z-index: 1;
         background: lighten($lightgrey, 20%);
-        padding: 5px;
+        padding-top: 5px;
         padding-left: 105%;
+        padding-right: 10px;
+        padding-bottom: 5px;
         height: 100%;
         width: 200%;
         top: 0;
@@ -426,13 +428,26 @@
           0px 2px 0px darken($lightgrey, 32%);
         border-radius: 0 0 2px 2px;
 
-
         &.ng-hide-remove {
           width: 100%;
+          padding-left: 8px;
         }
         &.ng-hide-remove.ng-hide-remove-active {
           width: 200%;
+          padding-left: 105%;
           transition: 0.25s;
+        }
+
+        h4 {
+          font-weight: 500;
+          font-size: 1.1rem;
+          text-align: center;
+        }
+        h6 {
+          font-size: 0.85rem;
+          text-align: center;
+
+          span { color: $red; }
         }
       }       
 

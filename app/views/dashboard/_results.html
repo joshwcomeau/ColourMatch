@@ -20,6 +20,9 @@
     
     <div class="result-info" ng-show="dash.manager.activeResult === p.photo.id">
       <h4>{{p.photo.px_name}}</h4>
+      <h6>By <span>{{p.photo.px_user.username}}</span></h6>
+
+      <p>{{p.photo.px_description | limitTo: 20}}</p>
     </div>
   </li>
 </ul>
