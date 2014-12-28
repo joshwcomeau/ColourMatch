@@ -8,13 +8,29 @@ class Photo::ExtractMostCommonColours
 
     matched_colours = remove_duplicates(matched_colours)
 
-    distinct_colours = get_distinct_colours(matched_colours).first(6)
+    puts "\n\n\nMATCHED BUT NOT DISTINCTIFIED\n"
+    matched_colours.each do |s|
+      puts "Colour #{s[:colour][:label]} occurs #{s[:occurances]} times."
+    end    
+
+    distinct_colours = remove_very_similar(matched_colours)
+
+    sorted = sort_by_occurances(distinct_colours).first(6)
+
+    puts "\n\n\nSORTED AND DISTINCT\n"
+    sorted.each do |s|
+      puts "Colour #{s[:colour][:label]} occurs #{s[:occurances]} times."
+    end
+
+    sorted
+
+
   end
 
   private
 
-  def self.remove_duplicates(c)
-    Hash[ *c.map{ |o| [ o[:colour], o ] }.flatten ].values
+  def self.remove_duplicates(colours)
+    Hash[ *colours.map{ |o| [ o[:colour], o ] }.flatten ].values
   end
 
   def self.match_colours_to_db(colour_data)
@@ -27,16 +43,39 @@ class Photo::ExtractMostCommonColours
     end
   end
 
-  def self.get_distinct_colours(colours)
-    colours.select do |first_colour|
-      distinct = true
-      colours.each do |second_colour|
-        if Colour::CalculateDistance.call(first_colour[:colour][:lab], second_colour[:colour][:lab]) < 4 && first_colour != second_colour
-          distinct = false if (first_colour[:colour][:hsb]['s'] + first_colour[:colour][:hsb]['b']) < (second_colour[:colour][:hsb]['s'] + second_colour[:colour][:hsb]['b'])
+  def self.sort_by_occurances(colours)
+    colours.sort { |a, b| b[:occurances] <=> a[:occurances] }
+  end
+
+  def self.sort_by_sat_bri(*args)
+    args.sort do |a, b| 
+      (b[:colour][:hsb]['s'] + b[:colour][:hsb]['b']) <=> (a[:colour][:hsb]['s'] + a[:colour][:hsb]['b'])
+    end
+  end
+
+  def self.remove_very_similar(colours)
+    # The goal here is to 'merge' very similar colours.
+    # We'll take the one that has a higher brightness+saturation,
+    # and we'll sum their occurances so their totals both count for one.
+    distinct_colours = colours
+
+    colours.combination(2) do |a, b|
+      if Colour::CalculateDistance.call(a[:colour][:lab], b[:colour][:lab]) < 10
+        a_index, b_index = distinct_colours.find_index(a), distinct_colours.find_index(b)
+
+        if a_index && b_index # ensure we haven't already removed this item
+          desc = sort_by_sat_bri(a, b)
+
+          distinct_colours[a_index][:occurances] += distinct_colours[b_index][:occurances]
+          distinct_colours.delete(b)
         end
       end
-
-      distinct
     end
+
+    distinct_colours
+  end
+
+  def self.sat_bri(c)
+    c[:colour][:hsb]['s'] + c[:colour][:hsb]['b']
   end
 end
