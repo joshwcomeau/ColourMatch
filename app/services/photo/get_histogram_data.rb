@@ -1,11 +1,16 @@
 class Photo::GetHistogramData
   def self.call(path, colours, resize=false)
+    path        = strip_version_from_path(path)
     histogram   = make_histogram(path, colours, resize)
     rgb_data    = parse_histogram(histogram)
     get_all_colorspaces(rgb_data)
   end
 
   private
+
+  def self.strip_version_from_path(path)
+    path.gsub(/\?v=[\d]+/, '')
+  end 
 
   def self.make_histogram(path, colours, resize)
     resize_str = resize ? "-resize 250x250" : ""
