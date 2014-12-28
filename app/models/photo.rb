@@ -34,19 +34,22 @@ class Photo < ActiveRecord::Base
 
   def analyze_photograph
     colour_data = Photo::CreatePaletteFromPhoto.call(px_image)
-
+    
+    # Let's turn our 'occurances' value for each color into percentages, 
+    # normalized so they sum to 100.
     resolution = FastImage.size(px_image)
     pixels = resolution[0] * resolution[1]
+
 
     colour_data.each do |colo|
       self.photo_colours.create({
         outlier: colo[:type] == 'outlier',
         colour_id: colo[:colour][:id],
-        coverage: colo[:type] == 'common' ? colo[:occurances] / pixels.to_f * 100 : nil
+        coverage: colo[:occurances] / pixels.to_f * 100
       })
     end
 
-    Photo::CreatePaletteImage.call(colour_data, px_name.underscore)
+    Photo::CreatePaletteImage.call(colour_data, px_name.underscore) unless Rails.env.production?
   end
 
 end

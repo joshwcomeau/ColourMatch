@@ -8,12 +8,18 @@ class PhotosController < ApplicationController
   #        colours -> A comma-separated list of 6 hex colour codes
   def index
 
-    col = Colour.all.sample(2)
+    photos = Photo.includes(:colours).first(20)
     response.headers['Content-Type']  = 'text/event-stream'
 
     begin
-      col.each do |c|
-        response.stream.write("data: #{c.hex}\n\n")  
+      sse = SSE.new(response.stream, retry: 300)
+    
+      photos.each do |p|
+
+        sse.write({ 
+          photo: p,
+          palette: p.colours
+        })
 
         # Want them to stream in slowly? Uncomment to fake a database query with math.
         # (30_000_000 * Random.rand).to_i.times do |n|
@@ -26,8 +32,8 @@ class PhotosController < ApplicationController
       IOError
     ensure
       puts "Connection terminating."
-      response.stream.write("data: OVER\n\n")      
-      response.stream.close
+      sse.write("OVER")  
+      sse.close
     end
 
 

@@ -30,7 +30,7 @@ function DashboardController($scope, $attrs, Manager ) {
         source.close();
       } else {
         $scope.$apply(function() {
-          Manager.photos.push(data);  
+          Manager.photos.push(JSON.parse(data));  
           console.log("Manager.photos is now: ", Manager.photos)
         });
       }
