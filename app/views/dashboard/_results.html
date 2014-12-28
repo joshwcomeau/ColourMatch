@@ -1,6 +1,24 @@
 <ul>
+  <li class="result" ng-class="{'active-result': dash.manager.activeResult === p.photo.id}"
+  ng-repeat="p in dash.manager.photos track by $index"
+  ng-mouseover="dash.manager.activeResult = p.photo.id"
+  ng-mouseout="dash.manager.activeResult = null">
+    <div class="result-thumb-wrapper">
+      <div class="result-thumb-dummy"></div>
+      <div class="result-thumb" ng-style="{'background-image': 'url('+p.photo.px_image+')'}"></div>
+    </div>
 
-  <li ng-repeat="p in dash.manager.photos track by $index">
-    <div class="result-thumb" ng-style="{'background-image': 'url('+p.photo.px_image+')'}"></div>
+    <div class="palette">
+      <ul>
+        <li class="palette-colour" ng-repeat="item in p.palette" 
+          ng-style="{'background-color': '#'+item.hex}"
+          
+        ></li>
+      </ul>
+    </div>
+    
+    <div class="result-info" ng-show="dash.manager.activeResult === p.photo.id">
+      <h4>{{p.photo.px_name}}</h4>
+    </div>
   </li>
 </ul>
