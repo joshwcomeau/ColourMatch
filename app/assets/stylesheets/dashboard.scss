@@ -361,13 +361,19 @@
 
       li.result {
         float: left;
+        width: 50%;
+
         position: relative;
-        width: 25%;
         background: rgba(0,0,0,0.15);
         padding: 5px;
 
         &.active-result {
           z-index: 3 !important;
+
+          .palette {
+            bottom: 0;
+            transition: 0.25s;
+          }
         }
 
         .result-thumb-wrapper {
@@ -375,6 +381,7 @@
           position: relative;
           z-index: 2;
           width: 100%;
+          overflow: hidden;
         }
         .result-thumb-dummy {
           margin-top: 75%;
@@ -388,27 +395,74 @@
           background-position: center center;
           background-size: cover;
         }
-
+        .palette {
+          position: absolute;
+          width: 100%;
+          left: 0;
+          bottom: -2rem;
+        }
         .palette-colour {
           width: 16.666666666%;
-          height: 2rem;
+          height: 1.4rem;
           float: left;
           border-top: 1px solid rgba(0,0,0,0.1);
         }
-        
-        .result-info {
-          position: absolute;
-          z-index: 1;
-          background: #FFF;
-          padding-left: 100%;
-          width: 250%;
-          height: 100%;
-          top: 0;
-          left: 0;
+               
+      }
 
-        }        
+      .result-info {
+        position: absolute;
+        z-index: 1;
+        background: #FFF;
+        padding-left: 100%;
+        width: 250%;
+        height: 100%;
+        top: 0;
+      }       
+
+      &.results-left .result-info {
+        left: 0;
+      }
+      &.results-right .result-info {
+        right: 0;
       }
     }
 
+  }
+}
+
+@media screen and (min-width: 420px) {
+  .photos-wrapper {
+    .content-wrapper {
+      .results {
+        li.result {
+          width: 33.3333%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .photos-wrapper {
+    .content-wrapper {
+      .results {
+        li.result {
+          width: 25%;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  .photos-wrapper {
+    .content-wrapper {
+      .results {
+        li.result {
+          width: 20%;
+        }
+      }
+    }
   }
 }

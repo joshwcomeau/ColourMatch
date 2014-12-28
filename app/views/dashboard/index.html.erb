@@ -68,7 +68,7 @@
           <h6>#{{dash.manager.active.colour.hex}}</h6>
         </div>
 
-        <div class="results" id="colour-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'">
+        <div class="results results-left" id="colour-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'">
           <%= render partial: 'results' %>
         </div>
 
@@ -113,7 +113,7 @@
           </button>
         </div>    
 
-        <div class="results" id="photo-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'">
+        <div class="results results-right" id="photo-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'">
           <%= render partial: 'results' %>
         </div>    
 
