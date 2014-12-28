@@ -25,12 +25,14 @@ RSpec.describe SearchController, :type => :controller do
       it "contains the right data" do
         data   = JSON.parse(response.body)
         
+        # Breaking the one-expect-per-spec rule because these specs are expensive.
         expect(data).to be_a Array
         expect(data.first).to be_a Hash
-        expect(data.first["type"]).to eq("common")
-        expect(data.first["occurances"]).not_to be_nil
+        expect(Colour.find(data.first["colour"]["id"])).to be_a Colour
 
-        expect(Colour.find(data.first["colour"]["id"])).to eq(Colour.find_by(label: 'Pale brown'))
+        expect(data.first["type"]).to eq("common")
+        expect(data.first["occurances"]).to be >= data.second["occurances"]
+        
       end
     end
 
@@ -44,7 +46,7 @@ RSpec.describe SearchController, :type => :controller do
       end
     end
 
-    context "when not passing in a photo" do
+    context "when not passing in an invalid file" do
       before(:each) do
         nim = fixture_file_upload(Rails.root.join('spec/files/not_an_image.md'), 'document')
         post :upload, { photo: nim }
