@@ -9,6 +9,19 @@
     transform: none;
   }
 }
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -25%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes fadeOutUp {
   0% {
     opacity: 1;
