@@ -93,7 +93,11 @@
         animation-name: fadeOutDown;
         animation-fill-mode: both;
       }
-
+      
+      &.fixed-from-top {
+        position: fixed;
+        top: 30px;
+      }
 
 
       h3 {
@@ -266,11 +270,6 @@
       &.shortenedHeight {
         height: 186px;
         transition: 0.55s;
-      }
-
-      &.fixed-from-top {
-        position: fixed;
-        top: 30px;
       }
 
       .move-off-canvas {

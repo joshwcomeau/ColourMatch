@@ -16,7 +16,7 @@
             <h4>{{p.active.label}}</h4>
             <h6>#{{p.active.hex}}</h6>
           </div>
-          <ul>
+          <ul ng-style="{'background-color': '#'+p.palette[p.palette.length-1].hex}">
             <li class="palette-colour" ng-repeat="item in p.palette" 
               ng-style="{'background-color': '#'+item.hex}"
               ng-mouseenter="p.active = item"
