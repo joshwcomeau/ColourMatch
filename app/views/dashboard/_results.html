@@ -30,7 +30,9 @@
     
     <div class="result-info" ng-show="dash.manager.activeResult === p.photo.id" >
       <h4>{{p.photo.px_name}}</h4>
-      <h6>By <span>{{p.photo.px_user.username}}</span></h6>
+      <h6>
+        By <a ng-href="https://www.500px.com/{{p.photo.px_user.username}}" target="_blank">{{p.photo.px_user.username}}</a>
+      </h6>
       <p ng-show="p.photo.px_description">{{p.photo.px_description | stripHtml | limitTo:90}}</p>
       <div class="attribution">© {{p.photo.px_user.firstname | capitalize}} {{p.photo.px_user.lastname | capitalize}} / 500px</div>
     </div>

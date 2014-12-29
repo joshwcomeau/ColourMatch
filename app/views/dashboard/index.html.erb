@@ -77,7 +77,9 @@
 
 
       <div id="right-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'}">
-        <section class="colour-select card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'" ng-class="{fadeInUp: dash.manager.state === 0, shortenedHeight: dash.manager.state > 0}">
+        <section class="colour-select card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'" 
+        ng-class="{fadeInUp: dash.manager.state === 0, shortenedHeight: dash.manager.state > 0}" 
+        follow-scroll min-scroll-top="30" initial-offset="211">
           <h3>
             <span class="card-header" ng-show="dash.manager.state <= 1">Choose a Colour</span>
             <span class="card-header" ng-show="dash.manager.state > 1 ">Your Colour</span>
@@ -106,7 +108,7 @@
           </div>
         </section> 
         
-        <div class="submit-button-wrapper" ng-class="{'hide-behind-card': dash.manager.state > 1}" ng-hide="dash.manager.mode === 'photo'">
+        <div class="submit-button-wrapper" ng-class="{'hide-behind-card': dash.manager.state > 1}" ng-hide="dash.manager.mode === 'photo' || dash.manager.state > 1">
           <button ng-click="dash.manager.requestImages(dash.manager.colour, dash.auth, 'colour')" move-to side="right">
             <i class="fa fa-check" ng-show="dash.manager.state === 0"></i>
             <i class="fa fa-circle-o-notch loading-icon" ng-show="dash.manager.state === 1"></i>

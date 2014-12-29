@@ -24,7 +24,6 @@ function DashboardController($scope, $attrs, Manager ) {
 
     source.onmessage = function(event) {
       var data = event.data
-      console.log("Received data: ", data);
       if (data === 'OVER') {
         console.log("Closing.");
         source.close();
@@ -36,7 +35,6 @@ function DashboardController($scope, $attrs, Manager ) {
       }
     };
 
-    console.log(source);
     
   };
 }
