@@ -481,9 +481,28 @@
         }
         h6 {
           font-size: 0.85rem;
+          font-weight: 300;
           text-align: center;
 
           span { color: $red; }
+        }
+
+        p {
+          font-weight: 100;
+          font-size: 0.85rem;
+          text-align: justify;
+          padding: 1rem 1.5rem;
+        }
+
+        .attribution {
+          position: absolute;
+          width: 50%;
+          right: 0;
+          bottom: 5px;
+          color: #CCC;
+          text-align: center;
+          font-weight: 500;
+          font-size: 0.85rem;
         }
       }       
 
@@ -518,7 +537,7 @@
   }
 }
 
-@media screen and (min-width: 420px) {
+@media screen and (min-width: 1024px) {
   .photos-wrapper {
     .content-wrapper {
       .results {
@@ -530,7 +549,7 @@
   }
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1280px) {
   .photos-wrapper {
     .content-wrapper {
       .results {
@@ -542,7 +561,7 @@
   }
 }
 
-@media screen and (min-width: 1440px) {
+@media screen and (min-width: 1600px) {
   .photos-wrapper {
     .content-wrapper {
       .results {
