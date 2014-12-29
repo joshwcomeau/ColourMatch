@@ -399,12 +399,46 @@
           left: 0;
           bottom: -2rem;
           background: rgba(0,0,0,0.3);
+
+          &:hover {
+            height: 100%;
+          }
+
+          ul {
+            position: absolute;
+            width: 100%;
+            height: 1.4rem;
+            z-index: 2;
+            bottom: 0;
+
+          }
         }
         .palette-colour {
           width: 16.666666666%;
           height: 1.4rem;
           float: left;
           border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .palette-colour-label {
+          position: absolute;
+          z-index: 1;
+          text-align: center;
+          width: 100%;
+          height: 100%;
+          padding-top: 25%;
+
+          h4 {
+            font-weight: 500;
+            font-size: 1.2rem;
+          }
+
+          h6 {
+            opacity: 0.8;
+            font-weight: 100;
+            font-size: 0.85rem;
+            margin-top: 6px;
+          }
         }
                
       }
@@ -419,19 +453,17 @@
         width: 200%;
         top: -5px;  // Offset the uneven padding.
         box-shadow: 3px 3px 40px rgba(0,0,0,0.2);
-        border: 1px solid rgba(0,0,0,0.25);
         // outline: 5px solid rgba(255,255,255,0.9);
 
         &:before {
           content: " ";
           position: absolute;
           z-index: -1;
-          top: -5px;
-          left: -5px;
-          right: -5px;
-          bottom: -5px;
-          border-radius: 2px;
-          border: 4px solid rgba(255,255,255,0.9);
+          top: -4px;
+          left: -4px;
+          right: -4px;
+          bottom: -4px;
+          border: 4px solid rgba(255,255,255,0.75);
         }
 
         &.ng-hide-remove {
@@ -457,7 +489,7 @@
 
       &.results-left .result-info {
         padding-left: 105%;
-        padding-right: 10px;        
+        padding-right: 5px;        
         left: 5px;
 
         &.ng-hide-remove {
@@ -469,7 +501,7 @@
 
       }
       &.results-right .result-info {
-        padding-left: 10px;
+        padding-left: 5px;
         padding-right: 105%;        
         right: -5px;
 

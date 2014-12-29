@@ -7,10 +7,17 @@
     <div class="result-thumb-wrapper">
       <div class="result-thumb-dummy"></div>
       <div class="result-thumb" ng-style="{'background-image': 'url('+p.photo.px_image+')'}" ng-mouseenter="dash.manager.activeResult = p.photo.id">
-        <div class="palette">
+        
+        <div class="palette" ng-mouseleave="p.active = null">
+          <div class="palette-colour-label" ng-class="{white: p.active.lab.l <= 69, black: p.active.lab.l > 69}"
+          ng-show="p.active" ng-style="{'background-color': 'rgb('+p.active.rgb.r+','+p.active.rgb.g+','+p.active.rgb.b+')'}">
+            <h4>{{p.active.label}}</h4>
+            <h6>#{{p.active.hex}}</h6>
+          </div>
           <ul>
             <li class="palette-colour" ng-repeat="item in p.palette" 
               ng-style="{'background-color': '#'+item.hex}"
+              ng-mouseenter="p.active = item"
               
             ></li>
           </ul>
