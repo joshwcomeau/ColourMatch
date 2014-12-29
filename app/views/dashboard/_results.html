@@ -2,10 +2,11 @@
   <li class="result" ng-class="{'active-result': dash.manager.activeResult === p.photo.id}"
   ng-repeat="p in dash.manager.photos track by $index"
   ng-mouseenter="dash.manager.activeResult = p.photo.id"
-  ng-mouseleave="dash.manager.activeResult = null">
+  ng-mouseleave="dash.manager.activeResult = null"
+  >
     <div class="result-thumb-wrapper">
       <div class="result-thumb-dummy"></div>
-      <div class="result-thumb" ng-style="{'background-image': 'url('+p.photo.px_image+')'}">
+      <div class="result-thumb" ng-style="{'background-image': 'url('+p.photo.px_image+')'}" ng-mouseenter="dash.manager.activeResult = p.photo.id">
         <div class="palette">
           <ul>
             <li class="palette-colour" ng-repeat="item in p.palette" 
@@ -18,11 +19,10 @@
     </div>
 
     
-    <div class="result-info" ng-show="dash.manager.activeResult === p.photo.id">
+    <div class="result-info" ng-show="dash.manager.activeResult === p.photo.id" >
       <h4>{{p.photo.px_name}}</h4>
       <h6>By <span>{{p.photo.px_user.username}}</span></h6>
 
-      <p>{{p.photo.px_description | limitTo: 20}}</p>
     </div>
   </li>
 </ul>
