@@ -7,6 +7,8 @@
     <div class="result-thumb-wrapper">
       <div class="result-thumb-dummy"></div>
       <div class="result-thumb" ng-style="{'background-image': 'url('+p.photo.px_image+')'}" ng-mouseenter="dash.manager.activeResult = p.photo.id">
+
+        <a class="px-link" ng-href="https://www.500px.com{{p.photo.px_link}}" target="_blank"><%= image_tag 'spacer.png' %></a>
         
         <div class="palette" ng-mouseleave="p.active = null">
           <div class="palette-colour-label" ng-class="{white: p.active.lab.l <= 69, black: p.active.lab.l > 69}"
