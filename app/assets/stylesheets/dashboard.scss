@@ -138,6 +138,12 @@
 
 
     // First card - Upload a Photo
+    .left-side-wrapper {
+      &.fixed-from-top {
+        position: fixed;
+        top: 30px;
+      }
+    }
     .photo-upload {
 
       &.fadeInUp {
@@ -522,7 +528,6 @@
         .attribution {
           position: absolute;
           width: 50%;
-          right: 0;
           bottom: 5px;
           color: #666;
           text-align: center;
@@ -543,6 +548,10 @@
           padding-left: 105%;
         }
 
+        .attribution {
+          right: 0;
+        }
+
       }
       &.results-right .result-info {
         padding-left: 5px;
@@ -554,6 +563,9 @@
         }
         &.ng-hide-remove.ng-hide-remove-active {
           padding-right: 105%;
+        }
+        .attribution {
+          left: 0;
         }
 
       }

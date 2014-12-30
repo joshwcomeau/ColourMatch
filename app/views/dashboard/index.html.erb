@@ -9,63 +9,66 @@
   <div class="content-wrapper" ng-class="{widemode: dash.manager.state > 1}" ng-cloak>
     <div class="grid padded-grid">
       <div id="left-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'}" ng-mouseleave="dash.manager.active = null">
-        <section class="photo-upload card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'photo'" ng-class="{fadeInUp: dash.manager.state === 0}">
-          <h3>
-            <span class="card-header" ng-show="dash.manager.state <= 1">Upload a Photo</span>
-            <span class="card-header" ng-show="dash.manager.state > 1 ">Your Photo</span>
-          </h3>
-          <button class="photo_box" 
-            ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
-            ng-file-drop 
-            ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
-            ng-model="dash.manager.photo" 
-            accept="image/*"
-            ng-rejected-file-model="rejected"
-            allowDir="true"
-            dropAvailable="dropSupported"
-            defer-click-to destination="#click-handler"
-          >
-            <div class="upload-text">
-              <i class="fa fa-cloud-upload"></i>
-              <h4>Click or Drag Photo</h4>
+        <div class="left-side-wrapper" follow-scroll min-scroll-top="30" initial-offset="211">
+          <section class="photo-upload card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'photo'" ng-class="{fadeInUp: dash.manager.state === 0}">
+            <h3>
+              <span class="card-header" ng-show="dash.manager.state <= 1">Upload a Photo</span>
+              <span class="card-header" ng-show="dash.manager.state > 1 ">Your Photo</span>
+            </h3>
+            <button class="photo_box" 
+              ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
+              ng-file-drop 
+              ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
+              ng-model="dash.manager.photo" 
+              accept="image/*"
+              ng-rejected-file-model="rejected"
+              allowDir="true"
+              dropAvailable="dropSupported"
+              defer-click-to destination="#click-handler"
+            >
+              <div class="upload-text">
+                <i class="fa fa-cloud-upload"></i>
+                <h4>Click or Drag Photo</h4>
+              </div>
+            </button>
+
+            <div class="palette" ng-show="dash.manager.palette">
+              <ul>
+                <li ng-repeat="item in dash.manager.palette" 
+                  ng-style="{'background-color': 'rgb('+item.colour.rgb.r+','+item.colour.rgb.g+','+item.colour.rgb.b+')'}"
+                  ng-mouseenter="dash.manager.active = item"
+                ></li>
+              </ul>
             </div>
-          </button>
 
-          <div class="palette" ng-show="dash.manager.palette">
-            <ul>
-              <li ng-repeat="item in dash.manager.palette" 
-                ng-style="{'background-color': 'rgb('+item.colour.rgb.r+','+item.colour.rgb.g+','+item.colour.rgb.b+')'}"
-                ng-mouseenter="dash.manager.active = item"
-              ></li>
-            </ul>
+            <div ng-no-file-drop>File Drag/drop is not supported</div>   
+            <!-- 
+              This invisible div holds our click-to-upload logic. 
+              Clicking on our photo-box causes the event to be sent here. 
+            -->
+            <div id="click-handler"
+              ng-file-select 
+              ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
+              ng-model="dash.manager.photo" 
+              accept="image/*"
+              ng-rejected-file-model="rejected"
+              allowDir="true"
+               move-to side="right">
+            </div>
+          </section>
+
+
+          <div class="active-palette-colour" 
+            ng-class="{white: dash.manager.active.colour.lab.l <= 69, black: dash.manager.active.colour.lab.l > 69}"
+            ng-show="dash.manager.active" 
+            ng-style="{
+              'background-color': 'rgb('+dash.manager.active.colour.rgb.r+','+dash.manager.active.colour.rgb.g+','+dash.manager.active.colour.rgb.b+')',
+              color: dash.manager.active.colour.lab.l <= 69 ? 'white' : 'black'
+            }"
+          >
+            <h4>{{dash.manager.active.colour.label}}</h4>
+            <h6>#{{dash.manager.active.colour.hex}}</h6>
           </div>
-
-          <div ng-no-file-drop>File Drag/drop is not supported</div>   
-          <!-- 
-            This invisible div holds our click-to-upload logic. 
-            Clicking on our photo-box causes the event to be sent here. 
-          -->
-          <div id="click-handler"
-            ng-file-select 
-            ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
-            ng-model="dash.manager.photo" 
-            accept="image/*"
-            ng-rejected-file-model="rejected"
-            allowDir="true"
-             move-to side="right">
-          </div>
-        </section>
-
-        <div class="active-palette-colour" 
-          ng-class="{white: dash.manager.active.colour.lab.l <= 69, black: dash.manager.active.colour.lab.l > 69}"
-          ng-show="dash.manager.active" 
-          ng-style="{
-            'background-color': 'rgb('+dash.manager.active.colour.rgb.r+','+dash.manager.active.colour.rgb.g+','+dash.manager.active.colour.rgb.b+')',
-            color: dash.manager.active.colour.lab.l <= 69 ? 'white' : 'black'
-          }"
-        >
-          <h4>{{dash.manager.active.colour.label}}</h4>
-          <h6>#{{dash.manager.active.colour.hex}}</h6>
         </div>
 
         <div class="results results-left" id="colour-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'">

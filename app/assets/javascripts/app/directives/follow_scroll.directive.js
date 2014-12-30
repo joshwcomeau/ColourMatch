@@ -3,25 +3,36 @@ function followScroll($window) {
     restrict: 'A',
     link: function(scope, element, attrs) {
       var position       = 'relative',
-          initial_offset = attrs.initialOffset || element.offset().top,
-          initial_width;
-      
+          initial_offset = attrs.initialOffset || element.offset().top;
+
       $($window).on("scroll", function() {
 
         // See if we need to switch into fixed
-        if ( $($window).scrollTop() >= (initial_offset - attrs.minScrollTop) && position === 'relative' ) {
-          // Set its width to whatever it currently is.
-          initial_width = element.width();
-          element.width(initial_width);
-
+        if ( shouldItBeFixed() && position === 'relative' ) {
+          setWidthToParent(element)
           element.addClass("fixed-from-top");
           position = 'fixed';
-        } else if ( $($window).scrollTop() < (initial_offset - attrs.minScrollTop) && position === 'fixed' ) {
+        } else if ( !shouldItBeFixed() && position === 'fixed' ) {
           element.removeClass("fixed-from-top");
-          element.removeAttr("style");
           position = 'relative';
         }
-      })
+      });
+
+      
+      $($window).on("resize", function() {
+        if ( position === 'fixed' ) 
+          setWidthToParent(element)
+        else
+          element.removeAttr("style");
+      });
+
+      function shouldItBeFixed() {
+        return $($window).scrollTop() >= (initial_offset - attrs.minScrollTop);
+      }
+
+      function setWidthToParent(element) {
+        return element.attr("style", "width: " + element.parent().width() + "px");
+      }
     }
   };
 }
