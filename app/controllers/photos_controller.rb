@@ -18,7 +18,7 @@ class PhotosController < ApplicationController
 
         sse.write({ 
           photo: p,
-          palette: p.colours
+          palette: p.photo_colours.map(&:colour)
         })
 
         # Want them to stream in slowly? Uncomment to fake a database query with math.
