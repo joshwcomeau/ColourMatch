@@ -11,7 +11,7 @@ RSpec.describe Photo::ExtractOutliers do
   end
 
   context "when provided 'colours_for_testing.png'" do
-    let(:colour_data) { Photo::GetHSBChannelStats.call(Photo::GetHistogramData.call('spec/files/outliers_for_testing.png', 64)) }
+    let(:colour_data) { Photo::GetHSBChannelStats.call(Photo::GetHistogramData.call('spec/files/outliers_for_testing.png', colours: 64)) }
     let(:results)     { Photo::ExtractOutliers.call(colour_data) }
 
     it "returns an array" do
@@ -35,7 +35,7 @@ RSpec.describe Photo::ExtractOutliers do
     end
     
     it "returns Bright turquoise as the first outlier" do
-      expect(results.last[:colour]).to eq(Colour.find_by(label: 'Gamboge'))
+      expect(results.second[:colour]).to eq(Colour.find_by(label: 'Gamboge'))
     end
 
 
