@@ -1,5 +1,9 @@
 class Photo::GetHSBChannelStats
   def self.call(colour_data)
+    # Ignore any colours that don't occupy at least 0.2% of the canvas.
+    min_occurance = get_min_occurance(colour_data) 
+    colour_data.select! { |c| c[:occurances] > min_occurance }
+
     {
       h: get_channel_stats(colour_data, :h),
       s: get_channel_stats(colour_data, :s),
@@ -8,6 +12,10 @@ class Photo::GetHSBChannelStats
   end
 
   private
+
+  def self.get_min_occurance(colour_data)
+    colour_data.inject(0) { |result, elem| result += elem[:occurances] } / 500
+  end
 
   def self.get_channel_stats(all_colours, channel)
     colours   = all_colours.map { |c| [c[:hsb][channel]] * (c[:occurances] / 500.0).ceil}.flatten
@@ -27,6 +35,7 @@ class Photo::GetHSBChannelStats
   def self.get_outliers(all_colours, measuring_colours, channel, mean, deviation, threshold=1)
     outliers = []
     all_colours.each do |c| 
+
       z_score = Maths.z_score(c[:hsb][channel], measuring_colours, mean, deviation).abs
       if z_score > threshold
 

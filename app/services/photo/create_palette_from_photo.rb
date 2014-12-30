@@ -17,7 +17,7 @@ class Photo::CreatePaletteFromPhoto
 
     results  = Photo::CompileToDominant.call(commons, outliers)
 
-    # binding.pry if test_mode
+    binding.pry if test_mode
 
     Photo::CreatePaletteImage.call(results, name) if palette_image
 
