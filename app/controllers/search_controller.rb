@@ -7,14 +7,10 @@ class SearchController < ApplicationController
     return render json: {error: "Missing necessary parameter 'photo'"}, status: 422 unless params[:photo]
     
     name = sanitize_name(params[:photo].original_filename)
-
     return render json: {error: "Couldn't save photo to disk."}, status: 415 unless path = Photo::SaveToDisk.call(params[:photo], name)
 
-    results = Photo::CreatePaletteFromPhoto.call(path, true)
 
-    # Create a png palette for testing
-    Photo::CreatePaletteImage.call(results, name) unless Rails.env.production?
-
+    results = Photo::CreatePaletteFromPhoto.call(path, resize: true, palette_image: true)
 
     render json: results
 

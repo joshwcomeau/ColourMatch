@@ -1,5 +1,5 @@
 class Photo::GetHistogramData
-  def self.call(path, colours, resize=false)
+  def self.call(path, colours:64, resize: false)
     path        = strip_version_from_path(path)
     histogram   = make_histogram(path, colours, resize)
     rgb_data    = parse_histogram(histogram)

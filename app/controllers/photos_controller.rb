@@ -8,7 +8,7 @@ class PhotosController < ApplicationController
   #        colours -> A comma-separated list of 6 hex colour codes
   def index
 
-    photos = Photo.includes(:colours).first(20)
+    photos = Photo.includes(:colours).last(20)
     response.headers['Content-Type']  = 'text/event-stream'
 
     begin
