@@ -20,39 +20,30 @@ module InitialColourSetup
   end
 
   def reset_bins
-    # Current strategy: 6 bins for hue, 2 for saturation (at 25% and 75%), 2 for lightness (at 25% and 75% as well).
-    # 24 bins total.
+    # Current strategy: 24 hue-based bins (with sat and brit kept at a static 50%) + 1 B&W bin
+    
+    # Start with B&W
+    white = Colour.find_by(label: "White")
+    Bin.create(exemplar_id: white.id)
 
-    hues  = [0, 60, 120, 180, 240, 300]
-    sats  = [25, 75]
-    brits = [25, 75]
+
+    hues  = (0...360).to_a.select { |h| h % 15 == 0}
 
     hues.each do |h|
-      sats.each do |s|
-        brits.each do |b|
-          # Let's find our exemplar
-          closest_colour = Colour::FindClosest.call({h: h, s: s, b: b}, false)
-          Bin.create(exemplar_id: closest_colour.id)
-        end
-      end
+      closest_colour = Colour::FindClosest.call({h: h, s: 50, b: 50}, false)
+      Bin.create(exemplar_id: closest_colour.id)
+
     end 
-
-    # Add a couple greyscale bins
-    greyscale = [
-      Colour::FindClosest.call({h: 0, s: 0, b: 0}, false),
-      Colour::FindClosest.call({h: 0, s: 0, b: 50}, false),
-      Colour::FindClosest.call({h: 0, s: 0, b: 100}, false)
-    ]
-    
-    greyscale.each do |s|
-      Bin.create(exemplar_id: s.id)
-    end
-
 
     # Let's assign all of our colors to the closest bin.
     bins = Bin.includes(:exemplar).all
     Colour.all.each do |c|
-      c.bin = Bin::FindClosest.call(c, bins)
+      # Is this greyscale?
+      if c[:rgb]["r"] == c[:rgb]["g"] && c[:rgb]["g"] == c[:rgb]["b"]
+        c.bin = Bin.first
+      else
+        c.bin = Bin::FindClosest.call(c, bins)
+      end
       c.save!
     end
   end

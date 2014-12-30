@@ -6,7 +6,7 @@ class Colour::FindClosest
     colour = Colour::GetLabColour.call(colour)
 
     if use_bins
-      bin = get_nearest_bin(colour)
+      bin = is_greyscale?(colour) ? Bin.first : get_nearest_bin(colour)
       get_nearest_colour(colour, bin.colours)
     else
       get_nearest_colour(colour, Colour.all)
@@ -16,6 +16,10 @@ class Colour::FindClosest
 
 
   private
+
+  def self.is_greyscale?(colour)
+    colour[:a].round == 0 && colour[:b].round == 0
+  end
 
   def self.get_nearest_bin(colour)
     closest_bin = nil
