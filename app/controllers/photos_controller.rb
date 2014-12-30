@@ -39,12 +39,20 @@ class PhotosController < ApplicationController
 
   end
 
-  # POST /create
-  # Will be used by rake task to create new photo objects
-  def create
-    
+  # GET /test
+  # Photos that I deem problematic get added to /lib/assets/test_images.
+  # This action runs those images through the algorithm and outputs them, along with their palettes,
+  # so I can quickly assess the efficacy of any tweaks I make. Should probably be removed before release.
+  def test
+    @images = Dir.glob("public/images/test_images/*.{jpg, jpeg, png, gif}")
+    @images.map! do |i|
+      path = i.gsub(/public\/images\//, '')
+      {
+        path: path,
+        data: Photo::CreatePaletteFromPhoto.call(i, resize: false, palette_image: false)
+      }
+    end 
   end
-
 
 
 end

@@ -1,0 +1,28 @@
+.photo-test-bed-wrapper {
+  h2 {
+    color: #FFF;
+    font-size: 3rem;
+    text-align: center;
+    margin: 1rem;
+  }
+  .image {
+    position: relative;
+    float: left;
+    overflow: auto;
+    margin-right: 1rem;
+  }
+
+  .palette {
+    overflow: auto;
+    width: 100%;
+    li {
+      width: 16.666666666%;
+      height: 3rem;
+      float: left;
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+  }
+
+
+
+}

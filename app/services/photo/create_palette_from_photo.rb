@@ -1,5 +1,5 @@
 class Photo::CreatePaletteFromPhoto
-  def self.call(path, resize: false, palette_image: false)
+  def self.call(path, resize: false, palette_image: false, test_mode: false)
     # Let's get 6-bit (64-colour) data
     colour_data_6_bit      = Photo::GetHistogramData.call(path, colours: 64, resize: resize)
     hsb_channel_data_6_bit = Photo::GetHSBChannelStats.call(colour_data_6_bit)
@@ -16,6 +16,8 @@ class Photo::CreatePaletteFromPhoto
     outliers = Photo::ExtractOutliers.call(hsb_channel_data_6_bit)
 
     results  = Photo::CompileToDominant.call(commons, outliers)
+
+    # binding.pry if test_mode
 
     Photo::CreatePaletteImage.call(results, name) if palette_image
 

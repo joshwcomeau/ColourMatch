@@ -6,7 +6,9 @@ class Photo::ExtractOutliers
 
     outliers = limit_outliers_by_bins(outliers)
 
-    match_colours_to_db(outliers)
+    results = match_colours_to_db(outliers)
+
+    results
   end
 
   

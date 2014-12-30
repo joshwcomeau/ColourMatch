@@ -1,0 +1,17 @@
+<div class="photo-test-bed-wrapper">
+  
+  <h2>Photo Test Bed</h2>
+
+  <% @images.each do |i| %>
+    <div class="image">
+      <%= image_tag i[:path] %>
+      <ul class="palette">
+        <% i[:data].each do |p| %>
+          <li class="palette-colour" style="background-color: #<%= p[:colour][:hex] %>">
+            
+          </li>  
+        <% end %>    
+      </ul>
+    </div>
+  <% end %>
+</div>
