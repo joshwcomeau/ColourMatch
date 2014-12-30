@@ -19,7 +19,7 @@ class Photo::CreatePaletteFromPhoto
 
     binding.pry if test_mode
 
-    Photo::CreatePaletteImage.call(results, name) if palette_image
+    Photo::CreatePaletteImage.call(results, path) if palette_image
 
     results
   end

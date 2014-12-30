@@ -13,7 +13,8 @@ class SearchController < ApplicationController
     results = Photo::CreatePaletteFromPhoto.call(path, resize: true, palette_image: true)
 
     render json: results
-
+  ensure
+    File.delete(path) if path
   end
 
   # GET /search
