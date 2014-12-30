@@ -118,6 +118,10 @@
           </button>
         </div>    
 
+        <div class="photo-processing-loadscreen" ng-show="dash.manager.state === 1 &amp;&amp; dash.manager.mode === 'photo'">
+          Processing photo...
+        </div>
+
         <div class="results results-right" id="photo-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'">
           <%= render partial: 'results' %>
         </div>    

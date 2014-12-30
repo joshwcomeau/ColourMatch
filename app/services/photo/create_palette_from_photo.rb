@@ -1,12 +1,11 @@
 class Photo::CreatePaletteFromPhoto
   def self.call(path, resize: false, palette_image: false, test_mode: false)
-    # Let's get 6-bit (64-colour) data
     colour_data_6_bit      = Photo::GetHistogramData.call(path, colours: 64, resize: resize)
     hsb_channel_data_6_bit = Photo::GetHSBChannelStats.call(colour_data_6_bit)
     
-    # Let's get 3-bit (16-colour) data
-    colour_data_3_bit      = Photo::GetHistogramData.call(path, colours: 8, resize: resize)
+    colour_data_3_bit      = Photo::GetHistogramData.call(path, colours: 4, resize: resize)
     # hsb_channel_data_4_bit = Photo::GetHSBChannelStats.call(colour_data_3_bit)
+
 
 
     ####### Current strategy:  #########################################################

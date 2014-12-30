@@ -1,5 +1,5 @@
 class Colour::FindClosest
-  def self.call(colour, use_bins=true)
+  def self.call(colour, use_bins=false)
     # We want to find which of the colors in our DB is closest to the provided color.
     # So, we need start by converting to LAB if it isn't already, for accuracy.
     # Then, do some pythagorean math.
