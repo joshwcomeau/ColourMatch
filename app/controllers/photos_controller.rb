@@ -44,7 +44,7 @@ class PhotosController < ApplicationController
   # This action runs those images through the algorithm and outputs them, along with their palettes,
   # so I can quickly assess the efficacy of any tweaks I make. Should probably be removed before release.
   def test
-    @images = Dir.glob("public/images/test_images/*.{jpg, jpeg, png, gif}")
+    @images = Dir.glob("public/images/test_images/*.{jpg,jpeg,png,gif}")
     @images.map! do |i|
       path = i.gsub(/public\/images\//, '')
       {

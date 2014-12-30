@@ -5,7 +5,7 @@ class Photo::CreatePaletteFromPhoto
     hsb_channel_data_6_bit = Photo::GetHSBChannelStats.call(colour_data_6_bit)
     
     # Let's get 4-bit (16-colour) data
-    colour_data_4_bit      = Photo::GetHistogramData.call(path, colours: 16, resize: resize)
+    colour_data_4_bit      = Photo::GetHistogramData.call(path, colours: 8, resize: resize)
     # hsb_channel_data_4_bit = Photo::GetHSBChannelStats.call(colour_data_4_bit)
 
 

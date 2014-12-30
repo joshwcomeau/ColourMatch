@@ -19,7 +19,7 @@ def fetch_fresh_today
   data = fetch
   photos = data["photos"]
 
-  photos.first(15).each do |p|
+  photos.first(25).each do |p|
     puts "Fetching Photo #{p}"
     Photo::SaveToDb.call(p)
     puts "Photo saved to DB \n\n\n"
