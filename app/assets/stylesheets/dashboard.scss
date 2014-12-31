@@ -427,10 +427,9 @@
         }
         .palette {
           position: absolute;
-          width: 100%;
+          width: 101%;
           left: 0;
           bottom: -2rem;
-          background: rgba(0,0,0,0.3);
 
           &:hover {
             height: 100%;
@@ -446,11 +445,36 @@
           }
         }
         .palette-colour {
-          width: 16.666666666%;
+          line-height: 1.4rem;
           height: 1.4rem;
           float: left;
           border-top: 1px solid rgba(0,0,0,0.1);
         }
+
+        /* three items */
+        .palette-colour:first-child:nth-last-child(3),
+        .palette-colour:first-child:nth-last-child(3) ~ .palette-colour {
+          width: 33.3333%;
+        }
+
+        /* four items */
+        .palette-colour:first-child:nth-last-child(4),
+        .palette-colour:first-child:nth-last-child(4) ~ .palette-colour {
+          width: 25%;
+        }
+
+        /* five items */
+        .palette-colour:first-child:nth-last-child(5),
+        .palette-colour:first-child:nth-last-child(5) ~ .palette-colour {
+          width: 20%;
+        }
+
+        /* six items */
+        .palette-colour:first-child:nth-last-child(6),
+        .palette-colour:first-child:nth-last-child(6) ~ .palette-colour {
+          width: 16.6666%;
+        }
+
 
         .palette-colour-label {
           position: absolute;
