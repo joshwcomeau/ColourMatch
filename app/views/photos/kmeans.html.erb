@@ -27,20 +27,34 @@
       }
 
       function kmeans(points, k, min_diff) {
+        // points is an array of 40,000 arrays.
+        // Each 'point' is a pixel, and each pixel is an RGB array.
+        // eg. point 1 might be [255,0,0].
+
         plen = points.length;
         clusters = [];
         seen = [];
+
+        // First, let's get our clusters
         while (clusters.length < k) {
+          // idx is a random point in the image
           idx = parseInt(Math.random() * plen);
+
           found = false;
           for (var i = 0; i < seen.length; i++ ) {
+            // Don't pick the same random point twice.
             if (idx === seen[i]) {
               found = true;
               break;
             }
           }
+          
           if (!found) {
+            // If this is a fresh pixel, add it to 'seen' array
             seen.push(idx);
+            // Also, let's create the cluster.
+            // Clusters have an array containing our first point as their first element,
+            // And an array of points contained in this cluster in their second.
             clusters.push([points[idx], [points[idx]]]);
           }
         }
@@ -48,6 +62,7 @@
         while (true) {
           plists = [];
           for (var i = 0; i < k; i++) {
+            // Create an array of empty arrays, equal to the number of clusters we want (4)
             plists.push([]);
           }
 
@@ -55,30 +70,59 @@
             var p = points[j]
              , smallest_distance = 10000000
              , idx = 0;
+            // p becomes our RGB colour data for every pixel in the image.
+            
             for (var i = 0; i < k; i++) {
               var distance = euclidean(p, clusters[i][0]);
+              // Get the distance between our current p, and each cluster's centerpoint.
               if (distance < smallest_distance) {
                 smallest_distance = distance;
                 idx = i;
               }
             }
+            // Add this point to the corresponding cluster's empty array.
             plists[idx].push(p);
           }
+
+          // At this point, clusters is still just an array with its own point, in two arrays,
+          // and plists has 4 sub-arrays each containing a bunch of points.
+          // Every pixel in the image is in one of the 4 plists.
 
           var diff = 0;
           for (var i = 0; i < k; i++) {
             var old = clusters[i]
               , list = plists[i]
               , center = calculateCenter(plists[i], 3)
+              // get the centerpoint of each cluster, and form a NEW cluster around this point, 
+              // with the same list of points.
               , new_cluster = [center, (plists[i])]
+
+              // Get the distance between our old centerpoint, and the new one.
               , dist = euclidean(old[0], center);
+            
+            // assign this new cluster (only change is centerpoint) to the old variable.
             clusters[i] = new_cluster
-            diff = diff > dist ? diff : dist;
+
+            // As long as the distance is positive, assign diff to this distance (or zero if its negative)
+
+            diff = dist;
           }
-          if (diff < min_diff) {
+          if (diff === 0) {
+            // If this distance is less than our minimum, we're done! Otherwise, repeat.
             break;
           }
         }
+        
+
+        clusters = clusters.sort(function(a, b) { return b[1].length - a[1].length });
+
+        // Temporary logging
+        for (var i=0; i<clusters.length; i++) {
+          console.log("Cluster RGB ", Math.round(clusters[i][0][0]), Math.round(clusters[i][0][1]), Math.round(clusters[i][0][2]), "Has ", clusters[i][1].length, " points");
+          console.log("\n");
+        }
+        console.log("\n\n\n");
+
         return clusters;
       }
 
@@ -100,7 +144,7 @@
             , b = data[i+2];
           points.push([r, g, b]);
         }
-        var results = kmeans(points, 4, 1)
+        var results = kmeans(points, 4)
          , hex = [];
         for (var i = 0; i < results.length; i++) {
           hex.push(rgbToHex(results[i][0]));
