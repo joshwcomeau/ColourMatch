@@ -54,5 +54,12 @@ class PhotosController < ApplicationController
     end 
   end
 
+  # GET /kmeans
+  # An experimental javascript-based k-means implementation.
+  # Should be removed before production.
+  def kmeans
+    @images = Dir.glob("public/images/test_images/*.{jpg,jpeg,png,gif}")
+    @images.map! { |i| i.gsub(/public\/images\//, '') }
+  end
 
 end
