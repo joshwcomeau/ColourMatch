@@ -34,7 +34,7 @@
 
             <div class="palette" ng-show="dash.manager.palette">
               <ul>
-                <li ng-repeat="item in dash.manager.palette" 
+                <li class="children-fill-width" ng-repeat="item in dash.manager.palette" 
                   ng-style="{'background-color': 'rgb('+item.colour.rgb.r+','+item.colour.rgb.g+','+item.colour.rgb.b+')'}"
                   ng-mouseenter="dash.manager.active = item"
                 ></li>

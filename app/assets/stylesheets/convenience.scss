@@ -14,3 +14,29 @@
 .black {
   font-weight: 900;
 }
+
+.children-fill-width {
+  /* three items */
+  &:first-child:nth-last-child(3),
+  &:first-child:nth-last-child(3) ~ & {
+    width: 33.3333%;
+  }
+
+  /* four items */
+  &:first-child:nth-last-child(4),
+  &:first-child:nth-last-child(4) ~ & {
+    width: 25%;
+  }
+
+  /* five items */
+  &:first-child:nth-last-child(5),
+  &:first-child:nth-last-child(5) ~ & {
+    width: 20%;
+  }
+
+  /* six items */
+  &:first-child:nth-last-child(6),
+  &:first-child:nth-last-child(6) ~ & {
+    width: 16.6666%;
+  }
+}
