@@ -6,7 +6,7 @@ class Photo::GetHSBChannelStats
   def self.call(colours)
     [
       get_channel_stats(colours, :h),
-      get_channel_stats(colours, :s).
+      get_channel_stats(colours, :s),
       get_channel_stats(colours, :b)
     ]
   end
