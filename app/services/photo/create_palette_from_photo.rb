@@ -1,18 +1,14 @@
 class Photo::CreatePaletteFromPhoto
   def self.call(path, resize: false, palette_image: false, test_mode: false)
-    colour_data_6_bit      = Photo::GetHistogramData.call(path, colours: 48, resize: resize)
-    hsb_channel_data_6_bit = Photo::GetHSBChannelStats.call(colour_data_6_bit)
-    
-    colour_data_3_bit      = Photo::GetHistogramData.call(path, colours: 4, resize: resize)
-    # hsb_channel_data_4_bit = Photo::GetHSBChannelStats.call(colour_data_3_bit)
+    colour_data_hires = Photo::GetHistogramData.call(path, colours: 48, resize: resize)   
+    colour_data_lores = Photo::GetHistogramData.call(path, colours: 4, resize: resize)
 
 
+    ####### Current strategy:  ###################################################################
+    ####### Get the 4 most prominent colours, and combine them with any important outliers #######
 
-    ####### Current strategy:  #########################################################
-    ####### Combine the 4-6 most popular 16-bit colors, as well as 0-2 outliers ########
-
-    commons  = Photo::ExtractMostCommonColours.call(colour_data_3_bit)
-    outliers = Photo::ExtractOutliers.call(hsb_channel_data_6_bit)
+    commons  = Photo::ExtractMostCommonColours.call(colour_data_lores)
+    outliers = Photo::ExtractOutliers.call(colour_data_hires)
 
     results  = Photo::CompileToDominant.call(commons, outliers)
 
