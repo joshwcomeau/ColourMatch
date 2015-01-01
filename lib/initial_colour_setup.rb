@@ -30,9 +30,8 @@ module InitialColourSetup
     hues  = (0...360).to_a.select { |h| h % 15 == 0}
 
     hues.each do |h|
-      closest_colour = Colour::FindClosest.call({h: h, s: 50, b: 50}, false)
+      closest_colour = Colour.where("hsb->>'h' = ? AND hsb->>'s' = ? AND hsb->>'b' = ?", h.to_s, '50', '50').take
       Bin.create(exemplar_id: closest_colour.id)
-
     end 
 
     # Let's assign all of our colors to the closest bin.

@@ -1,32 +1,25 @@
 class Photo::ExtractOutliers
+  THRESHOLD = 1.5 # Minimum z-score to be considered an outlier.
+
   def self.call(colour_data)
     # We don't want colours that take up less than 0.1% of the canvas.
     # Filter those out first, to save on processing later.
     colour_data[:colours] = Photo::FilterColoursByOccurance.call(colour_data) 
+    colour_stats          = Photo::GetHSBChannelStats.call(colour_data[:colours])
+    
 
-    colour_stats = Photo::GetHSBChannelStats.call(colour_data[:colours])
-    all_outliers = get_all_outliers(colour_data, colour_stats)
+    outliers  = get_all_outliers(colour_data, colour_stats)
 
+    outliers  = sort_by_zscore(outliers) 
 
+    # I want the very first outlier to be the highest-saturation outlier.
+    outliers  = bring_saturation_to_front(outliers).first(5)
 
-
-
-
-
-    # all_outliers = get_all_outliers(colour_data[:colours])
-
-    # outliers = sort_by_zscore(all_outliers).first(5)
-
-    # # We want the outlier that is most saturated/bright, as well.
-    # highest_sat = sort_by_sat(all_outliers).first
-    # outliers.unshift(highest_sat)
+    # I only want 1 outlier per Bin
+    outliers  = limit_outliers_by_bins(outliers)
 
 
-
-    # outliers = limit_outliers_by_bins(outliers)
-
-
-    # match_colours_to_db(outliers).uniq { |c| c[:colour] }
+    match_colours_to_db(outliers).uniq { |c| c[:colour] }
   end
 
   
@@ -34,43 +27,36 @@ class Photo::ExtractOutliers
 
   def self.get_all_outliers(colour_data, colour_stats)
     outliers = colour_data[:colours].map do |c|
-      # Figure out if it's a hue, saturation, or brightness outlier.
-      # if it is, return it along with other pertinent info 
-      # (zscore, type of outlier, occurance, coverage percentage)
-
-      # Unsure how best to do this.
-
-      # Maybe iterate through our 3 colour_stats, looking for the highest z-score?
-      # I should find a way to have different thresholds for different channels
-      find_highest_zscore(c, colour_stats)
-
-      hue_zscore = stuff
-      sat_zscore = stuff
-      brit_zscore = stuff
-
-      max_zscore = [hue_zscore, sat_zscore, brit_zscore].max
-
-      if max_channel > threshold
-        c[:outlier_channel] = 
-
-      if outlier
-      end
+      highest = find_highest_zscore(c, colour_stats)
+      return max_channel >= threshold ? c.merge(highest) : nil
     end
 
     outliers.compact.uniq
-
-    (colours[:h][:outliers] + colours[:s][:outliers] + colours[:b][:outliers]).uniq
   end
 
   def self.find_highest_zscore(c, colour_stats)
-    highest = 0
+    winner = { outlier_channel: nil, z_score: 0 }
+
     colour_stats.each do |stat|
-      z_score = Maths.z_score(c[:hsb][channel], mean: mean, deviation: deviation).abs
+      channel     = stat[:channel]
+      colour_val  = c[:hsb][channel] 
+
+      z_score     = Maths.z_score(colour_val, mean: stat[:mean], deviation: stat[:deviation]).abs
+
+      winner      = { outlier_channel: channel, z_score: z_score } if z_score > winner[:z_score]
     end
+
+    winner
   end
 
   def self.sort_by_zscore(colours)
     colours.sort { |a, b| b[:z_score] <=> a[:z_score] }
+  end
+
+  def self.bring_saturation_to_front(colours)
+    # Find the index of the highest-saturation colour
+    index = colours.find_index(colours.sort { |a, b| b[:hsb][:s] <=> a[:hsb][:s] }.first)
+    colours.unshift(colours.delete_at(index))
   end
 
   def self.sort_by_sat(colours)
@@ -78,13 +64,12 @@ class Photo::ExtractOutliers
   end
 
   def self.limit_outliers_by_bins(outliers)
-    # We only want max 1 outlier per bin.
     bins = Bin.all
     bins_taken = []
 
     outliers.select do |o|
       bin = Bin::FindClosest.call(o[:lab])
-      bins_taken << bin unless bins_taken.include? bin
+      bins_taken.exclude? bin ? bins_taken << bin : false
     end
   end
 

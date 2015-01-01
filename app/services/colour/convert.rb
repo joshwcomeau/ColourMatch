@@ -1,9 +1,11 @@
 class Colour::Convert
   def self.call(colour, to_type)
     if colour.is_a? Colour
-      return colour[to_type]
+      return colour[to_type].symbolize_keys
     elsif colour.is_a? Hash 
+      return colour[:lab].symbolize_keys if colour.key? :lab
       @colour = colour.symbolize_keys
+      
     elsif colour.is_a?(String) && /#?([\dA-F]{3}|[\dA-F]{6})/ =~ colour
       @colour = { hex: colour }
     else
@@ -13,6 +15,9 @@ class Colour::Convert
 
     # Colour ought to be a hash with the keys as r/g/b, h/s/l or l/a/b. This is how we'll tell them apart.
     from_type = Colour::GetType.call(@colour)
+
+    return colour if from_type == to_type
+
     case from_type
     when :hex
       new_color = hex_to_rgb if to_type == :rgb
