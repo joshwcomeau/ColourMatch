@@ -4,7 +4,7 @@
 
   <% @images.each do |i| %>
     <div class="image">
-      <%= image_tag i[:path] %>
+      <%= image_tag i[:path], style: 'max-width: 250px;' %>
       <ul class="palette">
         <% i[:data].each do |p| %>
           <li class="palette-colour" style="background-color: #<%= p[:colour][:hex] %>">

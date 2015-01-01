@@ -3,8 +3,8 @@ class PhotosController < ApplicationController
 
 
   # GET /photos
-  # Nabs all photos through SSE that match the provided colour info
-  # Param: colour  -> A single hex colour code
+  # Nabs all photos through Server-Sent Events that match the provided colour info
+  # Param: colour  -> A single hex colour code, OR
   #        colours -> A comma-separated list of 6 hex colour codes
   def index
 
@@ -49,7 +49,7 @@ class PhotosController < ApplicationController
       path = i.gsub(/public\/images\//, '')
       {
         path: path,
-        data: Photo::CreatePaletteFromPhoto.call(i, resize: false, palette_image: false)
+        data: Photo::CreatePaletteFromPhoto.call(i, resize: true, palette_image: false)
       }
     end 
   end

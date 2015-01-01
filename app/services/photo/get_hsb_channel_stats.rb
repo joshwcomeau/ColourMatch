@@ -1,6 +1,6 @@
 class Photo::GetHSBChannelStats
   def self.call(colour_data)
-    # Ignore any colours that don't occupy at least 0.2% of the canvas.
+    # Ignore any colours that don't occupy at least 0.1% of the canvas.
     min_occurance = get_min_occurance(colour_data) 
     colour_data.select! { |c| c[:occurances] > min_occurance }
 
@@ -14,7 +14,7 @@ class Photo::GetHSBChannelStats
   private
 
   def self.get_min_occurance(colour_data)
-    colour_data.inject(0) { |result, elem| result += elem[:occurances] } / 500
+    colour_data.inject(0) { |result, elem| result += elem[:occurances] } / 1000
   end
 
   def self.get_channel_stats(all_colours, channel)

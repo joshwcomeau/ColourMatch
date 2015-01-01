@@ -1,6 +1,6 @@
 class Photo::CreatePaletteFromPhoto
   def self.call(path, resize: false, palette_image: false, test_mode: false)
-    colour_data_6_bit      = Photo::GetHistogramData.call(path, colours: 64, resize: resize)
+    colour_data_6_bit      = Photo::GetHistogramData.call(path, colours: 48, resize: resize)
     hsb_channel_data_6_bit = Photo::GetHSBChannelStats.call(colour_data_6_bit)
     
     colour_data_3_bit      = Photo::GetHistogramData.call(path, colours: 4, resize: resize)

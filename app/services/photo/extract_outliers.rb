@@ -5,10 +5,13 @@ class Photo::ExtractOutliers
     outliers = sort_by_zscore(all_outliers).first(5)
 
     # We want the outlier that is most saturated/bright, as well.
-    outliers.unshift(get_highest_saturation_and_brightness(all_outliers))
+    highest_sat = sort_by_sat(all_outliers).first
+    outliers.unshift(highest_sat)
+
+    binding.pry
+
 
     outliers = limit_outliers_by_bins(outliers)
-
 
 
     match_colours_to_db(outliers).uniq { |c| c[:colour] }
@@ -25,8 +28,8 @@ class Photo::ExtractOutliers
     colours.sort { |a, b| b[:z_score] <=> a[:z_score] }
   end
 
-  def self.get_highest_saturation_and_brightness(outliers)
-    outliers.sort { |a, b| (b[:hsb][:s] + b[:hsb][:b]) <=> (a[:hsb][:s] + a[:hsb][:b]) }.first
+  def self.sort_by_sat(colours)
+    colours.sort { |a, b| b[:hsb][:s] <=> a[:hsb][:s] }
   end
 
   def self.limit_outliers_by_bins(outliers)
