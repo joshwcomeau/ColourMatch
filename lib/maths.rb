@@ -17,11 +17,12 @@ module Maths
     Math.sqrt(sample_variance(a))
   end
 
-  def self.z_score(a, sample, m=nil, d=nil)
+  def self.z_score(a, sample: nil, mean: nil, deviation: nil)
+    raise "Need either the sample, or the mean and deviation, to calculate z-score" unless sample || (mean && deviation)
     # Calculate mean and deviation unless provided
-    m ||= mean(sample)
-    d ||= standard_deviation(sample) 
+    mean      ||= mean(sample)
+    deviation ||= standard_deviation(sample) 
 
-    (a - m) / d
+    (a - mean) / deviation
   end
 end

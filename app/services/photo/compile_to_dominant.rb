@@ -62,9 +62,9 @@ class Photo::CompileToDominant
   def self.add_in_zscores(outliers, stats)
     outliers.map do |o|
       o[:zscore_from_common] = {
-        hue:  Maths.z_score(o[:colour][:hsb]["h"], [], stats[:hue][:mean], stats[:hue][:deviation]).abs,
-        sat:  Maths.z_score(o[:colour][:hsb]["h"], [], stats[:sat][:mean], stats[:sat][:deviation]).abs,
-        brit: Maths.z_score(o[:colour][:hsb]["h"], [], stats[:brit][:mean], stats[:brit][:deviation]).abs
+        hue:  Maths.z_score(o[:colour][:hsb]["h"], mean: stats[:hue][:mean], deviation: stats[:hue][:deviation]).abs,
+        sat:  Maths.z_score(o[:colour][:hsb]["h"], mean: stats[:sat][:mean], deviation: stats[:sat][:deviation]).abs,
+        brit: Maths.z_score(o[:colour][:hsb]["h"], mean: stats[:brit][:mean], deviation: stats[:brit][:deviation]).abs
       }
       o
     end

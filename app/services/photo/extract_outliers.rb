@@ -42,7 +42,7 @@ class Photo::ExtractOutliers
 
       # Maybe iterate through our 3 colour_stats, looking for the highest z-score?
       # I should find a way to have different thresholds for different channels
-      find_highest_zscore(c)
+      find_highest_zscore(c, colour_stats)
 
       hue_zscore = stuff
       sat_zscore = stuff
@@ -62,8 +62,11 @@ class Photo::ExtractOutliers
     (colours[:h][:outliers] + colours[:s][:outliers] + colours[:b][:outliers]).uniq
   end
 
-  def self.find_highest_zscore(colour)
-
+  def self.find_highest_zscore(c, colour_stats)
+    highest = 0
+    colour_stats.each do |stat|
+      z_score = Maths.z_score(c[:hsb][channel], mean: mean, deviation: deviation).abs
+    end
   end
 
   def self.sort_by_zscore(colours)
