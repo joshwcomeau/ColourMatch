@@ -68,6 +68,14 @@
             <h4>{{dash.manager.active.colour.label}}</h4>
             <h6>#{{dash.manager.active.original_colour.hex}}</h6>
           </div>
+
+          <div class="colour-stats">
+            <div class="colour-row" ng-repeat="item in dash.manager.palette">
+              <div class="label">{{item.colour.label}} (#{{item.original_colour.hex}})</div>
+              <div class="type" ng-if="item.type === 'common'">Primary ({{item.coverage}}% coverage)</div>
+              <div class="type" ng-if="item.type === 'outlier'">{{item.outlier_channel}} Outlier (z-score: {{item.z_score}})</div>
+            </div>
+          </div>
         </div>
 
         <div class="results results-left" id="colour-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'">
