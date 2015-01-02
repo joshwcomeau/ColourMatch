@@ -2,21 +2,14 @@ class Photo::ExtractMostCommonColours
   def self.call(colour_data)
     # Any colors that are < 0.8 from each other (using Colour::CalculateDistance) are too similar.
     # Remove the one with the least sat/brightness.
-    matched_colours   = match_colours_to_db(colour_data[:colours].first(10))
-
+    matched_colours   = match_colours_to_db(colour_data[:colours])
     distinct_colours  = remove_very_similar(matched_colours)
-
-    sorted_colours    = sort_by_occurances(distinct_colours).first(6)
-
+    sorted_colours    = sort_by_occurances(distinct_colours)
 
     sorted_colours
   end
 
   private
-
-  def self.remove_duplicates(colours)
-    Hash[ *colours.map{ |o| [ o[:colour], o ] }.flatten ].values
-  end
 
   def self.match_colours_to_db(colour_data)
     colour_data.map do |c|
@@ -31,18 +24,6 @@ class Photo::ExtractMostCommonColours
   def self.sort_by_occurances(colours)
     colours.sort { |a, b| b[:occurances] <=> a[:occurances] }
   end
-
-  def self.sort_by_sat(*args)
-    args.sort do |a, b| 
-      b[:colour][:hsb]['s'] <=> a[:colour][:hsb]['s']
-    end
-  end
-
-  # def self.sort_by_sat_bri(*args)
-  #   args.sort do |a, b| 
-  #     (b[:colour][:hsb]['s'] + b[:colour][:hsb]['b']) <=> (a[:colour][:hsb]['s'] + a[:colour][:hsb]['b'])
-  #   end
-  # end
 
   def self.remove_very_similar(colours)
     # The goal here is to 'merge' very similar colours.
@@ -64,9 +45,5 @@ class Photo::ExtractMostCommonColours
     end
 
     distinct_colours
-  end
-
-  def self.sat_bri(c)
-    c[:colour][:hsb]['s'] + c[:colour][:hsb]['b']
   end
 end
