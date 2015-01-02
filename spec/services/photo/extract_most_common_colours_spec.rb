@@ -11,7 +11,12 @@ RSpec.describe Photo::ExtractMostCommonColours do
   end
 
   context "when provided 'extract_most_common_colours_test_image.png'" do
-    let(:colour_data) { Photo::GetHistogramData.call('spec/files/extract_most_common_colours_test_image.png', colours: 4) }
+    let(:colour_data) do 
+      Photo::GetHistogramData.call(
+        'spec/files/extract_most_common_colours_test_image.png', 
+        colours: Photo::CreatePaletteFromPhoto::LORES
+      ) 
+    end
     let(:results)     { Photo::ExtractMostCommonColours.call(colour_data) }
 
     it "returns an array" do

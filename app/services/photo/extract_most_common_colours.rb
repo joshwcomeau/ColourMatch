@@ -36,4 +36,10 @@ class Photo::ExtractMostCommonColours
 
     distinct_colours
   end
+  
+  def self.sort_by_sat(*args)
+    args.sort do |a, b| 
+      b[:colour][:hsb]['s'] <=> a[:colour][:hsb]['s']
+    end
+  end  
 end

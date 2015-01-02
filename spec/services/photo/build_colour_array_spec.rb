@@ -23,8 +23,8 @@ RSpec.describe Photo::BuildColourArray do
       ) 
     end
 
-    let(:outliers) { Photo::ExtractOutliers.call(colour_data_hires) }
-    let(:commons)  { Photo::ExtractMostCommonColours.call(colour_data_lores) }
+    let(:outliers) { Photo::ExtractOutliers.call(colour_data_hires)           } 
+    let(:commons)  { Photo::ExtractMostCommonColours.call(colour_data_lores)  }
 
     it "contains an 'outliers' array" do
       expect(outliers).to be_a Array
