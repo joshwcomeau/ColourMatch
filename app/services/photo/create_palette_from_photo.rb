@@ -1,7 +1,9 @@
 class Photo::CreatePaletteFromPhoto
+  HIRES = 48
+  LORES = 4
   def self.call(path, resize: false, palette_image: false, test_mode: false)
-    colour_data_hires = Photo::GetHistogramData.call(path, colours: 48, resize: resize)   
-    colour_data_lores = Photo::GetHistogramData.call(path, colours: 4, resize: resize)
+    colour_data_hires = Photo::GetHistogramData.call(path, colours: HIRES, resize: resize)   
+    colour_data_lores = Photo::GetHistogramData.call(path, colours: LORES, resize: resize)
 
 
     ####### Current strategy:  ###################################################################

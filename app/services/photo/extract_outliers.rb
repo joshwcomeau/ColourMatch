@@ -19,7 +19,7 @@ class Photo::ExtractOutliers
       outliers  = limit_outliers_by_bins(outliers)
 
 
-      match_colours_to_db(outliers).uniq { |c| c[:colour] }
+      Photo::BuildColourArray.call(outliers, colour_data, colour_type: 'outlier')
     else
       []
     end
@@ -73,16 +73,4 @@ class Photo::ExtractOutliers
       bins_taken.exclude? bin ? bins_taken << bin : false
     end
   end
-
-  # Pull me into my own service?
-  def self.match_colours_to_db(colour_data)
-    colour_data.map do |c|
-      {
-        type:       "outlier",
-        colour:     Colour::FindClosest.call(c[:lab], false),
-        occurances: c[:occurances]
-      }
-    end
-  end
-
 end
