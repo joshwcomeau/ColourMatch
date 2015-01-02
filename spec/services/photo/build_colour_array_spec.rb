@@ -59,7 +59,7 @@ RSpec.describe Photo::BuildColourArray do
     describe "original colour" do
       subject { commons.first[:original_colour] }
 
-      it { is_expected.not_to be_nil }
+      it { is_expected.not_to be_nil      }
       it { is_expected.to include(r: 194) }
       it { is_expected.to include(g: 152) }
       it { is_expected.to include(b: 227) }

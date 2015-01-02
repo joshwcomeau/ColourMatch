@@ -27,12 +27,6 @@ class Colour < ActiveRecord::Base
   before_validation :set_hsb_value
   before_validation :set_lab_value
 
-  def get_hex_value(rgb)
-    rgb.inject("") do |result, elem|
-      result += elem[1].to_hex # 'to_hex' Defined in lib/ext/integer.rb
-    end
-  end
-
   def is_greyscale?
     rgb["r"] == rgb["g"] && rgb["g"] == rgb["b"]
   end
@@ -44,7 +38,7 @@ class Colour < ActiveRecord::Base
   private
   
   def set_hex_value
-    self.hex = get_hex_value(rgb)
+    self.hex = Colour::Convert.call(rgb, :hex)
   end
 
   def set_lab_value

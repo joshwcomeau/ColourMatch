@@ -29,6 +29,20 @@ RSpec.describe Colour::Convert do
     end
   end
 
+  context "when converting from RGB to HEX" do
+    it "converts when given a random color with the hashtag" do
+      expect(Colour::Convert.call({r: 18,  g: 52,  b: 86}, :hex)).to eq("123456") 
+    end
+    
+    it "converts when the hashtag is absent" do
+      expect(Colour::Convert.call({r: 18,  g: 52,  b: 86}, :hex)).to eq("123456") 
+    end
+
+    it "converts 3-character hex codes" do
+      expect(Colour::Convert.call({r: 51,  g: 102,  b: 153}, :hex)).to eq("336699") 
+    end
+  end  
+
   context "when converting from RGB to HSB" do
     it "converts when red is max, and green is more than blue" do
       expect(Colour::Convert.call({r: 211, g: 200, b: 50 }, :hsb)).to eq({h: 56,  s: 76,  b: 83}) 

@@ -22,22 +22,29 @@ class Colour::Convert
 
     case from_type
     when :hex
-      new_color = hex_to_rgb if to_type == :rgb
+      new_colour = hex_to_rgb if to_type == :rgb
     when :hsb
-      new_color = hsb_to_rgb if to_type == :rgb
-      new_color = hsb_to_lab if to_type == :lab
+      new_colour = hsb_to_rgb if to_type == :rgb
+      new_colour = hsb_to_lab if to_type == :lab
     when :lab
       # Do me
     when :rgb
-      new_color = rgb_to_hsb if to_type == :hsb
-      new_color = rgb_to_lab if to_type == :lab
-      new_color = rgb_to_xyz if to_type == :xyz 
+      new_colour = rgb_to_hex if to_type == :hex
+      new_colour = rgb_to_hsb if to_type == :hsb
+      new_colour = rgb_to_lab if to_type == :lab
+      new_colour = rgb_to_xyz if to_type == :xyz 
     end
 
-    new_color
+    new_colour
   end
 
   private
+
+  def self.rgb_to_hex
+    @colour.inject("") do |result, elem|
+      result += elem[1].to_hex # 'to_hex' Defined in lib/ext/integer.rb
+    end
+  end
 
   def self.hex_to_rgb
     @colour = @colour[:hex]

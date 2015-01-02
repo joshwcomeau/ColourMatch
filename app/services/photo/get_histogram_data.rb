@@ -55,6 +55,7 @@ class Photo::GetHistogramData
       }
 
       # Next, we do the conversions
+      hex = Colour::Convert.call(rgb, :hex)
       hsb = Colour::Convert.call(rgb, :hsb)
       lab = Colour::Convert.call(rgb, :lab)
 
@@ -64,6 +65,7 @@ class Photo::GetHistogramData
       {
         occurances: color_array[0].to_i,
         rgb:        rgb,
+        hex:        hex,
         hsb:        hsb,
         lab:        lab
       }
