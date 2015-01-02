@@ -3,6 +3,8 @@ class Colour::Convert
     if colour.is_a? Colour
       return colour[to_type].symbolize_keys
     elsif colour.is_a? Hash 
+      return colour[:rgb].symbolize_keys if colour.key? :rgb
+      return colour[:hsb].symbolize_keys if colour.key? :hsb
       return colour[:lab].symbolize_keys if colour.key? :lab
       @colour = colour.symbolize_keys
       
