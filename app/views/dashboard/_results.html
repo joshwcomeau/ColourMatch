@@ -33,7 +33,18 @@
       <h6>
         By <a ng-href="https://www.500px.com/{{p.photo.px_user.username}}" target="_blank">{{p.photo.px_user.username}}</a>
       </h6>
-      <p ng-show="p.photo.px_description">{{p.photo.px_description | stripHtml | limitTo:90}}</p>
+
+      <div class="match-score">
+        <h5>Match Score</h5>
+        <h2>82.5%</h2>
+      </div>
+
+
+      <div class="for-sale">
+        <span ng-if="p.photo.px_for_sale" class="green"><i class="fa fa-check"></i> Yes, this photo is for sale!</span>
+        <span ng-if="!p.photo.px_for_sale" class="red"><i class="fa fa-times"></i> Not for sale.</span>
+      </div>
+
       <div class="attribution">© {{p.photo.px_user.firstname | capitalize}} {{p.photo.px_user.lastname | capitalize}} / 500px</div>
     </div>
   </li>
