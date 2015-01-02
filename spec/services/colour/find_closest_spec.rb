@@ -1,12 +1,13 @@
 require 'rails_helper'
+require 'initial_colour_setup'
 
 RSpec.describe Colour::FindClosest do
-  include ColourSupport
+  include InitialColourSetup
 
-  before(:all) do
-    # Create some colors for us to play with
-    create_some_colours_and_bins
+  before(:all) do 
+    reset_a_few_colours
   end
+
   describe "finds the closest colour to a given colour" do
     context "when not given a subset" do
       it "finds Bright Lavender" do

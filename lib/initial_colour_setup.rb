@@ -3,6 +3,7 @@ require 'json'
 module InitialColourSetup
   JSON_PATH = 'lib/wikipedia_colours_rgb.json'
 
+  # Build all 780 colours in our json file. Used by seeds and tests.
   def reset_colours
     colour_array = JSON.parse(File.open(JSON_PATH, 'r').read)
 
@@ -17,6 +18,17 @@ module InitialColourSetup
         label: colour["label"]
       })
     end
+  end
+
+  # Build a handful of colours, for tests that don't require the full crayon box.
+  def reset_a_few_colours
+    @c1   = Colour.create(label: "Bright lavender", rgb: {r: 191, g: 148, b: 228})
+    @c2   = Colour.create(label: "Pale brown", rgb: {r: 152, g: 118, b: 84})
+    @c3   = Colour.create(label: "Tangelo", rgb: {r: 249, g: 77, b: 0})
+    @c4   = Colour.create(label: "Pastel Violet", rgb: {r: 203, g: 153, b: 201})
+    @bin  = Bin.create(exemplar_id: @c1.id)
+
+    Colour.all.each { |c| c.update(bin_id: @bin.id) }
   end
 
   def reset_bins

@@ -1,9 +1,10 @@
 require 'rails_helper'
+require 'initial_colour_setup'
 
 RSpec.describe SearchController, :type => :controller do
-  include ColourSupport
-  before(:all) do
-    create_some_colours_and_bins  
+  include InitialColourSetup
+  before(:all) do 
+    reset_a_few_colours
   end
 
   describe "POST :upload" do
