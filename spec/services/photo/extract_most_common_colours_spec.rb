@@ -10,8 +10,8 @@ RSpec.describe Photo::ExtractMostCommonColours do
     reset_bins
   end
 
-  context "when provided 'colours_for_testing.png'" do
-    let(:colour_data) { Photo::GetHistogramData.call('spec/files/colours_for_testing.png', colours: 16) }
+  context "when provided 'extract_most_common_colours_test_image.png'" do
+    let(:colour_data) { Photo::GetHistogramData.call('spec/files/extract_most_common_colours_test_image.png', colours: 4) }
     let(:results)     { Photo::ExtractMostCommonColours.call(colour_data) }
 
     it "returns an array" do
@@ -23,7 +23,7 @@ RSpec.describe Photo::ExtractMostCommonColours do
     end
 
     it "returns 6 things" do
-      expect(results.count).to eq(6)
+      expect(results.count).to eq(4)
     end
 
     it "returns the most common colour first ('Orange (RYB)')" do
@@ -34,8 +34,8 @@ RSpec.describe Photo::ExtractMostCommonColours do
       expect(results.second[:colour]).to eq(Colour.find_by(label: 'Guppie green'))
     end
 
-    it "returns the 6th most common colour last ('Dim gray')" do
-      expect(results.last[:colour]).to eq(Colour.find_by(label: 'Dim gray'))
+    it "returns the least common colour last ('Electric indigo')" do
+      expect(results.last[:colour]).to eq(Colour.find_by(label: 'Electric indigo'))
     end
 
     it "returns the type of the colour (common or outlier)" do
