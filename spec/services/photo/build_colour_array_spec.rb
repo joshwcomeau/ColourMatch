@@ -60,9 +60,8 @@ RSpec.describe Photo::BuildColourArray do
       subject { commons.first[:original_colour] }
 
       it { is_expected.not_to be_nil      }
-      it { is_expected.to include(r: 194) }
-      it { is_expected.to include(g: 152) }
-      it { is_expected.to include(b: 227) }
+      it { is_expected.to include(rgb: {r: 194, g: 152, b: 227}) }
+      it { is_expected.to include(hex: "C298E3") }
     end
   end
 end

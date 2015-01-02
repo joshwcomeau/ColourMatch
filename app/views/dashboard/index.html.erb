@@ -35,7 +35,7 @@
             <div class="palette" ng-show="dash.manager.palette">
               <ul>
                 <li class="children-fill-width" ng-repeat="item in dash.manager.palette" 
-                  ng-style="{'background-color': 'rgb('+item.colour.rgb.r+','+item.colour.rgb.g+','+item.colour.rgb.b+')'}"
+                  ng-style="{'background-color': 'rgb('+item.original_colour.rgb.r+','+item.original_colour.rgb.g+','+item.original_colour.rgb.b+')'}"
                   ng-mouseenter="dash.manager.active = item"
                 ></li>
               </ul>
@@ -62,12 +62,11 @@
             ng-class="{white: dash.manager.active.colour.lab.l <= 69, black: dash.manager.active.colour.lab.l > 69}"
             ng-show="dash.manager.active" 
             ng-style="{
-              'background-color': 'rgb('+dash.manager.active.colour.rgb.r+','+dash.manager.active.colour.rgb.g+','+dash.manager.active.colour.rgb.b+')',
-              color: dash.manager.active.colour.lab.l <= 69 ? 'white' : 'black'
+              'background-color': 'rgb('+dash.manager.active.original_colour.rgb.r+','+dash.manager.active.original_colour.rgb.g+','+dash.manager.active.original_colour.rgb.b+')'
             }"
           >
             <h4>{{dash.manager.active.colour.label}}</h4>
-            <h6>#{{dash.manager.active.colour.hex}}</h6>
+            <h6>#{{dash.manager.active.original_colour.hex}}</h6>
           </div>
         </div>
 

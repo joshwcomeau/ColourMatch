@@ -10,9 +10,8 @@ class Photo::BuildColourArray
         occurances: c[:occurances],
         coverage:   (c[:occurances].to_f / colour_data[:pixels] * 100).round,
         original_colour: {
-          r: c[:rgb][:r],
-          g: c[:rgb][:g],
-          b: c[:rgb][:b],
+          rgb:  { r: c[:rgb][:r], g: c[:rgb][:g], b: c[:rgb][:b] },
+          hex:  c[:hex]
         }
       }
 
