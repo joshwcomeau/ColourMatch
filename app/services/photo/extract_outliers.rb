@@ -7,43 +7,47 @@ class Photo::ExtractOutliers
     colour_data[:colours] = Photo::FilterColoursByOccurance.call(colour_data) 
     colour_stats          = Photo::GetHSBChannelStats.call(colour_data[:colours])
     
-
     outliers  = get_all_outliers(colour_data, colour_stats)
 
-    outliers  = sort_by_zscore(outliers) 
+    if outliers.any?
+      outliers  = sort_by_zscore(outliers) 
 
-    # I want the very first outlier to be the highest-saturation outlier.
-    outliers  = bring_saturation_to_front(outliers).first(5)
+      # I want the very first outlier to be the highest-saturation outlier.
+      outliers  = bring_saturation_to_front(outliers).first(5)
 
-    # I only want 1 outlier per Bin
-    outliers  = limit_outliers_by_bins(outliers)
+      # I only want 1 outlier per Bin
+      outliers  = limit_outliers_by_bins(outliers)
 
 
-    match_colours_to_db(outliers).uniq { |c| c[:colour] }
+      match_colours_to_db(outliers).uniq { |c| c[:colour] }
+    else
+      []
+    end
   end
 
   
   private
 
   def self.get_all_outliers(colour_data, colour_stats)
+
     outliers = colour_data[:colours].map do |c|
       highest = find_highest_zscore(c, colour_stats)
-      return max_channel >= threshold ? c.merge(highest) : nil
+      highest[:z_score] >= THRESHOLD ? c.merge(highest) : nil
     end
 
     outliers.compact.uniq
   end
 
   def self.find_highest_zscore(c, colour_stats)
+    puts c
     winner = { outlier_channel: nil, z_score: 0 }
 
     colour_stats.each do |stat|
       channel     = stat[:channel]
       colour_val  = c[:hsb][channel] 
-
       z_score     = Maths.z_score(colour_val, mean: stat[:mean], deviation: stat[:deviation]).abs
 
-      winner      = { outlier_channel: channel, z_score: z_score } if z_score > winner[:z_score]
+      winner = { outlier_channel: channel, z_score: z_score } if z_score > winner[:z_score]
     end
 
     winner

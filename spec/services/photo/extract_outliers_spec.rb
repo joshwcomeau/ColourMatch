@@ -11,7 +11,7 @@ RSpec.describe Photo::ExtractOutliers do
   end
 
   context "when provided 'outliers_for_testing.png'" do
-    let(:colour_data) { Photo::GetHSBChannelStats.call(Photo::GetHistogramData.call('spec/files/outliers_for_testing.png', colours: 64)) }
+    let(:colour_data) { Photo::GetHistogramData.call('spec/files/outliers_for_testing.png', colours: 64) }
     let(:results)     { Photo::ExtractOutliers.call(colour_data) }
 
     it "returns an array" do
