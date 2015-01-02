@@ -30,12 +30,12 @@ RSpec.describe Photo::ExtractOutliers do
       expect(results.first[:colour]).to be_a Colour
     end
 
-    it "returns Gamboge as the first outlier" do
+    it "returns Bright turquoise as the first outlier" do
       expect(results.first[:colour]).to eq(Colour.find_by(label: 'Bright turquoise'))
     end
     
-    it "returns Bright turquoise as the first outlier" do
-      expect(results.second[:colour]).to eq(Colour.find_by(label: 'Gamboge'))
+    it "returns Harvest Gold as the first outlier" do
+      expect(results.second[:colour]).to eq(Colour.find_by(label: 'Harvest Gold'))
     end
 
 

@@ -39,7 +39,6 @@ class Photo::ExtractOutliers
   end
 
   def self.find_highest_zscore(c, colour_stats)
-    puts c
     winner = { outlier_channel: nil, z_score: 0 }
 
     colour_stats.each do |stat|
@@ -58,9 +57,7 @@ class Photo::ExtractOutliers
   end
 
   def self.bring_saturation_to_front(colours)
-    # Find the index of the highest-saturation colour
-    index = colours.find_index(colours.sort { |a, b| b[:hsb][:s] <=> a[:hsb][:s] }.first)
-    colours.unshift(colours.delete_at(index))
+    colours.unshift(colours.delete(colours.sort { |a, b| b[:hsb][:s] <=> a[:hsb][:s] }.first))
   end
 
   def self.sort_by_sat(colours)
