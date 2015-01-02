@@ -15,15 +15,16 @@ class Photo::BuildColourArray
       if colour_type == 'outlier'
         case c[:outlier_channel]
         when :h
-          channel_name = "hue"
+          channel_label = "Hue"
         when :s
-          channel_name = "saturation"
+          channel_label = "Saturation"
         when :b
-          channel_name = "brightness"
+          channel_label = "Brightness"
         end
 
-        new_data[:outlier_channel]  = channel_name
-        new_data[:z_score]          = c[:z_score]
+
+        new_data[:outlier_channel]  = channel_label
+        new_data[:z_score]          = c[:z_score].round(2)
       end
 
       new_data

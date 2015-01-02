@@ -31,10 +31,9 @@ class Photo::ExtractOutliers
   private
 
   def self.get_all_outliers(colour_data, colour_stats)
-
     outliers = colour_data[:colours].map do |c|
       highest = find_highest_zscore(c, colour_stats)
-      highest[:z_score] >= THRESHOLD ? c.merge(highest) : nil
+      highest[:z_score].abs >= THRESHOLD ? c.merge(highest) : nil
     end
 
     outliers.compact.uniq
@@ -46,16 +45,15 @@ class Photo::ExtractOutliers
     colour_stats.each do |stat|
       channel     = stat[:channel]
       colour_val  = c[:hsb][channel] 
-      z_score     = Maths.z_score(colour_val, mean: stat[:mean], deviation: stat[:deviation]).abs
-
-      winner = { outlier_channel: channel, z_score: z_score } if z_score > winner[:z_score]
+      z_score     = Maths.z_score(colour_val, mean: stat[:mean], deviation: stat[:deviation])
+      winner = { outlier_channel: channel, z_score: z_score } if z_score.abs > winner[:z_score]
     end
 
     winner
   end
 
   def self.sort_by_zscore(colours)
-    colours.sort { |a, b| b[:z_score] <=> a[:z_score] }
+    colours.sort { |a, b| b[:z_score].abs <=> a[:z_score].abs }
   end
 
   def self.bring_saturation_to_front(colours)
