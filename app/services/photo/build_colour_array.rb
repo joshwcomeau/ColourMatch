@@ -8,7 +8,12 @@ class Photo::BuildColourArray
         type:       colour_type,
         colour:     Colour::FindClosest.call(c[:lab], false),
         occurances: c[:occurances],
-        coverage:   (c[:occurances].to_f / colour_data[:pixels] * 100).round
+        coverage:   (c[:occurances].to_f / colour_data[:pixels] * 100).round,
+        original_colour: {
+          r: c[:rgb][:r],
+          g: c[:rgb][:g],
+          b: c[:rgb][:b],
+        }
       }
 
       if colour_type == 'outlier'

@@ -18,7 +18,6 @@ class Photo::ExtractOutliers
       # I only want 1 outlier per Bin
       outliers  = limit_outliers_by_bins(outliers)
 
-
       Photo::BuildColourArray.call(outliers, colour_data, colour_type: 'outlier')
     else
       []

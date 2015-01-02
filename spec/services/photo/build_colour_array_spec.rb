@@ -42,8 +42,7 @@ RSpec.describe Photo::BuildColourArray do
       it { is_expected.to include(occurances:       2200)                             }
       it { is_expected.to include(coverage:         7)                                }
       it { is_expected.to include(outlier_channel:  :s)                               }
-      it { is_expected.to include(z_score:          3.2260993295290947)               }
-
+      it { is_expected.to include(z_score:          3.3553043810357237)               }
     end
 
     describe "commons" do
@@ -51,13 +50,20 @@ RSpec.describe Photo::BuildColourArray do
 
       it { is_expected.to     include(type:       'common')                                 }
       it { is_expected.to     include(colour:     Colour.find_by(label: 'Bright lavender')) }
-      it { is_expected.to     include(occurances: 20700)                                    }
-      it { is_expected.to     include(coverage:   69)                                       }
+      it { is_expected.to     include(occurances: 22554)                                    }
+      it { is_expected.to     include(coverage:   75)                                       }
       it { is_expected.not_to include(:outlier_channel)                                     }
       it { is_expected.not_to include(:z_score)                                             }
+    end
+  
+    describe "original colour" do
+      subject { commons.first[:original_colour] }
 
+      it { is_expected.not_to be_nil }
+      it { is_expected.to include(r: 194) }
+      it { is_expected.to include(g: 152) }
+      it { is_expected.to include(b: 227) }
     end
   end
 end
-
 
