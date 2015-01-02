@@ -12,11 +12,14 @@ class Photo::ExtractOutliers
     if outliers.any?
       outliers  = sort_by_zscore(outliers) 
 
-      # I want the very first outlier to be the highest-saturation outlier.
+      # I want the saturation bin to hold the most saturated utlier
       outliers  = bring_saturation_to_front(outliers).first(5)
 
       # I only want 1 outlier per Bin
-      outliers  = limit_outliers_by_bins(outliers)
+      # outliers  = limit_outliers_by_bins(outliers).first(5)
+
+      # I only want 1 outlier per type
+      outliers  = limit_outliers_by_type(outliers)
 
       Photo::BuildColourArray.call(outliers, colour_data, colour_type: 'outlier')
     else
@@ -69,7 +72,16 @@ class Photo::ExtractOutliers
 
     outliers.select do |o|
       bin = Bin::FindClosest.call(o[:lab])
-      bins_taken.exclude? bin ? bins_taken << bin : false
+      if bins_taken.include? bin
+        false
+      else
+        bins_taken << bin
+        true
+      end
     end
+  end
+
+  def self.limit_outliers_by_type(outliers)
+    outliers.uniq { |o| o[:outlier_channel]}
   end
 end
