@@ -39,6 +39,7 @@ class Photo::ExtractOutliers
   end
 
   def self.find_highest_zscore(c, colour_stats)
+    puts c
     winner = { outlier_channel: nil, z_score: 0 }
 
     colour_stats.each do |stat|
