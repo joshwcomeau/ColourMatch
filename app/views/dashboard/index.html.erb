@@ -35,7 +35,7 @@
             <div class="palette" ng-show="dash.manager.palette">
               <ul>
                 <li class="children-fill-width" ng-repeat="item in dash.manager.palette" 
-                  ng-style="{'background-color': 'rgb('+item.original_colour.rgb.r+','+item.original_colour.rgb.g+','+item.original_colour.rgb.b+')'}"
+                  ng-style="{'background-color': '#'+item.original_colour.hex}"
                   ng-mouseenter="dash.manager.active = item"
                 ></li>
               </ul>
@@ -47,33 +47,28 @@
               Clicking on our photo-box causes the event to be sent here. 
             -->
             <div id="click-handler"
-              ng-file-select 
-              ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
-              ng-model="dash.manager.photo" 
-              accept="image/*"
-              ng-rejected-file-model="rejected"
-              allowDir="true"
-               move-to side="right">
+            ng-file-select 
+            ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
+            ng-model="dash.manager.photo" 
+            accept="image/*"
+            ng-rejected-file-model="rejected"
+            allowDir="true"
+            move-to side="right">
             </div>
           </section>
 
-
-          <div class="active-palette-colour" 
+          <div class="active-palette" ng-show="dash.manager.active">
+            <div class="active-palette-colour"
             ng-class="{white: dash.manager.active.colour.lab.l <= 69, black: dash.manager.active.colour.lab.l > 69}"
-            ng-show="dash.manager.active" 
-            ng-style="{
-              'background-color': 'rgb('+dash.manager.active.original_colour.rgb.r+','+dash.manager.active.original_colour.rgb.g+','+dash.manager.active.original_colour.rgb.b+')'
-            }"
-          >
-            <h4>{{dash.manager.active.colour.label}}</h4>
-            <h6>#{{dash.manager.active.original_colour.hex}}</h6>
-          </div>
+            ng-style="{'background-color': '#'+dash.manager.active.original_colour.hex}"
+            >
+              <h4>{{dash.manager.active.colour.label}}</h4>
+              <h6>#{{dash.manager.active.original_colour.hex}}</h6>
+            </div>
 
-          <div class="colour-stats">
-            <div class="colour-row" ng-repeat="item in dash.manager.palette">
-              <div class="label">{{item.colour.label}} (#{{item.original_colour.hex}})</div>
-              <div class="type" ng-if="item.type === 'common'">Primary ({{item.coverage}}% coverage)</div>
-              <div class="type" ng-if="item.type === 'outlier'">{{item.outlier_channel}} Outlier (z-score: {{item.z_score}})</div>
+            <div class="active-palette-stats">
+              <p ng-if="dash.manager.active.type === 'common'">Primary Colour (covers {{dash.manager.active.coverage}}%)</p>
+              <p ng-if="dash.manager.active.type === 'outlier'">{{dash.manager.active.outlier_channel}} Outlier ({{dash.manager.active.z_score}}<em>z</em>)</p>
             </div>
           </div>
         </div>
@@ -141,3 +136,10 @@
   </div>
 
 </div>
+
+<script type="text/javascript">
+  $(window).on("scroll", function(e) {
+    console.log("Scroll event logged. Current scroll position: ", $(document).scrollTop());
+    console.log(e);
+  })
+</script>
