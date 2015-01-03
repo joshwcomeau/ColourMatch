@@ -1,5 +1,5 @@
-require 'fetch_photos'
-include FetchPhotos
+require 'five_hundred_api'
+include FiveHundredAPI
 
 namespace :fhpx do 
   desc "Create a png featuring all the colors we'll be using"
@@ -16,10 +16,10 @@ end
 
 
 def fetch_fresh_today
-  data = fetch
+  data = get_photos
   photos = data["photos"]
 
-  photos.first(25).each do |p|
+  photos.each do |p|
     puts "Fetching Photo #{p}"
     Photo::SaveToDb.call(p)
     puts "Photo saved to DB \n\n\n"

@@ -1,8 +1,8 @@
-module FetchPhotos
+module FiveHundredAPI
   require 'rest_client'
   BASE_URL = "https://api.500px.com/v1/photos?consumer_key=#{ENV['FIVEHUNDREDPX_KEY']}"
   
-  def fetch(given_opts={})
+  def get_photos(given_opts={})
     opts = default_opts.merge(given_opts)
     request_string = BASE_URL + build_endpoint_string(opts)
 
@@ -19,7 +19,7 @@ module FetchPhotos
 
   def default_opts
     {
-      rpp:            2,
+      rpp:            100,
       image_size:     3,
       include_store:  1 
     }
