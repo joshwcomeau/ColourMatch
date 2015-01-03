@@ -10,13 +10,20 @@ class Photo::CreatePaletteFromPhoto
     ####### Get the 4 most prominent colours, and combine them with any important outliers #######
 
     commons  = Photo::ExtractMostCommonColours.call(colour_data_lores)
-    outliers = Photo::ExtractOutliers.call(colour_data_hires)
 
-    results  = Photo::CompileToDominant.call(commons, outliers)
+    colour_data_hires[:colours] = Photo::FilterColoursByOccurance.call(colour_data_hires) 
+    hsb_colour_stats = Photo::GetHSBChannelStats.call(colour_data_hires[:colours])
+
+    outliers = Photo::ExtractOutliers.call(colour_data_hires, hsb_colour_stats)
+
+    results  = {
+      colours: Photo::CompileToDominant.call(commons, outliers),
+      stats:   hsb_colour_stats
+    }
 
     binding.pry if test_mode
 
-    Photo::CreatePaletteImage.call(results, path) if palette_image
+    Photo::CreatePaletteImage.call(results[:colours], path) if palette_image
 
     results
   end

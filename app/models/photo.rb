@@ -2,29 +2,34 @@
 #
 # Table name: photos
 #
-#  id                :integer          not null, primary key
-#  px_id             :integer
-#  px_name           :string(255)
-#  px_description    :text
-#  px_category       :integer
-#  px_user           :json
-#  px_rating         :decimal(, )
-#  px_status         :integer
-#  px_for_sale       :boolean
-#  px_store_download :boolean
-#  px_license_type   :integer
-#  px_privacy        :boolean
-#  created_at        :datetime
-#  updated_at        :datetime
-#  px_link           :string(255)
-#  px_image          :string(255)
+#  id                   :integer          not null, primary key
+#  px_id                :integer
+#  px_name              :string(255)
+#  px_description       :text
+#  px_category          :integer
+#  px_user              :json
+#  px_rating            :decimal(, )
+#  px_status            :integer
+#  px_for_sale          :boolean
+#  px_store_download    :boolean
+#  px_license_type      :integer
+#  px_privacy           :boolean
+#  created_at           :datetime
+#  updated_at           :datetime
+#  px_link              :string(255)
+#  px_image             :string(255)
+#  hue_mean             :float
+#  hue_deviation        :float
+#  saturation_mean      :float
+#  saturation_deviation :float
+#  brightness_mean      :float
+#  brightness_deviation :float
 #
 
 class Photo < ActiveRecord::Base
   # The constant we're using when fetching images from 500px.
   # 1 is 70x70, 2 is 140x140, 3 is 280x280. 4 & 5 are not as predictable.
   IMAGE_SIZE = 3
-  MAKE_IMAGE = false
 
   has_many :photo_colours, dependent: :destroy
   has_many :colours, through: :photo_colours
@@ -47,17 +52,29 @@ class Photo < ActiveRecord::Base
 
   def analyze_photograph
     colour_data = Photo::CreatePaletteFromPhoto.call(px_image)
-    pixels = get_pixel_count.to_f
+
+    update_channel_stats(colour_data[:stats])
     
-    colour_data.each do |colo|
+    pixels = get_pixel_count.to_f
+
+    colour_data[:colours].each do |colo|
       self.photo_colours.create({
-        outlier: colo[:type] == 'outlier',
-        colour_id: colo[:colour][:id],
-        coverage: colo[:occurances] / pixels * 100
+        outlier:    colo[:type] == 'outlier',
+        colour_id:  colo[:colour][:id],
+        coverage:   colo[:occurances] / pixels * 100
       })
     end
+  end
 
-    Photo::CreatePaletteImage.call(colour_data, px_name.underscore) if MAKE_IMAGE
+  def update_channel_stats(stats)
+    self.update({
+      hue_mean:             stats.first[:mean],
+      hue_deviation:        stats.first[:deviation],
+      saturation_mean:      stats.second[:mean],
+      saturation_deviation: stats.second[:deviation],
+      brightness_mean:      stats.third[:mean],
+      brightness_deviation: stats.third[:deviation],
+    })
   end
 
 end

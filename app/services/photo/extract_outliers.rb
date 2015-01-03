@@ -1,11 +1,9 @@
 class Photo::ExtractOutliers
   THRESHOLD = 1.5 # Minimum z-score to be considered an outlier.
 
-  def self.call(colour_data)
+  def self.call(colour_data, colour_stats)
     # We don't want colours that take up less than 0.1% of the canvas.
     # Filter those out first, to save on processing later.
-    colour_data[:colours] = Photo::FilterColoursByOccurance.call(colour_data) 
-    colour_stats          = Photo::GetHSBChannelStats.call(colour_data[:colours])
     
     outliers  = get_all_outliers(colour_data, colour_stats)
 
