@@ -26,7 +26,6 @@ class Photo < ActiveRecord::Base
   IMAGE_SIZE = 3
   MAKE_IMAGE = false
 
-
   has_many :photo_colours, dependent: :destroy
   has_many :colours, through: :photo_colours
 
