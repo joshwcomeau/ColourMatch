@@ -8,10 +8,12 @@ function followScroll($window) {
       $($window).on("scroll", function() {
 
         // See if we need to switch into fixed
-        if ( shouldItBeFixed() && position === 'relative' ) {
+        if ( shouldItBeFixed() ) {
           setWidthToParent(element)
-          element.addClass("fixed-from-top");
-          position = 'fixed';
+          if ( position === 'relative' ) {
+            element.addClass("fixed-from-top");
+            position = 'fixed';
+          }
         } else if ( !shouldItBeFixed() && position === 'fixed' ) {
           element.removeClass("fixed-from-top");
           position = 'relative';
