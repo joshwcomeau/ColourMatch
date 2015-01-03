@@ -409,6 +409,7 @@
           position: relative;
           z-index: 2;
           width: 100%;
+          min-height: 165px;
           overflow: hidden;
         }
         .result-thumb-dummy {
@@ -521,6 +522,10 @@
           font-weight: 500;
           font-size: 1.1rem;
           text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
         }
         h6 {
           font-size: 0.85rem;
@@ -528,7 +533,7 @@
           text-align: center;
 
           a { 
-            color: $red; 
+            color: $blue; 
             text-decoration: none;
 
             &:hover {
@@ -538,21 +543,26 @@
         }
 
         .match-score {
-          width: 75%;
-          margin: 1rem auto;
+          position: absolute;
+          width: 40%;
+          height: 3.875rem;
+          top: 0;
+          right: 5%;
+          bottom: 0;
+          margin: auto 0px;
           padding: 0.5rem;
           text-align: center;
-          background: rgba(0,0,0,0.06);
-          border-radius: 5px;
+          border-radius: 2px;
 
           h5 {
             font-weight: 300;
-            font-size: 1.0rem;
+            font-size: 0.9rem;
           }
 
           h2 {
             font-weight: 900;
             font-size: 2rem;
+            letter-spacing: -1px;
           }
         }
 
