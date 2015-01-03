@@ -21,6 +21,11 @@
 #
 
 class Photo < ActiveRecord::Base
+  # The constant we're using when fetching images from 500px.
+  # 1 is 70x70, 2 is 140x140, 3 is 280x280. 4 & 5 are not as predictable.
+  IMAGE_SIZE = 3
+
+
   has_many :photo_colours, dependent: :destroy
   has_many :colours, through: :photo_colours
 
@@ -32,20 +37,24 @@ class Photo < ActiveRecord::Base
 
   private
 
+  def self.resolution_from_500px
+    70 * 2**(IMAGE_SIZE-1)
+  end
+
+  def get_pixel_count
+    [1,2,3].include? IMAGE_SIZE ? Photo.resolution_from_500px ** 2 : FastImage.size(px_image).inject(&:*)    
+  end
+
   def analyze_photograph
     colour_data = Photo::CreatePaletteFromPhoto.call(px_image)
+
+    pixels = get_pixel_count.to_f
     
-    # Let's turn our 'occurances' value for each color into percentages, 
-    # normalized so they sum to 100.
-    resolution = FastImage.size(px_image)
-    pixels = resolution[0] * resolution[1]
-
-
     colour_data.each do |colo|
       self.photo_colours.create({
         outlier: colo[:type] == 'outlier',
         colour_id: colo[:colour][:id],
-        coverage: colo[:occurances] / pixels.to_f * 100
+        coverage: colo[:occurances] / pixels * 100
       })
     end
 
