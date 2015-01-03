@@ -20,19 +20,27 @@ RSpec.describe SearchController, :type => :controller do
       end
 
       it "responds with JSON" do
-        expect(JSON.parse(response.body).class).to eq(Array)
+        expect(JSON.parse(response.body).class).to eq(Hash)
       end
 
       it "contains the right data" do
         data   = JSON.parse(response.body)
         
         # Breaking the one-expect-per-spec rule because these specs are expensive.
-        expect(data).to be_a Array
-        expect(data.first).to be_a Hash
-        expect(Colour.find(data.first["colour"]["id"])).to be_a Colour
+        expect(data["colours"]).to be_a Array
+        expect(data["colours"].first).to be_a Hash
+        expect(data["colours"].first["type"]).to eq("common")
+        expect(data["colours"].first["occurances"]).to be >= data["colours"].second["occurances"]
+        expect(Colour.find(data["colours"].first["colour"]["id"])).to be_a Colour
 
-        expect(data.first["type"]).to eq("common")
-        expect(data.first["occurances"]).to be >= data.second["occurances"]
+        expect(data["stats"]).to be_a Array
+        expect(data["stats"].first).to be_a Hash
+        expect(data["stats"].first["mean"]).to be_a Float
+        expect(data["stats"].first["deviation"]).to be_a Float
+        expect(data["stats"].second["mean"]).to be_a Float
+        expect(data["stats"].second["deviation"]).to be_a Float
+        expect(data["stats"].third["mean"]).to be_a Float
+        expect(data["stats"].third["deviation"]).to be_a Float
         
       end
     end

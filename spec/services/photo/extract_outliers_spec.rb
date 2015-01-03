@@ -17,34 +17,33 @@ RSpec.describe Photo::ExtractOutliers do
         colours: Photo::CreatePaletteFromPhoto::HIRES
       ) 
     end
-    let(:results)     { Photo::ExtractOutliers.call(colour_data) }
+    let(:stats_data)  { Photo::GetHSBChannelStats.call(colour_data[:colours]) }
+    let(:results)     { Photo::ExtractOutliers.call(colour_data, stats_data) }
 
     it "returns an array" do
       expect(results).to be_a Array
     end
 
-    it "returns type as 'outlier'" do
-      expect(results.first[:type]).to eq("outlier")
-    end 
+    describe "first outlier" do
+      subject { results.first }
 
-    it "returns occurances" do
-      expect(results.first[:occurances]).to be_a Integer
+      it { is_expected.to include(colour: Colour.find_by(label: 'Pine green'))  }
+      it { is_expected.to include(type: "outlier")                              }
+      it { is_expected.to include(occurances: 4582)                             }
+      it { is_expected.to include(coverage: 2)                                  }
+      it { is_expected.to include(outlier_channel: "Saturation")                }
+      it { is_expected.to include(z_score: 5.02)                                }
     end
 
-    it "returns colours" do
-      expect(results.first[:colour]).to be_a Colour
-    end
+    describe "second outlier" do
+      subject { results.second }
 
-    it "returns Bright turquoise as the first outlier" do
-      expect(results.first[:colour]).to eq(Colour.find_by(label: 'Bright turquoise'))
+      it { is_expected.to include(colour: Colour.find_by(label: 'Pearl'))       }
+      it { is_expected.to include(type: "outlier")                              }
+      it { is_expected.to include(occurances: 1152)                             }
+      it { is_expected.to include(coverage: 0)                                  }
+      it { is_expected.to include(outlier_channel: "Brightness")                }
+      it { is_expected.to include(z_score: 7.47)                                }
     end
-    
-    it "returns Harvest Gold as the first outlier" do
-      expect(results.second[:colour]).to eq(Colour.find_by(label: 'Harvest Gold'))
-    end
-
-
   end
 end
-
-

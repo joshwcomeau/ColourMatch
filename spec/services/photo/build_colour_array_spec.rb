@@ -23,8 +23,9 @@ RSpec.describe Photo::BuildColourArray do
       ) 
     end
 
-    let(:outliers) { Photo::ExtractOutliers.call(colour_data_hires)           } 
-    let(:commons)  { Photo::ExtractMostCommonColours.call(colour_data_lores)  }
+    let(:stats)    { Photo::GetHSBChannelStats.call(colour_data_hires[:colours])  }
+    let(:outliers) { Photo::ExtractOutliers.call(colour_data_hires, stats)        } 
+    let(:commons)  { Photo::ExtractMostCommonColours.call(colour_data_lores)      }
 
     it "contains an 'outliers' array" do
       expect(outliers).to be_a Array
@@ -41,8 +42,8 @@ RSpec.describe Photo::BuildColourArray do
       it { is_expected.to include(colour:           Colour.find_by(label: 'Tangelo')) }
       it { is_expected.to include(occurances:       2200)                             }
       it { is_expected.to include(coverage:         7)                                }
-      it { is_expected.to include(outlier_channel:  :s)                               }
-      it { is_expected.to include(z_score:          3.3553043810357237)               }
+      it { is_expected.to include(outlier_channel:  "Saturation")                     }
+      it { is_expected.to include(z_score:          3.36)               }
     end
 
     describe "commons" do

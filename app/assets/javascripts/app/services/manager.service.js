@@ -31,7 +31,8 @@ function Manager($timeout, UploadPhoto, SendColour) {
       .success(function(data, status, headers, config) {
         // file is uploaded successfully
         Manager.photo   = config.file;
-        Manager.palette = data;
+        Manager.palette = data.colours;
+        Manager.stats   = data.stats;
 
         // We need to create a string to append to our server request. Like 333333,FF0000,123456.
         Manager.requestPath = "/photos?colours=" + _.map(data, function(colour) {
