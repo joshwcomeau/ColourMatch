@@ -2,7 +2,7 @@ module FiveHundredAPI
   require 'rest_client'
   BASE_URL = "https://api.500px.com/v1/photos?consumer_key=#{ENV['FIVEHUNDREDPX_KEY']}"
   
-  def get_photos(given_opts={})
+  def self.get_photos(given_opts={})
     opts = default_opts.merge(given_opts)
     request_string = BASE_URL + build_endpoint_string(opts)
 
@@ -11,13 +11,13 @@ module FiveHundredAPI
 
   private
 
-  def build_endpoint_string(opts)
+  def self.build_endpoint_string(opts)
     opts.inject("") do |result, opt|
       result += "&#{opt[0]}=#{opt[1]}"
     end
   end
 
-  def default_opts
+  def self.default_opts
     {
       rpp:            3,
       image_size:     3,

@@ -1,5 +1,4 @@
 require 'five_hundred_api'
-include FiveHundredAPI
 
 namespace :fhpx do 
   desc "Create a png featuring all the colors we'll be using"
@@ -14,7 +13,7 @@ end
 
 
 def full_retrieve(opts, recursive: true)
-  data = get_photos(opts)
+  data = FiveHundredAPI.get_photos(opts)
 
   data["photos"].each do |p|
     Photo::SaveToDb.call(p)
