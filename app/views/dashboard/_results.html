@@ -12,9 +12,10 @@
         
         <div class="palette" ng-mouseleave="p.active = null">
           <div class="palette-colour-label" ng-class="{white: p.active.lab.l <= 69, black: p.active.lab.l > 69}"
-          ng-show="p.active" ng-style="{'background-color': 'rgb('+p.active.rgb.r+','+p.active.rgb.g+','+p.active.rgb.b+')'}">
+          ng-show="p.active" ng-style="{'background-color': '#'+p.active.hex}">
             <h4>{{p.active.label}}</h4>
             <h6>#{{p.active.hex}}</h6>
+            <p>{{p.active}}</p>
           </div>
           <ul>
             <li class="palette-colour children-fill-width" ng-repeat="item in p.palette" 

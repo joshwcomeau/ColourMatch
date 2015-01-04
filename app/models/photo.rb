@@ -59,9 +59,16 @@ class Photo < ActiveRecord::Base
 
     colour_data[:colours].each do |colo|
       self.photo_colours.create({
-        outlier:    colo[:type] == 'outlier',
-        colour_id:  colo[:colour][:id],
-        coverage:   colo[:occurances] / pixels * 100
+        outlier:            colo[:type] == 'outlier',
+        closest_colour_id:  colo[:closest][:id],
+        label:              colo[:closest][:label],
+        coverage:           colo[:occurances] / pixels * 100,
+        outlier_channel:    colo[:outlier_channel],
+        z_score:            colo[:z_score],
+        hex:                colo[:colour][:hex],
+        rgb:                colo[:colour][:rgb],
+        lab:                colo[:colour][:lab],
+        hsb:                colo[:colour][:hsb],
       })
     end
   end

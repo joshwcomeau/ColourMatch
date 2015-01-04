@@ -13,10 +13,11 @@ end
 
 
 def full_retrieve(opts, recursive: true)
+  puts "Started retrieving page #{opts[:page]}."
   data = FiveHundredAPI.get_photos(opts)
 
   data["photos"].each do |p|
-    Photo::SaveToDb.call(p)
+    Photo::SaveToDb.call(p) ? puts "Photo #{p.id} saved." : puts "Photo not saved."
   end
 
   if recursive && opts[:page] < data["total_pages"]

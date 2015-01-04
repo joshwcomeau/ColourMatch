@@ -8,7 +8,7 @@ class PhotosController < ApplicationController
   #        colours -> A comma-separated list of 6 hex colour codes
   def index
 
-    photos = Photo.includes(:colours).last(20)
+    photos = Photo.last(25)
     response.headers['Content-Type']  = 'text/event-stream'
 
     begin
@@ -18,7 +18,7 @@ class PhotosController < ApplicationController
 
         sse.write({ 
           photo: p,
-          palette: p.photo_colours.map(&:colour)
+          palette: p.photo_colours
         })
 
         # Want them to stream in slowly? Uncomment to fake a database query with math.
