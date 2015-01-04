@@ -45,7 +45,13 @@
         <span ng-if="!p.photo.px_for_sale" class="red"><i class="fa fa-times"></i> Not for sale.</span>
       </div>
 
-      <div class="attribution">© {{p.photo.px_user.firstname | capitalize}} {{p.photo.px_user.lastname | capitalize}} / 500px</div>
+      <div class="attribution">
+        © 
+        <span ng-if="p.photo.px_user.firstname &amp;&amp; p.photo.px_user.lastname ">
+          {{p.photo.px_user.firstname | capitalize}} {{p.photo.px_user.lastname | capitalize}} /
+        </span> 
+        500px
+      </div>
     </div>
   </li>
 </ul>

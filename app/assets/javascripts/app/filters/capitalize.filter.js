@@ -1,7 +1,9 @@
 angular.module('colourMatch').
   filter('capitalize', function() {
     return function(word) {
-      return word.charAt(0).toUpperCase() + word.slice(1);
+      if (word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }
     }
   }
 );
