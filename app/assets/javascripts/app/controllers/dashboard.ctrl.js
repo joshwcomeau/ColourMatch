@@ -13,12 +13,6 @@ function DashboardController($scope, $attrs, $window, Manager ) {
       dash.listenForResponse(Manager.requestPath);
     }
   });
-  // console.log("ANGULAR LOAD LOGS")
-  // console.log("HTML clientHeight:", document.getElementsByTagName('html')[0].clientHeight);
-  // console.log("HTML scrollHeight:", document.getElementsByTagName('html')[0].scrollHeight);
-  // console.log("Document height:", $(document).height());
-  // console.log("Window height:", $(window).height());
-  // console.log("\n\n\n")
 
   this.listenForResponse = function(link) {
     source = new EventSource(link);
@@ -32,12 +26,6 @@ function DashboardController($scope, $attrs, $window, Manager ) {
       } else {
         $scope.$apply(function() {
           Manager.photos.push(JSON.parse(data));  
-          // console.log( "WINDOW: ", $(window).height() );
-          // console.log( "DOCUMENT: ", $(document).height());
-          // console.log( "RESULTS: ", document.getElementsByClassName("results")[0].scrollHeight);
-          // console.log( "THUMBHEIGHT:", $(".result-thumb-wrapper").last().height() );
-          // console.log("\n\n\n");
-          // console.log("Manager.photos is now: ", Manager.photos)
         });
       }
     };

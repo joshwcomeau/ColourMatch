@@ -548,7 +548,6 @@
           width: 40%;
           height: 3.875rem;
           top: 0;
-          right: 5%;
           bottom: 0;
           margin: auto 0px;
           padding: 0.5rem;
@@ -570,7 +569,6 @@
         .for-sale {
           position: absolute;
           width: 50%;
-          right: 0;
           bottom: 1.4rem;
           font-weight: 500;
           font-size: 0.85rem;
@@ -603,7 +601,12 @@
         &.ng-hide-remove.ng-hide-remove-active {
           padding-left: 105%;
         }
-
+        .match-score {
+          right: 5%;          
+        }
+        .for-sale {
+          right: 0;
+        }
         .attribution {
           right: 0;
         }
@@ -619,6 +622,12 @@
         }
         &.ng-hide-remove.ng-hide-remove-active {
           padding-right: 105%;
+        }
+        .match-score {
+          left: 5%;          
+        }
+        .for-sale {
+          left: 0;
         }
         .attribution {
           left: 0;
