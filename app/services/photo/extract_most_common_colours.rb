@@ -1,10 +1,8 @@
 class Photo::ExtractMostCommonColours
   def self.call(colour_data)
-    # Any colors that are < 0.8 from each other (using Colour::CalculateDistance) are too similar.
-    # Remove the one with the least sat/brightness.
     matched_colours   = Photo::BuildColourArray.call(colour_data[:colours], colour_data)
-    distinct_colours  = combine_duplicates(matched_colours)
-    sorted_colours    = sort_by_occurances(distinct_colours)
+    # distinct_colours  = combine_duplicates(matched_colours)
+    sorted_colours    = sort_by_occurances(matched_colours)
 
     sorted_colours
   end

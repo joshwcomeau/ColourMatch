@@ -35,7 +35,7 @@
             <div class="palette" ng-show="dash.manager.palette">
               <ul>
                 <li class="children-fill-width" ng-repeat="item in dash.manager.palette" 
-                  ng-style="{'background-color': '#'+item.original_colour.hex}"
+                  ng-style="{'background-color': '#'+item.colour.hex}"
                   ng-mouseenter="dash.manager.active = item"
                 ></li>
               </ul>
@@ -59,11 +59,11 @@
 
           <div class="active-palette" ng-show="dash.manager.active">
             <div class="active-palette-colour"
-            ng-class="{white: dash.manager.active.colour.lab.l <= 69, black: dash.manager.active.colour.lab.l > 69}"
-            ng-style="{'background-color': '#'+dash.manager.active.original_colour.hex}"
+            ng-class="{white: dash.manager.active.colour.lab.l <= 68, black: dash.manager.active.colour.lab.l > 68}"
+            ng-style="{'background-color': '#'+dash.manager.active.colour.hex}"
             >
               <h4>{{dash.manager.active.colour.label}}</h4>
-              <h6>#{{dash.manager.active.original_colour.hex}}</h6>
+              <h6>#{{dash.manager.active.colour.hex}}</h6>
             </div>
 
             <div class="active-palette-stats">
@@ -107,7 +107,7 @@
             </div>
           </div>
 
-          <div class="colour-selection" ng-class="{white: dash.manager.closestColour.lab.l <= 69, black: dash.manager.closestColour.lab.l > 69, 'move-into-canvas': dash.manager.state > 0 &amp;&amp; dash.manager.mode === 'colour'}">
+          <div class="colour-selection" ng-class="{white: dash.manager.closestColour.lab.l <= 68, black: dash.manager.closestColour.lab.l > 68, 'move-into-canvas': dash.manager.state > 0 &amp;&amp; dash.manager.mode === 'colour'}">
             <h4>{{dash.manager.colour}}</h4> 
             <h6>{{dash.manager.closestColour.label}}</h6>
           </div>

@@ -31,7 +31,7 @@ RSpec.describe SearchController, :type => :controller do
         expect(data["colours"].first).to be_a Hash
         expect(data["colours"].first["type"]).to eq("common")
         expect(data["colours"].first["occurances"]).to be >= data["colours"].second["occurances"]
-        expect(Colour.find(data["colours"].first["colour"]["id"])).to be_a Colour
+        expect(Colour.find(data["colours"].first["closest"]["id"])).to be_a Colour
 
         expect(data["stats"]).to be_a Array
         expect(data["stats"].first).to be_a Hash

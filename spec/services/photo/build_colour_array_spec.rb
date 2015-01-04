@@ -39,7 +39,7 @@ RSpec.describe Photo::BuildColourArray do
       subject { outliers.first }
 
       it { is_expected.to include(type:             'outlier')                        }
-      it { is_expected.to include(colour:           Colour.find_by(label: 'Tangelo')) }
+      it { is_expected.to include(closest:          Colour.find_by(label: 'Tangelo')) }
       it { is_expected.to include(occurances:       2200)                             }
       it { is_expected.to include(coverage:         7)                                }
       it { is_expected.to include(outlier_channel:  "Saturation")                     }
@@ -50,20 +50,20 @@ RSpec.describe Photo::BuildColourArray do
       subject { commons.first }
 
       it { is_expected.to     include(type:       'common')                                 }
-      it { is_expected.to     include(colour:     Colour.find_by(label: 'Bright lavender')) }
+      it { is_expected.to     include(closest:    Colour.find_by(label: 'Bright lavender')) }
       it { is_expected.to     include(occurances: 22554)                                    }
       it { is_expected.to     include(coverage:   75)                                       }
       it { is_expected.not_to include(:outlier_channel)                                     }
       it { is_expected.not_to include(:z_score)                                             }
+
+      describe "colour" do
+        subject { commons.first[:colour] }
+
+        it { is_expected.to     include(rgb: {r: 194, g: 152, b: 227})                        } 
+        it { is_expected.to     include(hex: "C298E3")                                        }
+      end
     end
   
-    describe "original colour" do
-      subject { commons.first[:original_colour] }
-
-      it { is_expected.not_to be_nil      }
-      it { is_expected.to include(rgb: {r: 194, g: 152, b: 227}) }
-      it { is_expected.to include(hex: "C298E3") }
-    end
   end
 end
 
