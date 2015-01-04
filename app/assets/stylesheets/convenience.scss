@@ -28,6 +28,15 @@
 
 .children-fill-width {
   /* three items */
+  &:first-child {
+    width: 100%;
+  }
+  /* three items */
+  &:first-child:nth-last-child(2),
+  &:first-child:nth-last-child(2) ~ & {
+    width: 50%;
+  }
+  /* three items */
   &:first-child:nth-last-child(3),
   &:first-child:nth-last-child(3) ~ & {
     width: 33.3333%;
