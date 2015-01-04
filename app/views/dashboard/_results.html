@@ -15,7 +15,6 @@
           ng-show="p.active" ng-style="{'background-color': '#'+p.active.hex}">
             <h4>{{p.active.label}}</h4>
             <h6>#{{p.active.hex}}</h6>
-            <p>{{p.active}}</p>
           </div>
           <ul>
             <li class="palette-colour children-fill-width" ng-repeat="item in p.palette" 
@@ -40,6 +39,11 @@
         <h5>Match</h5>
       </div>
 
+      <p style="display: none;"> <!-- debugging purposes -->
+        Hue: {{p.photo.hue_mean}} with {{p.photo.hue_deviation}}<br>
+        Sat: {{p.photo.saturation_mean}} with {{p.photo.saturation_deviation}}<br>
+        Bri: {{p.photo.brightness_mean}} with {{p.photo.brightness_deviation}}<br>
+      </p>
 
       <div class="for-sale">
         <span ng-if="p.photo.px_for_sale" class="green"><i class="fa fa-check"></i> Yes, this photo is for sale!</span>
@@ -49,7 +53,7 @@
       <div class="attribution">
         © 
         <span ng-if="p.photo.px_user.firstname &amp;&amp; p.photo.px_user.lastname ">
-          {{p.photo.px_user.firstname | capitalize}} {{p.photo.px_user.lastname | capitalize}} /
+          {{(p.photo.px_user.firstname + " " + p.photo.px_user.lastname) | capitalize | limitTo:15}} /
         </span> 
         500px
       </div>
