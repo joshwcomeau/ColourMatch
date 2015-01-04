@@ -19,9 +19,10 @@ module FiveHundredAPI
 
   def default_opts
     {
-      rpp:            100,
+      rpp:            3,
       image_size:     3,
-      include_store:  1 
+      include_store:  1,
+      sort:           'created_at'
     }
   end
 end

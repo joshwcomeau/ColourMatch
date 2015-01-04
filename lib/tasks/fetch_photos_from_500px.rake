@@ -3,19 +3,21 @@ include FiveHundredAPI
 
 namespace :fhpx do 
   desc "Create a png featuring all the colors we'll be using"
-  task fresh: :environment do
-    # Strategy: run this task at 11:30pm every day, pulling 'fresh' photos from 500px api one page at a time.
-    # Iterate through the photos in each page of 100, and if the ID doesnt exist in the DB, add it.
+  task quick: :environment do
     # (maybe don't even check if it already exists, but create it in a try/catch block, with a validation on px_id uniqueness?)
     # At the end of each page, check to see if the date is equal to today. If it isn't, stop fetching new pages.
 
-    fetch_fresh_today
+    quick
+  end
+
+  task all_fresh: :environment do
+    full_retrieve({page: 1, feature: 'fresh_today'})
   end
 end
 
 
 
-def fetch_fresh_today
+def quick
   data = get_photos
   photos = data["photos"]
 
@@ -24,6 +26,22 @@ def fetch_fresh_today
     Photo::SaveToDb.call(p)
     puts "Photo saved to DB \n\n\n"
   end
+end
 
-  
+def full_retrieve(opts, recursive: true)
+  # Recursive, homeslice!
+  # Call this method with ever-increasing page numbers.
+  # End case is when we've reached the 'total_pages' integer from the API.
+  data = get_photos(opts)
+
+  data["photos"].each_with_index do |p, i|
+    puts "Fetching Photo ##{i} with px_id #{p["id"]} on page #{data["current_page"]}"
+    Photo::SaveToDb.call(p)
+  end
+
+  if recursive && opts[:page] < 10 # data["total_pages"]
+    opts[:page] += 1
+    puts "CURRENT OPTIONS: #{opts}"
+    full_retrieve(opts)
+  end
 end
