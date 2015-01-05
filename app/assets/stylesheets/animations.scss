@@ -81,3 +81,27 @@
     opacity: 0;
   }
 }
+
+@keyframes dynamicUnderline {
+  0% {
+    width: 0%;
+    left: 0;
+  }
+
+  50% {
+    width: 100%;
+    left: 0;
+    right: 0;
+  }
+  51% {
+    width: 100%;
+    right: 0;
+    left: auto;
+  }
+
+  100% {
+    right: 0;
+    left: auto;
+    width: 0%;
+  }
+}
