@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150104150405) do
+ActiveRecord::Schema.define(version: 20150105213228) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,11 +52,8 @@ ActiveRecord::Schema.define(version: 20150104150405) do
   create_table "photos", force: true do |t|
     t.integer  "px_id"
     t.string   "px_name"
-    t.text     "px_description"
     t.integer  "px_category"
     t.json     "px_user"
-    t.decimal  "px_rating"
-    t.integer  "px_status"
     t.boolean  "px_for_sale"
     t.boolean  "px_store_download"
     t.integer  "px_license_type"
@@ -71,6 +68,7 @@ ActiveRecord::Schema.define(version: 20150104150405) do
     t.float    "saturation_deviation"
     t.float    "brightness_mean"
     t.float    "brightness_deviation"
+    t.boolean  "from_500px"
   end
 
   add_index "photos", ["px_id"], name: "index_photos_on_px_id", using: :btree

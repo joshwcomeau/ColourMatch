@@ -14,8 +14,6 @@
 #  px_store_download    :boolean
 #  px_license_type      :integer
 #  px_privacy           :boolean
-#  created_at           :datetime
-#  updated_at           :datetime
 #  px_link              :string(255)
 #  px_image             :string(255)
 #  hue_mean             :float
@@ -24,6 +22,8 @@
 #  saturation_deviation :float
 #  brightness_mean      :float
 #  brightness_deviation :float
+#  created_at           :datetime
+#  updated_at           :datetime
 #
 
 class Photo < ActiveRecord::Base
@@ -34,11 +34,12 @@ class Photo < ActiveRecord::Base
   has_many :photo_colours, dependent: :destroy
   has_many :colours, through: :photo_colours
 
-
   validates :px_id, uniqueness: true
 
   after_create :analyze_photograph
 
+
+  scope :from_500px, -> { where(from_500px: true) }
 
   private
 
