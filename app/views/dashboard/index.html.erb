@@ -82,6 +82,21 @@
 
 
       <div id="right-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'}">
+        <div class="photo-processing-loadscreen" ng-show="dash.manager.state === 1 &amp;&amp; dash.manager.mode === 'photo'">
+          <div class="processing-animation sk-spinner-cube-grid">
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+            <div class="sk-cube"></div>
+          </div>
+          <h2>Processing Photo...</h2>
+        </div>
+
         <section class="colour-select card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'" 
         ng-class="{fadeInUp: dash.manager.state === 0, shortenedHeight: dash.manager.state > 0}" 
         follow-scroll min-scroll-top="30" initial-offset="211">
@@ -120,9 +135,7 @@
           </button>
         </div>    
 
-        <div class="photo-processing-loadscreen" ng-show="dash.manager.state === 1 &amp;&amp; dash.manager.mode === 'photo'">
-          Processing photo...
-        </div>
+        
 
         <div class="results results-right" id="photo-results" ng-if="dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'">
           <%= render partial: 'results' %>

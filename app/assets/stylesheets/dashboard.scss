@@ -77,6 +77,10 @@
       }
     }
 
+    #right-col {
+      position: relative;
+    }
+
     .card {
       @extend .card_with_border; // From _components.scss
       padding: 5rem 1rem 1rem 1rem; // top is offset from the absolutely-positioned heading.
@@ -380,11 +384,40 @@
 
 
     .photo-processing-loadscreen {
-      padding: 10rem;
-      font-size: 2rem;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      padding: 0.5rem;
+      font-size: 1.65rem;
       color: #FFF;
-    }
 
+      &.ng-hide-remove {
+        animation-duration: 1s !important;  
+        animation-name: fadeInUp;
+        animation-fill-mode: both;
+      }
+
+      &.ng-hide-add {
+        animation-duration: 0.45s !important;  
+        animation-name: fadeOutShrink;
+        animation-fill-mode: both;
+      }
+
+
+
+
+      .processing-animation {
+        position: relative;
+        width: 60px;
+        height: 60px;
+      }
+
+      h2 {
+        margin: 1rem;
+        text-align: center;
+      }
+    }    
 
     .results {
       position: relative;
