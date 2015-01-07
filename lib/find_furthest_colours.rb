@@ -1,5 +1,5 @@
 # A quick method of getting the greatest possible distance between two colours,
-# using Colour::CalculateDistance. Important since Calculate::MatchScore
+# using Calculate::Distance. Important since Calculate::MatchScore
 # is normalizing data using this range. 
 
 # It turns out the greatest distance, in LAB colourspace, is ~256, 
@@ -13,7 +13,7 @@ module FindFurthestColours
     
     colours.each do |c1|
       colours.each do |c2|
-        dist = Colour::CalculateDistance.call(c1, c2)
+        dist = Calculate::Distance.call(c1, c2)
         if dist > max_dist
           max_dist    = dist 
           max_colours = [c1, c2]

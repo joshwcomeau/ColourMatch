@@ -26,7 +26,7 @@ class Colour::FindClosest
     closest_distance = 1_000_000
 
     Bin.includes(:exemplar).each do |b|
-      distance = Colour::CalculateDistance.call(colour, b.exemplar[:lab])
+      distance = Calculate::Distance.call(colour, b.exemplar[:lab])
       if distance < closest_distance
         closest_distance = distance
         closest_bin      = b 
@@ -41,7 +41,7 @@ class Colour::FindClosest
     closest_distance = 1_000_000
 
     bin_colours.each do |c2|
-      distance = Colour::CalculateDistance.call(c1, c2[:lab].symbolize_keys)
+      distance = Calculate::Distance.call(c1, c2[:lab].symbolize_keys)
 
       if distance < closest_distance
         closest_distance = distance

@@ -1,4 +1,4 @@
-class Photo::CalculateMatchScore
+class Calculate::MatchScore
   def self.call(mode, data, p2)
     score = nil
 
@@ -13,11 +13,14 @@ class Photo::CalculateMatchScore
       # We might need to tweak this formula, since brightness doesn't seem as important, and 
       # we're not taking standard deviation into account at all
     elsif mode == 'colour'
-      score = p2.photo_colours.inject(0) do |result, elem|
-        distance = Colour::CalculateDistance.call(data[:lab], elem) * (elem.coverage * 0.01) 
-        result  += Calculate::NormalizedDistance.call(distance)
+      judged_colours = p2.photo_colours.where(outlier: false)
+      score = judged_colours.inject(0) do |result, elem|
+        result  += Calculate::Distance.call(data[:lab], elem) * (elem.coverage * 0.01) 
         result
       end
+
+      # At this point, we have a number between 0 and (256 * colours.length). We want to normalize that.
+      score = Calculate::NormalizedScore.call(score, judged_colours.length)
     end
 
     score

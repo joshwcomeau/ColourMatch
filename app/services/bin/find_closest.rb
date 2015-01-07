@@ -15,7 +15,7 @@ class Bin::FindClosest
     nearest_bin = nil
 
     bins.each do |b|
-      dist = Colour::CalculateDistance.call(colour, b.exemplar)
+      dist = Calculate::Distance.call(colour, b.exemplar)
       if dist < closest
         closest = dist
         nearest_bin = b

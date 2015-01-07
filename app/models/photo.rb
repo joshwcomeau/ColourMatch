@@ -5,25 +5,23 @@
 #  id                   :integer          not null, primary key
 #  px_id                :integer
 #  px_name              :string(255)
-#  px_description       :text
 #  px_category          :integer
 #  px_user              :json
-#  px_rating            :decimal(, )
-#  px_status            :integer
 #  px_for_sale          :boolean
 #  px_store_download    :boolean
 #  px_license_type      :integer
 #  px_privacy           :boolean
+#  created_at           :datetime
+#  updated_at           :datetime
 #  px_link              :string(255)
-#  px_image             :string(255)
+#  image                :string(255)
 #  hue_mean             :float
 #  hue_deviation        :float
 #  saturation_mean      :float
 #  saturation_deviation :float
 #  brightness_mean      :float
 #  brightness_deviation :float
-#  created_at           :datetime
-#  updated_at           :datetime
+#  from_500px           :boolean
 #
 
 class Photo < ActiveRecord::Base
@@ -48,7 +46,11 @@ class Photo < ActiveRecord::Base
   end
 
   def get_pixel_count
-    ([1,2,3].include? IMAGE_SIZE) ? Photo.resolution_from_500px ** 2 : FastImage.size(px_image).inject(&:*)    
+    if from_500px && [1,2,3].include?(IMAGE_SIZE)
+      Photo.resolution_from_500px ** 2
+    else
+      FastImage.size(image).inject(&:*)  
+    end  
   end
 
   def analyze_photograph

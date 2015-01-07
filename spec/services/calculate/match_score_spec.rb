@@ -35,14 +35,19 @@ RSpec.describe Calculate::MatchScore do
       expect(photo_1_score).to eq(100)
     end
 
-    it "gives photo 3 a score of 0" do
-      expect(photo_3_score).to eq(0)
+    it "gives photo 2 a score around 85" do
+      expect(photo_2_score).to be > 80
+      expect(photo_2_score).to be < 90
+    end
+
+    it "gives photo 3 a score of <50" do
+      expect(photo_3_score).to be < 50
     end
   end
 
 
 
-  context "when using a photo" do
+  xcontext "when using a photo" do
     # HSB: 190/100/100
     let!(:photo_1) { Photo.create(image: 'spec/files/calculate_match_score/photo_blue_1.png', from_500px: false) }
     # HSB: 190/90/100
