@@ -1,6 +1,6 @@
 class Colour::Convert
   def self.call(colour, to_type)
-    if colour.is_a? Colour
+    if (colour.is_a? Colour) || (colour.is_a? PhotoColour)
       return colour[to_type].symbolize_keys
     elsif colour.is_a? Hash 
       return colour[:rgb].symbolize_keys if colour.key? :rgb

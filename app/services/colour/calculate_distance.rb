@@ -2,7 +2,6 @@ class Colour::CalculateDistance
   def self.call(c1, c2)
     c1 = Colour::Convert.call(c1, :lab)
     c2 = Colour::Convert.call(c2, :lab)
-
     calculate_distance(c1, c2)
   end
 
