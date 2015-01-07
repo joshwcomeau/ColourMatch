@@ -18,13 +18,10 @@ class Photo::CalculateMatchScore
   
   def self.call(p1, p2)
 
-    hue_dist = get_distance(p1.hue_mean, p2.hue_mean, hue: true)
-    sat_dist = get_distance(p1.saturation_mean, p2.saturation_mean)
-    bri_dist = get_distance(p1.brightness_mean, p2.brightness_mean)
-
+    mean_dist = get_distance(p1.hue_mean, p2.hue_mean, hue: true)
     # At this point, the perfect match is a 0, and the worst match is 380 (hue is 180 to be on opposite ends)
     # Let's say a good match is anything below 60. 
-    hue_dist + sat_dist + bri_dist
+    mean_dist + p2.hue_deviation
 
     # We might need to tweak this formula, since brightness doesn't seem as important, and 
     # we're not taking standard deviation into account at all

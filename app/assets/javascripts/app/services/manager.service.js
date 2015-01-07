@@ -16,7 +16,7 @@ function Manager($timeout, UploadPhoto, SendColour) {
   this.colour  = null;
   this.closestColour = null;
 
-  this.requestPath = "";
+  this.requestPath = "/photos";
 
 
 
@@ -34,12 +34,12 @@ function Manager($timeout, UploadPhoto, SendColour) {
         Manager.palette = data.colours;
         Manager.stats   = data.stats;
 
-        // We need to create a string to append to our server request. Like 333333,FF0000,123456.
-        Manager.requestPath = "/photos?colours=" + _.map(data, function(colour) {
-          return colour.hex;
-        }).join(",");
+        console.log("DATA", data)
 
-        // Make sure this bit takes at least 500ms
+        Manager.requestPath += "?mode_data=" + data.stats.id + "&mode=photo";
+
+        // The second server request happens when Manager.state gets updated in Manager#updateAfterInterval.
+        // There's a watch function in dash.ctrl.js
         Manager.updateAfterInterval(Manager.states.done);
 
       });
@@ -48,11 +48,16 @@ function Manager($timeout, UploadPhoto, SendColour) {
       //.xhr(function(xhr){xhr.upload.addEventListener(...)}) // access or attach event listeners to the underlying XMLHttpRequest
     
     } else if (type == 'colour') {
+      console.log("COLOUR IS ", Manager.colour);
       SendColour.call(search, token)
       .$promise.then(function(successResult) {
         Manager.closestColour = successResult.closest_colour;
-        Manager.requestPath   = "/photos?colour="+Manager.closestColour.hex
 
+        Manager.requestPath  += "?mode_data=" + Manager.colour.replace("#", "") + "&mode=colour";
+        
+        
+        // The second server request happens when Manager.state gets updated in Manager#updateAfterInterval.
+        // There's a watch function in dash.ctrl.js
         Manager.updateAfterInterval(Manager.states.done);
         
       }, function(errorResult) {

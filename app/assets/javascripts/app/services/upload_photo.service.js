@@ -4,7 +4,7 @@ function UploadPhoto($upload, SetImagePreview) {
   this.call = function(photo, token) {
     SetImagePreview.call(photo);    
     return $upload.upload({
-      url: '/search/upload',
+      url: '/photos',
       method: 'POST',
       data: {photo: photo, authenticity_token: token},
       file: photo, 

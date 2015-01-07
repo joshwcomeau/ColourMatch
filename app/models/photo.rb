@@ -34,7 +34,7 @@ class Photo < ActiveRecord::Base
   has_many :photo_colours, dependent: :destroy
   has_many :colours, through: :photo_colours
 
-  validates :px_id, uniqueness: true
+  validates :px_id, uniqueness: true, if: :from_500px
 
   after_create :analyze_photograph
 
@@ -52,7 +52,7 @@ class Photo < ActiveRecord::Base
   end
 
   def analyze_photograph
-    colour_data = Photo::CreatePaletteFromPhoto.call(px_image)
+    colour_data = Photo::CreatePaletteFromPhoto.call(image)
 
     update_channel_stats(colour_data[:stats])
     
@@ -75,6 +75,13 @@ class Photo < ActiveRecord::Base
   end
 
   def update_channel_stats(stats)
+    # replace NaN's with 0's.
+    stats.map! do |s|
+      s[:mean]      = 0 if s[:mean].nan?
+      s[:deviation] = 0 if s[:deviation].nan?
+      s
+    end
+
     self.update({
       hue_mean:             stats.first[:mean],
       hue_deviation:        stats.first[:deviation],

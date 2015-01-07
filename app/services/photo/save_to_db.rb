@@ -1,5 +1,5 @@
 class Photo::SaveToDb
-  def self.call(p, from_api: true)
+  def self.call(p)
     Photo.create(
       px_id:              p['id'],
       px_image:           p['image_url'],
@@ -11,7 +11,7 @@ class Photo::SaveToDb
       px_license_type:    p['license_type'],
       px_privacy:         p['privacy'],
       px_link:            p['url'],
-      from_500px:         from_api
+      from_500px:         true
     )
   end
 end

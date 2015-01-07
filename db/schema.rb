@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150105213228) do
+ActiveRecord::Schema.define(version: 20150105214812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,7 +61,7 @@ ActiveRecord::Schema.define(version: 20150105213228) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "px_link"
-    t.string   "px_image"
+    t.string   "image"
     t.float    "hue_mean"
     t.float    "hue_deviation"
     t.float    "saturation_mean"

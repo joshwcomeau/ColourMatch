@@ -18,6 +18,7 @@ def full_retrieve(opts, recursive: true)
   puts "#{data["total_pages"]} total pages"
 
   data["photos"].each do |p|
+    p[:from_500px] = true
     puts Photo::SaveToDb.call(p) ? "Photo #{p['id']} saved." : "Photo  #{p['id']} NOT saved."
   end
 
