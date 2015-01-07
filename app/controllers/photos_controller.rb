@@ -1,6 +1,6 @@
 class PhotosController < ApplicationController
   include ActionController::Live
-
+  MAX_RESULTS = 10
 
   # GET /photos
   # Nabs all photos through Server-Sent Events that match the provided colour info
@@ -10,24 +10,28 @@ class PhotosController < ApplicationController
   def index
     response.headers['Content-Type']  = 'text/event-stream'
 
-
     begin
+      results = 0
       sse = SSE.new(response.stream, retry: 300)
 
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
     
       # let's do the analyzing in groups of 10, for now
-      Photo.where(from_500px: nil).find_in_batches(batch_size: 10) do |photos|
+      Photo.includes(:photo_colours).where(from_500px: nil).find_in_batches(batch_size: 100) do |photos|
 
         photos.each do |p|
           match_score = Calculate::MatchScore.call(params[:mode], data, p)
+
           if match_score > 97
+            results += 1
             sse.write({ 
               photo:    p,
               palette:  p.photo_colours,
               score:    match_score
             })
+
+            return true if results >= MAX_RESULTS
           end
         end
 
