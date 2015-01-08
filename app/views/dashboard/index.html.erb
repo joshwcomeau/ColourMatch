@@ -35,7 +35,7 @@
             <div class="palette" ng-show="dash.manager.palette">
               <ul>
                 <li class="children-fill-width" ng-repeat="item in dash.manager.palette" 
-                  ng-style="{'background-color': '#'+item.colour.hex}"
+                  ng-style="{'background-color': '#'+item.hex}"
                   ng-mouseenter="dash.manager.active = item"
                 ></li>
               </ul>
@@ -59,16 +59,16 @@
 
           <div class="active-palette" ng-show="dash.manager.active">
             <div class="active-palette-colour"
-            ng-class="{white: dash.manager.active.colour.lab.l <= 68, black: dash.manager.active.colour.lab.l > 68}"
-            ng-style="{'background-color': '#'+dash.manager.active.colour.hex}"
+            ng-class="{white: dash.manager.active.lab.l <= 68, black: dash.manager.active.lab.l > 68}"
+            ng-style="{'background-color': '#'+dash.manager.active.hex}"
             >
-              <h4>{{dash.manager.active.colour.label}}</h4>
-              <h6>#{{dash.manager.active.colour.hex}}</h6>
+              <h4>{{dash.manager.active.label}}</h4>
+              <h6>#{{dash.manager.active.hex}}</h6>
             </div>
 
             <div class="active-palette-stats">
-              <p ng-if="dash.manager.active.type === 'common'">Primary Colour (covers {{dash.manager.active.coverage}}%)</p>
-              <p ng-if="dash.manager.active.type === 'outlier'">{{dash.manager.active.outlier_channel}} Outlier ({{dash.manager.active.z_score}}<em>z</em>)</p>
+              <p ng-if="dash.manager.active.outlier === false">Primary Colour (covers {{dash.manager.active.coverage | number:1}}%)</p>
+              <p ng-if="dash.manager.active.outlier === true">{{dash.manager.active.outlier_channel}} Outlier ({{dash.manager.active.z_score}}<em>z</em>)</p>
             </div>
           </div>
         </div>
