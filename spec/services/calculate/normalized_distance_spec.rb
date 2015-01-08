@@ -7,11 +7,11 @@ RSpec.describe Calculate::NormalizedDistance do
   end
 
   it "converts the max to 0" do
-    expect(Calculate::NormalizedDistance.call(256)).to eq(0)
+    expect(Calculate::NormalizedDistance.call(150)).to eq(0)
   end
 
   it "converts 128 to 50" do
-    expect(Calculate::NormalizedDistance.call(128)).to eq(50)
+    expect(Calculate::NormalizedDistance.call(75)).to eq(50)
   end
 
 end

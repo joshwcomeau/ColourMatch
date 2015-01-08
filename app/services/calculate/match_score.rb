@@ -15,14 +15,17 @@ class Calculate::MatchScore
     elsif mode == 'colour'
       judged_colours = p2.photo_colours.where(outlier: false)
       score = judged_colours.inject(0) do |result, elem|
-        result  += Calculate::Distance.call(data[:lab], elem) * (elem.coverage * 0.01) 
+        result  += Calculate::Distance.call(data, elem, mode: :hsb) * (elem.coverage * 0.01) 
         result
       end
 
-      # At this point, we have a number between 0 and (256 * colours.length). We want to normalize that.
-      score = Calculate::NormalizedScore.call(score, judged_colours.length)
-    end
+      # At this point, we have a number between 0 and 256. We want to normalize that.
+      score = Calculate::NormalizedDistance.call(score)
 
+      # Option 2: means and deviations
+
+    end
+ 
     score.round(2)
 
   end

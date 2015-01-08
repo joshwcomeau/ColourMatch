@@ -1,6 +1,6 @@
 class PhotosController < ApplicationController
   include ActionController::Live
-  MAX_RESULTS = 10
+  MAX_RESULTS = 15
 
   # GET /photos
   # Nabs all photos through Server-Sent Events that match the provided colour info
@@ -18,12 +18,12 @@ class PhotosController < ApplicationController
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
     
       # let's do the analyzing in groups of 10, for now
-      Photo.includes(:photo_colours).where(from_500px: nil).find_in_batches(batch_size: 100) do |photos|
+      Photo.where(from_500px: nil).find_in_batches(batch_size: 100) do |photos|
 
         photos.each do |p|
           match_score = Calculate::MatchScore.call(params[:mode], data, p)
 
-          if match_score > 97
+          if match_score > 75
             results += 1
             sse.write({ 
               photo:    p,

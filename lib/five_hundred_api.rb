@@ -25,3 +25,7 @@ module FiveHundredAPI
     }
   end
 end
+
+#NOTES
+
+# I only want images that have a distinct primary colour (or two), OR have a brilliant outlier.

@@ -1,11 +1,11 @@
 class Colour::Convert
   def self.call(colour, to_type)
-    if (colour.is_a? Colour) || (colour.is_a? PhotoColour)
+    if colour.respond_to? to_type # Is it a Colour or PhotoColour?
       return colour[to_type].symbolize_keys
     elsif colour.is_a? Hash 
-      return colour[:rgb].symbolize_keys if colour.key? :rgb
-      return colour[:hsb].symbolize_keys if colour.key? :hsb
-      return colour[:lab].symbolize_keys if colour.key? :lab
+      return colour[:lab].symbolize_keys if (colour.key?(:lab) && to_type == :lab)
+      return colour[:hsb].symbolize_keys if (colour.key?(:hsb) && to_type == :hsb)
+      return colour[:rgb].symbolize_keys if (colour.key?(:rgb) && to_type == :rgb)
       @colour = colour.symbolize_keys
       
     elsif colour.is_a?(String) && /#?([\dA-F]{3}|[\dA-F]{6})/ =~ colour
@@ -23,6 +23,7 @@ class Colour::Convert
     case from_type
     when :hex
       new_colour = hex_to_rgb if to_type == :rgb
+      new_colour = hex_to_lab if to_type == :lab
     when :hsb
       new_colour = hsb_to_rgb if to_type == :rgb
       new_colour = hsb_to_lab if to_type == :lab
@@ -177,6 +178,11 @@ class Colour::Convert
     # Let's first convert HSB to RGB, and then RGB to LAB
     @colour = hsb_to_rgb
     rgb_to_lab
+  end
+
+  def self.hex_to_lab
+    @colour = hex_to_rgb
+    rgb_to_lab  
   end
 
 
