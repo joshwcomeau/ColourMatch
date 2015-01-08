@@ -23,7 +23,7 @@ class Calculate::MatchScore
       score = Calculate::NormalizedScore.call(score, judged_colours.length)
     end
 
-    score
+    score.round(2)
 
   end
 
