@@ -67,8 +67,8 @@
             </div>
 
             <div class="active-palette-stats">
-              <p ng-if="dash.manager.active.outlier === false">Primary Colour (covers {{dash.manager.active.coverage | number:1}}%)</p>
-              <p ng-if="dash.manager.active.outlier === true">{{dash.manager.active.outlier_channel}} Outlier ({{dash.manager.active.z_score}}<em>z</em>)</p>
+              <p ng-if="dash.manager.active.outlier === false">Primary Colour <span class="translucent">(covers {{dash.manager.active.coverage | number:1}}%)</span></p>
+              <p ng-if="dash.manager.active.outlier === true">{{dash.manager.active.outlier_channel}} Outlier <span class="translucent">({{dash.manager.active.z_score}}<em>z</em>)</span></p>
             </div>
           </div>
         </div>
