@@ -21,10 +21,10 @@
 **/.DS_Store
 
 # Ignore image in uploads folder
-/public/upload/*.png
-/public/upload/*.jpg
-/public/upload/*.jpeg
-/public/upload/*.gif
+/public/upload/**/*.png
+/public/upload/**/*.jpg
+/public/upload/**/*.jpeg
+/public/upload/**/*.gif
 
 # Ignore bower packages
 /vendor/assets/bower_components
