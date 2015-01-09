@@ -45,6 +45,12 @@ class Photo < ActiveRecord::Base
 
   private
 
+  def file_path
+    # Because we're storing uploaded images and not storing 500px,
+    # the path is different. One is CarrierWave, the other is just a string.
+    from_500px ? px_image : image.file.file
+  end
+
   def self.resolution_from_500px
     70 * 2**(IMAGE_SIZE-1)
   end
@@ -58,7 +64,8 @@ class Photo < ActiveRecord::Base
   end
 
   def analyze_photograph
-    colour_data = Photo::CreatePaletteFromPhoto.call(image.file.file)
+
+    colour_data = Photo::CreatePaletteFromPhoto.call(file_path)
 
     update_channel_stats(colour_data[:stats])
     

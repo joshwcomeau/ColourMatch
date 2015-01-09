@@ -20,12 +20,12 @@ class PhotosController < ApplicationController
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
     
       # let's do the analyzing in groups of 10, for now
-      Photo.where(from_500px: nil).find_in_batches(batch_size: 100) do |photos|
+      Photo.where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
 
         photos.each do |p|
           match_score = Calculate::MatchScore.call(params[:mode], data, p)
 
-          if match_score > 75
+          if match_score > 40
             results += 1
             sse.write({ 
               photo:    p,
