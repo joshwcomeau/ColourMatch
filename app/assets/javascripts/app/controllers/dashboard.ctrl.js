@@ -11,6 +11,9 @@ function DashboardController($scope, $attrs, $window, Manager ) {
   }), function (newVal, oldVal) {
     if (newVal === 2) {
       dash.listenForResponse(Manager.requestPath);
+      // Enable our follow-scroll directive. This probably isn't the best way to do this,
+      // come back and refactor me when you find a better way?
+      $(".follower").attr("enabled", true);
     }
   });
 

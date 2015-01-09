@@ -9,7 +9,7 @@
   <div class="content-wrapper" ng-class="{widemode: dash.manager.state > 1}" ng-cloak>
     <div class="grid padded-grid">
       <div id="left-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'}" ng-mouseleave="dash.manager.active = null">
-        <div class="left-side-wrapper" follow-scroll min-scroll-top="30" initial-offset="211">
+        <div class="left-side-wrapper follower" follow-scroll min-scroll-top="30" initial-offset="211" enabled="false">
           <section class="photo-upload card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'photo'" ng-class="{fadeInUp: dash.manager.state === 0}">
             <h3>
               <span class="card-header" ng-show="dash.manager.state <= 1">Upload a Photo</span>
@@ -97,9 +97,9 @@
           <h2>Processing Photo...</h2>
         </div>
 
-        <section class="colour-select card" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'" 
+        <section class="colour-select card follower" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'" 
         ng-class="{fadeInUp: dash.manager.state === 0, shortenedHeight: dash.manager.state > 0}" 
-        follow-scroll min-scroll-top="30" initial-offset="211">
+        follow-scroll min-scroll-top="30" initial-offset="211" enabled="false">
           <h3>
             <span class="card-header" ng-show="dash.manager.state <= 1">Choose a Colour</span>
             <span class="card-header" ng-show="dash.manager.state > 1 ">Your Colour</span>

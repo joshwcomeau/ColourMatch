@@ -3,29 +3,38 @@ function followScroll($window) {
     restrict: 'A',
     link: function(scope, element, attrs) {
       var position       = 'relative',
-          initial_offset = attrs.initialOffset || element.offset().top;
+          initial_offset = attrs.initialOffset || element.offset().top,
+          enabled;
 
       $($window).on("scroll", function() {
+        // Get updated attrs-enabled
+        enabled = element.attr("enabled");
 
-        // See if we need to switch into fixed
-        if ( shouldItBeFixed() ) {
-          setWidthToParent(element)
-          if ( position === 'relative' ) {
-            element.addClass("fixed-from-top");
-            position = 'fixed';
+        console.log("Attrs, ", attrs.enabled)
+        if (enabled === 'true') {
+          console.log("Attrs are enabled.")
+          // See if we need to switch into fixed
+          if ( shouldItBeFixed() ) {
+            setWidthToParent(element)
+            if ( position === 'relative' ) {
+              element.addClass("fixed-from-top");
+              position = 'fixed';
+            }
+          } else if ( !shouldItBeFixed() && position === 'fixed' ) {
+            element.removeClass("fixed-from-top");
+            position = 'relative';
           }
-        } else if ( !shouldItBeFixed() && position === 'fixed' ) {
-          element.removeClass("fixed-from-top");
-          position = 'relative';
         }
       });
 
       
       $($window).on("resize", function() {
-        if ( position === 'fixed' ) 
-          setWidthToParent(element)
-        else
-          element.removeAttr("style");
+        if (enabled === 'true') {
+          if ( position === 'fixed' ) 
+            setWidthToParent(element)
+          else
+            element.removeAttr("style");
+        }
       });
 
       function shouldItBeFixed() {
