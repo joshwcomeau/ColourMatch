@@ -22,6 +22,7 @@
 #  brightness_mean      :float
 #  brightness_deviation :float
 #  from_500px           :boolean
+#  px_image             :string(255)
 #
 
 FactoryGirl.define do

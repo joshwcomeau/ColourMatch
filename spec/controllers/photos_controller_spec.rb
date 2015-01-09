@@ -54,7 +54,7 @@ RSpec.describe PhotosController, :type => :controller do
       end
     end
 
-    context "when not passing in an invalid file" do
+    context "when not passing in a markdown file" do
       before(:each) do
         nim = fixture_file_upload(Rails.root.join('spec/files/not_an_image.md'), 'document')
         post :create, { photo: nim }
@@ -63,6 +63,17 @@ RSpec.describe PhotosController, :type => :controller do
         expect(response.status).to eq(415)
       end
     end
+
+    context "when not passing in an SVG" do
+      before(:each) do
+        nim = fixture_file_upload(Rails.root.join('spec/files/an_svg.svg'), 'image/svg+xml')
+        post :create, { photo: nim }
+      end
+      it "responds with 415 unsupported media type status" do
+        expect(response.status).to eq(415)
+      end
+    end
+
   end
 
   describe "GET :show" do

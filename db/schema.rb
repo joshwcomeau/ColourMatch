@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150105214812) do
+ActiveRecord::Schema.define(version: 20150109145518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,51 +24,52 @@ ActiveRecord::Schema.define(version: 20150105214812) do
 
   create_table "colours", force: true do |t|
     t.string   "label"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "hex"
+    t.json     "hsb"
     t.json     "lab"
     t.json     "rgb"
     t.integer  "bin_id"
-    t.json     "hsb"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "photo_colours", force: true do |t|
     t.integer  "photo_id"
     t.integer  "closest_colour_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "outlier"
-    t.float    "coverage"
-    t.string   "outlier_channel"
-    t.float    "z_score"
+    t.string   "label"
     t.string   "hex"
+    t.json     "hsb"
     t.json     "lab"
     t.json     "rgb"
-    t.json     "hsb"
-    t.string   "label"
+    t.float    "coverage"
+    t.boolean  "outlier"
+    t.string   "outlier_channel"
+    t.float    "z_score"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "photos", force: true do |t|
-    t.integer  "px_id"
-    t.string   "px_name"
-    t.integer  "px_category"
-    t.json     "px_user"
-    t.boolean  "px_for_sale"
-    t.boolean  "px_store_download"
-    t.integer  "px_license_type"
-    t.boolean  "px_privacy"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "px_link"
     t.string   "image"
+    t.boolean  "from_500px"
     t.float    "hue_mean"
     t.float    "hue_deviation"
     t.float    "saturation_mean"
     t.float    "saturation_deviation"
     t.float    "brightness_mean"
     t.float    "brightness_deviation"
-    t.boolean  "from_500px"
+    t.integer  "px_category"
+    t.boolean  "px_for_sale"
+    t.integer  "px_id"
+    t.string   "px_image"
+    t.integer  "px_license_type"
+    t.string   "px_link"
+    t.string   "px_name"
+    t.boolean  "px_privacy"
+    t.boolean  "px_store_download"
+    t.json     "px_user"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "photos", ["px_id"], name: "index_photos_on_px_id", using: :btree

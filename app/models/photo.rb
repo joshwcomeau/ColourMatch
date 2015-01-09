@@ -3,7 +3,17 @@
 # Table name: photos
 #
 #  id                   :integer          not null, primary key
+#  image                :string(255)
+#  from_500px           :boolean
+#  hue_mean             :float
+#  hue_deviation        :float
+#  saturation_mean      :float
+#  saturation_deviation :float
+#  brightness_mean      :float
+#  brightness_deviation :float
 #  px_id                :integer
+#  px_image             :string(255)
+#  px_link              :string(255)
 #  px_name              :string(255)
 #  px_category          :integer
 #  px_user              :json
@@ -13,15 +23,6 @@
 #  px_privacy           :boolean
 #  created_at           :datetime
 #  updated_at           :datetime
-#  px_link              :string(255)
-#  image                :string(255)
-#  hue_mean             :float
-#  hue_deviation        :float
-#  saturation_mean      :float
-#  saturation_deviation :float
-#  brightness_mean      :float
-#  brightness_deviation :float
-#  from_500px           :boolean
 #
 
 class Photo < ActiveRecord::Base
@@ -36,6 +37,9 @@ class Photo < ActiveRecord::Base
 
   after_create :analyze_photograph
 
+  mount_uploader :image, ImageUploader
+
+
 
   scope :from_500px, -> { where(from_500px: true) }
 
@@ -49,16 +53,18 @@ class Photo < ActiveRecord::Base
     if from_500px && [1,2,3].include?(IMAGE_SIZE)
       Photo.resolution_from_500px ** 2
     else
-      FastImage.size(image).inject(&:*)  
+      `identify -format "%wx%h" #{image.file.path}`.split(/x/).map(&:to_i).inject(&:*)  
     end  
   end
 
   def analyze_photograph
-    colour_data = Photo::CreatePaletteFromPhoto.call(image)
+    colour_data = Photo::CreatePaletteFromPhoto.call(image.file.file)
 
     update_channel_stats(colour_data[:stats])
     
     pixels = get_pixel_count.to_f
+
+
 
     colour_data[:colours].each do |colo|
       self.photo_colours.create({

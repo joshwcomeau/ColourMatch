@@ -1,5 +1,7 @@
 class PhotosController < ApplicationController
   include ActionController::Live
+
+  before_action :validate_photo, only: :create
   MAX_RESULTS = 15
 
   # GET /photos
@@ -56,12 +58,7 @@ class PhotosController < ApplicationController
   # Used when searching by photo.
   # Param: photo -> HttpUpload object
   def create
-    return render json: {error: "Missing necessary parameter 'photo'"}, status: 422 unless params[:photo]
-    
-    name = sanitize_name(params[:photo].original_filename)
-    return render json: {error: "Couldn't save photo to disk."}, status: 415 unless path = Photo::SaveToDisk.call(params[:photo], name)
-
-    if results = Photo.create(image: path, from_500px: false)
+    if results = Photo.create(image: params[:photo], from_500px: false)
       render json: {
         stats: results,
         colours: results.photo_colours
@@ -69,8 +66,6 @@ class PhotosController < ApplicationController
     else
       render json: {error: "Couldn't extract photo information."}, status: 415 
     end
-  ensure
-    File.delete(path) if path
   end
 
 
@@ -105,4 +100,19 @@ class PhotosController < ApplicationController
   def sanitize_name(name)
     name.gsub(/[^\w\.]/, '')
   end
+
+  def validate_photo
+    # First case: catches blank params, or non-multipart-upload params.
+    if !params[:photo].respond_to? :content_type
+      render json: {error: "Photo not included with request"}, status: 422
+    # second case: catches files that don't have content type of a non-svg image.
+    elsif !is_an_image?(params[:photo].content_type)
+      render json: {error: "File uploaded not a valid photo"}, status: 415
+    end
+  end
+
+  def is_an_image?(content_type)
+    (content_type =~ /image/) && !(content_type =~ /svg/)
+  end
+
 end
