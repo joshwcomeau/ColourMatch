@@ -146,19 +146,21 @@
     </div>  
     <div class="or animated rotateIn" ng-show="dash.manager.state === 0">OR</div>
 
-    <div class="suggested-photos">
-      <h4><strong>Want a quick demo?</strong> Try one of these recent user-uploaded photos:</h4>
-      <div class="grid">
-        <% @suggestions.each do |s| %>
+    <% if @suggestions.any? %>
+      <div class="suggested-photos">
+        <h4><strong>Want a quick demo?</strong> Try one of these recent user-uploaded photos:</h4>
+        <div class="grid">
+          <% @suggestions.each do |s| %>
 
-          <div class="suggested-cell-wrapper c<%= @column_width %>">
-            <div class="suggested-cell-dummy"></div>
-            <div class="suggested-cell" style="background-image: url(<%= asset_path s.image %>)"></div>
-          </div>
-        <% end %>
-        
+            <div class="suggested-cell-wrapper c<%= @column_width %>">
+              <div class="suggested-cell-dummy"></div>
+              <div class="suggested-cell" style="background-image: url(<%= asset_path s.image %>)"></div>
+            </div>
+          <% end %>
+          
+        </div>
       </div>
-    </div>
+    <% end %>
 
   </div>
 
