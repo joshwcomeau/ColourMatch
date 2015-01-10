@@ -18,6 +18,8 @@ function Manager($timeout, UploadPhoto, SendColour) {
 
   this.requestPath = "/photos";
 
+  this.suggestions = gon.suggestions;
+
 
 
 
@@ -34,6 +36,8 @@ function Manager($timeout, UploadPhoto, SendColour) {
         Manager.photo   = config.file;
         Manager.palette = data.colours;
         Manager.stats   = data.stats;
+
+        console.log(config.file);
 
         console.log("DATA", data)
 

@@ -34,11 +34,14 @@ function DashboardController($scope, $attrs, $window, Manager ) {
     };
   };
 
-  this.useSuggestion = function(id) {
-    Manager.mode  = "photo";
-    Manager.photo = id;
-    Manager.state = Manager.states.done;
-    Manager.requestPath += "?mode_data=" + id + "&mode=photo";
+  this.useSuggestion = function(data) {
+    console.log(data);
+    Manager.mode    = "photo";
+    Manager.palette = data.palette;
+    Manager.stats   = data.photo;
+    Manager.state   = Manager.states.done;
+    Manager.requestPath += "?mode_data=" + data.photo.id + "&mode=photo";
+    $(".photo_box").css('background-image', 'url('+data.photo.image.url +')');
   }
 }
 

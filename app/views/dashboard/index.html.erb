@@ -16,16 +16,15 @@
               <span class="card-header" ng-show="dash.manager.state > 1 ">Your Photo</span>
             </h3>
             <button class="photo_box" 
-              ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
-              ng-file-drop 
-              ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
-              ng-model="dash.manager.photo" 
-              accept="image/*"
-              ng-rejected-file-model="rejected"
-              allowDir="true"
-              dropAvailable="dropSupported"
-              defer-click-to destination="#click-handler"
-            >
+            ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
+            ng-file-drop 
+            ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
+            ng-model="dash.manager.photo" 
+            accept="image/*"
+            ng-rejected-file-model="rejected"
+            allowDir="true"
+            dropAvailable="dropSupported"
+            defer-click-to destination="#click-handler">
               <div class="upload-text">
                 <i class="fa fa-cloud-upload"></i>
                 <h4>Click or Drag Photo</h4>
@@ -146,20 +145,33 @@
     </div>  
     <div class="or animated rotateIn" ng-show="dash.manager.state === 0">OR</div>
 
-    <% if @suggestions.any? %>
-      <div class="suggested-photos">
-        <h4><strong>Want a quick demo?</strong> Try one of these recent user-uploaded photos:</h4>
-        <div class="grid">
-          <% @suggestions.each do |s| %>
-
-            <div class="suggested-cell-wrapper c<%= @column_width %>">
-              <div class="suggested-cell" style="background-image: url(<%= asset_path s.image %>)" ng-click="dash.useSuggestion(<%= s.id %>)"></div>
+    <div class="suggested-photos">
+      <h4><strong>Want a quick demo?</strong> Try one of these recent user-uploaded photos:</h4>
+      <div class="grid">
+        
+        <div class="suggested-cell-wrapper c3" ng-repeat="sug in dash.manager.suggestions">
+          
+          <div class="suggested-cell" 
+          ng-click="dash.useSuggestion(sug)" 
+          ng-style="{'background-image': 'url(' + sug.photo.image.url +')'}"
+          ng-mouseenter="dash.manager.activeSuggestion = sug.photo.id"
+          ng-mouseleave="dash.manager.activeSuggestion = null">
+            <div class="suggested-cell-palette" ng-class="{active: dash.manager.activeSuggestion === sug.photo.id}">
+              <ul>
+                <li class="children-fill-width" 
+                ng-repeat="item in sug.palette" 
+                ng-style="{'background-color': '#'+item.hex}">
+                </li>
+              </ul>
             </div>
-          <% end %>
+          </div>
+          
           
         </div>
+      
+        
       </div>
-    <% end %>
+    </div>
 
   </div>
 
