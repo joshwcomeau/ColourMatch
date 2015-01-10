@@ -17,6 +17,7 @@
             </h3>
             <button class="photo_box" 
             ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
+            ng-style="{'background-image': 'url(' + dash.manager.suggestion.photo.image.url + ')'}"
             ng-file-drop 
             ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
             ng-model="dash.manager.photo" 
@@ -152,7 +153,7 @@
         <div class="suggested-cell-wrapper c3" ng-repeat="sug in dash.manager.suggestions">
           
           <div class="suggested-cell" 
-          ng-click="dash.useSuggestion(sug)" 
+          ng-click="dash.manager.useSuggestion(sug)" 
           ng-style="{'background-image': 'url(' + sug.photo.image.url +')'}"
           ng-mouseenter="dash.manager.activeSuggestion = sug.photo.id"
           ng-mouseleave="dash.manager.activeSuggestion = null">

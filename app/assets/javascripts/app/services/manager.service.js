@@ -22,7 +22,6 @@ function Manager($timeout, UploadPhoto, SendColour) {
 
 
 
-
   this.requestImages = function(search, token, type) {
     var request_string;
 
@@ -45,7 +44,7 @@ function Manager($timeout, UploadPhoto, SendColour) {
 
         // The second server request happens when Manager.state gets updated in Manager#updateAfterInterval.
         // There's a watch function in dash.ctrl.js
-        Manager.updateAfterInterval(Manager.states.done);
+        Manager.updateAfterInterval(Manager.states.done, 700);
 
       });
       //.error(...)
@@ -63,7 +62,7 @@ function Manager($timeout, UploadPhoto, SendColour) {
         
         // The second server request happens when Manager.state gets updated in Manager#updateAfterInterval.
         // There's a watch function in dash.ctrl.js
-        Manager.updateAfterInterval(Manager.states.done);
+        Manager.updateAfterInterval(Manager.states.done, 700);
         
       }, function(errorResult) {
         console.log(errorResult);
@@ -71,14 +70,23 @@ function Manager($timeout, UploadPhoto, SendColour) {
     }
   };
 
-  this.updateAfterInterval = function(desiredState) {
-    var minTimeToWait = 700;
+  this.updateAfterInterval = function(desiredState, timeToWait) {
 
     $timeout(function() {
       Manager.state = desiredState;
-    }, minTimeToWait)
+    }, timeToWait)
   };
 
+  this.useSuggestion = function(data) {
+    Manager.suggestion  = data;
+    Manager.mode        = "photo";
+    Manager.palette     = data.palette;
+    Manager.stats       = data.photo;
+    Manager.state       = Manager.states.uploading;
+    Manager.requestPath  += "?mode_data=" + data.photo.id + "&mode=photo"; 
+
+    Manager.updateAfterInterval(Manager.states.done, 220);
+  }
 
 }
 
