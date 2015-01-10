@@ -20,11 +20,14 @@
 .DS_Store
 **/.DS_Store
 
-# Ignore image in uploads folder
+# Ignore image in uploads directory
 /public/upload/**/*.png
 /public/upload/**/*.jpg
 /public/upload/**/*.jpeg
 /public/upload/**/*.gif
+
+# Ignore CarrierWave's temp image directory
+/public/uploads
 
 # Ignore bower packages
 /vendor/assets/bower_components
