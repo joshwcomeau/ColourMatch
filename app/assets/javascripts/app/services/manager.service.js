@@ -20,6 +20,7 @@ function Manager($timeout, UploadPhoto, SendColour) {
 
 
 
+
   this.requestImages = function(search, token, type) {
     var request_string;
 

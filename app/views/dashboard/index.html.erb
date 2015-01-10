@@ -153,8 +153,7 @@
           <% @suggestions.each do |s| %>
 
             <div class="suggested-cell-wrapper c<%= @column_width %>">
-              <div class="suggested-cell-dummy"></div>
-              <div class="suggested-cell" style="background-image: url(<%= asset_path s.image %>)"></div>
+              <div class="suggested-cell" style="background-image: url(<%= asset_path s.image %>)" ng-click="dash.useSuggestion(<%= s.id %>)"></div>
             </div>
           <% end %>
           

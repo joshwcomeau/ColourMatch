@@ -32,9 +32,14 @@ function DashboardController($scope, $attrs, $window, Manager ) {
         });
       }
     };
-
-    
   };
+
+  this.useSuggestion = function(id) {
+    Manager.mode  = "photo";
+    Manager.photo = id;
+    Manager.state = Manager.states.done;
+    Manager.requestPath += "?mode_data=" + id + "&mode=photo";
+  }
 }
 
 
