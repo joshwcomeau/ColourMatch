@@ -30,12 +30,12 @@ class Photo::GetHSBChannelStats
   # However, it adds too much to the processing time to use every pixel, so I'm dividing 
   # occurances by 500 so get a general representation of the occurances, without killing CPU.
   def self.build_representative_array(colours, channel)
-    colours.map! do |c| 
+    data = colours.map do |c| 
       # val = channel == :h ? convert_hue_to_angle(c[:hsb][:h]) : c[:hsb][channel]
       [ c[:hsb][channel] ] * ( c[:occurances] / 500.0 ).ceil
     end
 
-    colours.flatten
+    data.flatten
   end
 
   # Currently not used. Still need to work out hue mean/sd.
