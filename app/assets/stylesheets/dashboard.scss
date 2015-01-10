@@ -1,5 +1,13 @@
 @import 'variables';
 
+.width-wrapper {
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: $starting_width;
+}
+
 .photos-wrapper {
   padding: 0 1rem;
 
@@ -28,14 +36,6 @@
   }
   .black {
     color: #000;
-  }
-
-  .width-wrapper {
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-    width: 100%;
-    max-width: $starting_width;
   }
 
 
@@ -673,59 +673,61 @@
       }
     }
 
-    .suggested-photos {
+  }
+  .suggested-photos {
+    position: relative;
+    top: 2rem;
+    margin-bottom: 4rem;
+
+    h4 {
+      text-align: center;
+      font-size: 0.9em;
+      padding: 1rem;
+      color: #FFF;
+
+      strong {
+        font-weight: 500;
+        color: $beige;
+      }
+    }
+
+    .suggested-cell-wrapper {
       position: relative;
-      top: 2rem;
+      overflow: hidden;
+    
 
-      h4 {
-        text-align: center;
-        font-size: 0.9em;
-        padding: 1rem;
-        color: #FFF;
+      .suggested-cell {
+        position: relative;
+        width: 100%;
+        height: 7rem;
+        background-size: cover;
+        background-position: center center;
+        border-radius: 5px;
+        cursor: pointer;      
+        overflow: hidden;    
+      }
+      .suggested-cell-palette {
+        position: absolute;
+        width: 101%;
+        left: 0;
+        bottom: -0.8rem;
+        border-radius: 0 0 5px 5px;
+        transition: 0.5s;
 
-        strong {
-          font-weight: 500;
-          color: $beige;
+        &.active {
+          bottom: 0;
+          transition: 0.5s;
+        }
+
+        li {
+          border-top: 1px solid rgba(0,0,0,0.2);
+          height: 1.2rem;
+          float: left;
         }
       }
-
-      .suggested-cell-wrapper {
-        position: relative;
-        overflow: hidden;
-      
-
-        .suggested-cell {
-          position: relative;
-          width: 100%;
-          height: 7rem;
-          background-size: cover;
-          background-position: center center;
-          border-radius: 5px;
-          cursor: pointer;      
-          overflow: hidden;    
-        }
-        .suggested-cell-palette {
-          position: absolute;
-          width: 101%;
-          left: 0;
-          bottom: -0.8rem;
-          border-radius: 0 0 5px 5px;
-          transition: 0.5s;
-
-          &.active {
-            bottom: 0;
-            transition: 0.5s;
-          }
-
-          li {
-            border-top: 1px solid rgba(0,0,0,0.2);
-            height: 1.2rem;
-            float: left;
-          }
-        }
-      }  
-    }
+    }  
   }
+
 }
 
 

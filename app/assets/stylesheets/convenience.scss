@@ -26,6 +26,15 @@
   color: $red;
 }
 
+.fleft {
+  float: left;
+}
+
+.fright {
+  // Boo!
+  float: right;
+}
+
 .children-fill-width {
   /* three items */
   &:first-child {

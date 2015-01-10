@@ -145,45 +145,48 @@
 
     </div>  
     <div class="or animated rotateIn" ng-show="dash.manager.state === 0">OR</div>
+  </div>
 
-    <div class="suggested-photos">
-      <h4><strong>Want a quick demo?</strong> Try one of these recent user-uploaded photos:</h4>
-      <div class="grid">
-        
-        <div class="suggested-cell-wrapper c3" ng-repeat="sug in dash.manager.suggestions">
-          
-          <div class="suggested-cell" 
-          ng-click="dash.manager.useSuggestion(sug)" 
-          ng-style="{'background-image': 'url(' + sug.photo.image.url +')'}"
-          ng-mouseenter="dash.manager.activeSuggestion = sug.photo.id"
-          ng-mouseleave="dash.manager.activeSuggestion = null">
-            <div class="suggested-cell-palette" ng-class="{active: dash.manager.activeSuggestion === sug.photo.id}">
-              <ul>
-                <li class="children-fill-width" 
-                ng-repeat="item in sug.palette" 
-                ng-style="{'background-color': '#'+item.hex}">
-                </li>
-              </ul>
-            </div>
-          </div>
-          
-          
-        </div>
+  <div class="suggested-photos width-wrapper">
+    <h4>Some recent uploads</h4>
+    <div class="grid">
       
+      <div class="suggested-cell-wrapper c3" ng-repeat="sug in dash.manager.suggestions">
+        
+        <div class="suggested-cell" 
+        ng-click="dash.manager.useSuggestion(sug)" 
+        ng-style="{'background-image': 'url(' + sug.photo.image.url +')'}"
+        ng-mouseenter="dash.manager.activeSuggestion = sug.photo.id"
+        ng-mouseleave="dash.manager.activeSuggestion = null">
+          <div class="suggested-cell-palette" ng-class="{active: dash.manager.activeSuggestion === sug.photo.id}">
+            <ul>
+              <li class="children-fill-width" 
+              ng-repeat="item in sug.palette" 
+              ng-style="{'background-color': '#'+item.hex}">
+              </li>
+            </ul>
+          </div>
+        </div>
+        
         
       </div>
+    
+      
     </div>
-
   </div>
+
 
 </div>
 
 <footer class="dash-footer">
-  <p>
-    An experiment by <a href="https://github.com/joshwcomeau" class="dynamic-underline" target="_blank" ng-style="{'color': glob.manager.colour, 'border-color': glob.manager.colour}">Joshua Comeau</a>. All rights, wrongs, and grey areas reserved. Unaffiliated with 500px.
-  </p>
-  <p>
-    About &bull; Support
-  </p>
+  <div class="width-wrapper">
+    <div class="fleft">
+      An experiment by <a href="https://github.com/joshwcomeau" class="dynamic-underline" target="_blank" ng-style="{'color': glob.manager.colour, 'border-color': glob.manager.colour}">Joshua Comeau</a>. All rights, wrongs, and grey areas reserved. Unaffiliated with 500px. 
+    </div>
+    <div class="fright">
+      About & Privacy
+    </div>
+  </div>
+
 </footer>
 
