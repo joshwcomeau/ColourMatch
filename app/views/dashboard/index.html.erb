@@ -142,8 +142,8 @@
     <div class="or animated rotateIn" ng-show="dash.manager.state === 0">OR</div>
   </div>
 
-  <div class="suggested-photos width-wrapper">
-    <h4>Some recent uploads</h4>
+  <div class="suggested-photos width-wrapper" ng-hide="dash.manager.state !== 0">
+    <h4>Try one of these <strong>recent user uploads</strong>:</h4>
     <div class="grid">
       
       <div class="suggested-cell-wrapper c3" ng-repeat="sug in dash.manager.suggestions">

@@ -662,6 +662,17 @@
     position: relative;
     top: 2rem;
     margin-bottom: 4rem;
+    animation-delay: 1s;
+    animation-duration: 2s !important;  
+    animation-name: fadeInUp;
+    animation-fill-mode: both;
+
+    &.ng-hide {
+      animation-delay: 0s;
+      animation-duration: 1s !important;  
+      animation-name: fadeOutDown;
+      animation-fill-mode: forwards;
+    }
 
     h4 {
       text-align: center;
