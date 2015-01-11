@@ -1,0 +1,49 @@
+@import 'variables';
+
+.info-wrapper {
+  header {
+    background: darken($darkgrey, 4%);
+    padding-bottom: 3rem !important;
+  
+    h4 {
+      font-size: 1.6rem !important;
+      margin-top: 0.25rem !important;
+      color: lighten($beige, 10%);
+    }
+
+    .droplet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      bottom: -2rem;
+      height: 4rem;
+      opacity: 0;
+      animation-delay: 1s;
+      animation-duration: 1s;
+      animation-name: fadeInDrop;
+      animation-fill-mode:forwards;
+    }
+  }
+
+  h6 {
+    color: #FFF;
+    font-weight: 500;
+    font-size: 1.5rem;
+    margin: 2rem 0 0.5rem 0;
+  }
+  p {
+    color: #CCC;
+    line-height: 1.4em;
+    font-size: 1.1em;
+    margin-bottom: 1rem;
+
+    em {
+      color: $green;
+    }
+
+    a {
+      color: $blue;
+    }
+  }  
+}

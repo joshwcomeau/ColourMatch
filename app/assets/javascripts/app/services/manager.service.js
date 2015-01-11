@@ -18,7 +18,9 @@ function Manager($timeout, UploadPhoto, SendColour) {
 
   this.requestPath = "/photos";
 
-  this.suggestions = gon.suggestions;
+  if (gon.suggestions) {
+    this.suggestions = gon.suggestions;
+  }
 
 
 

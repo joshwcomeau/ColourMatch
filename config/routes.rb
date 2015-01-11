@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
 
   get  'search'   => 'search#show'                    # Search by hex color code
-  get  'info'     => 'info#index', as: 'information'  # More information
+  get  'privacy'  => 'privacy#index', as: 'privacy'   
 
   # Temporary testing routes
   get  'test'     => 'photos#test'                    

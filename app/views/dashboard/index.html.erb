@@ -1,10 +1,5 @@
 <div class="photos-wrapper" ng-controller="DashboardController as dash" data-auth-token="<%= form_authenticity_token %>">
-  <header>
-    <div class="header-text">
-      <h1>ColourMatch</h1>
-      <p>Find beautiful photos from 500px, using colour.</p>
-    </div>
-  </header>
+  <%= render partial: 'layouts/header', locals: { subheader: 'Find beautiful photos from 500px, using colour.' } %>
 
   <div class="content-wrapper" ng-class="{widemode: dash.manager.state > 1}" ng-cloak>
     <div class="grid padded-grid">
@@ -184,7 +179,7 @@
       An experiment by <a href="https://github.com/joshwcomeau" class="dynamic-underline" target="_blank" ng-style="{'color': glob.manager.colour, 'border-color': glob.manager.colour}">Joshua Comeau</a>. All rights, wrongs, and grey areas reserved. Unaffiliated with 500px. 
     </div>
     <div class="fright">
-      <%= link_to "More Info", information_path %>
+      <%= link_to "Privacy", privacy_path %>
     </div>
   </div>
 

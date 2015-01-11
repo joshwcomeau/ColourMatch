@@ -19,6 +19,23 @@ body {
   font-weight:  300;
   padding-bottom: 10rem;
 
+  header.main-header {
+    text-align: center;
+    padding: 2rem 0;
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 900;
+      color: $red;
+    }
+
+    h4 {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      color: lighten($beige, 10%);
+    }
+  }
+
 
   & > footer {
     position:     absolute;

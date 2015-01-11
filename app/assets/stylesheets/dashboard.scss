@@ -11,22 +11,6 @@
 .photos-wrapper {
   padding: 0 1rem;
 
-  & > header {
-    text-align: center;
-    margin: 2rem 0;
-
-    h1 {
-      font-size: 4rem;
-      font-weight: 900;
-      color: $red;
-    }
-
-    p {
-      font-size: 1.2rem;
-      margin-top: 1rem;
-      color: lighten($beige, 10%);
-    }
-  }
   [class*='column_'], .c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8, .c9, .c10, .c11, .c12 {
     transition: $transition_length;
   }
