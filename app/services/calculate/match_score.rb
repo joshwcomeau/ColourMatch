@@ -8,7 +8,7 @@ class Calculate::MatchScore
       mean_dist = get_distance(p1.hue_mean, p2.hue_mean, hue: true)
       # At this point, the perfect match is a 0, and the worst match is 380 (hue is 180 to be on opposite ends)
       # Let's say a good match is anything below 60. 
-      score = mean_dist + p2.hue_deviation
+      score = mean_dist
 
       # We might need to tweak this formula, since brightness doesn't seem as important, and 
       # we're not taking standard deviation into account at all

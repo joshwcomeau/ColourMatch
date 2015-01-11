@@ -13,15 +13,15 @@ RSpec.describe Calculate::MatchScore do
     let(:colour) { Colour::BuildColourHashFromHex.call("FF0000") }
 
     # This image is a perfect match: 100% coverage of the same colour.
-    let(:photo_1) { Photo.create(image: 'spec/files/calculate_match_score/colour_all_red.png', from_500px: false) }
+    let(:photo_1) { Photo.create(image: File.open('spec/files/calculate_match_score/colour_all_red.png'), from_500px: false) }
     # This image is a half match: 50% coverage, with the other 50% a very-different blue
-    let(:photo_2) { Photo.create(image: 'spec/files/calculate_match_score/colour_half_red.png', from_500px: false) }
+    let(:photo_2) { Photo.create(image: File.open('spec/files/calculate_match_score/colour_half_red.png'), from_500px: false) }
     # This image is all blue. 0% coverage with the red.
-    let(:photo_3) { Photo.create(image: 'spec/files/calculate_match_score/colour_no_red.png', from_500px: false) }
+    let(:photo_3) { Photo.create(image: File.open('spec/files/calculate_match_score/colour_no_red.png'), from_500px: false) }
     # This image has 8 different reds.
-    let(:photo_4) { Photo.create(image: 'spec/files/calculate_match_score/several_reds.png', from_500px: false) }
+    let(:photo_4) { Photo.create(image: File.open('spec/files/calculate_match_score/several_reds.png'), from_500px: false) }
     # This image has a rainbow of colours.
-    let(:photo_5) { Photo.create(image: 'spec/files/calculate_match_score/rainbow.png', from_500px: false) }
+    let(:photo_5) { Photo.create(image: File.open('spec/files/calculate_match_score/rainbow.png'), from_500px: false) }
 
 
     let(:photo_1_score) { Calculate::MatchScore.call('colour', colour, photo_1) }
@@ -70,11 +70,11 @@ RSpec.describe Calculate::MatchScore do
 
   xcontext "when using a photo" do
     # HSB: 190/100/100
-    let(:photo_1) { Photo.create(image: 'spec/files/calculate_match_score/photo_blue_1.png', from_500px: false) }
+    let(:photo_1) { Photo.create(remote_image_url: 'spec/files/calculate_match_score/photo_blue_1.png', from_500px: false) }
     # HSB: 190/90/100
-    let(:photo_2) { Photo.create(image: 'spec/files/calculate_match_score/photo_blue_2.png', from_500px: false) }
+    let(:photo_2) { Photo.create(remote_image_url: 'spec/files/calculate_match_score/photo_blue_2.png', from_500px: false) }
     # HSB: 190/80/90
-    let(:photo_3) { Photo.create(image: 'spec/files/calculate_match_score/photo_blue_3.png', from_500px: false) }
+    let(:photo_3) { Photo.create(remote_image_url: 'spec/files/calculate_match_score/photo_blue_3.png', from_500px: false) }
 
     it "calculates a score of 0 between two instances of the same photo" do
       expect(Calculate::MatchScore.call('photo', photo_1, photo_1)).to eq(0)
