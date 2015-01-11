@@ -8,3 +8,27 @@
   border-radius: 0 0 2px 2px;
   overflow: auto;
 }
+
+.dynamic-underline {
+  display: inline-block;
+  position: relative;
+  border: 0;
+
+  &:after {
+    content: "";
+    position: absolute;
+    border-bottom: 2px solid black;
+    border-bottom-color: inherit;
+    bottom: -3px;
+    background: #F00;
+  }
+  &:hover {
+    text-decoration: none;
+
+    &:after {
+      animation-duration: 0.5s;
+      animation-name: dynamicUnderline;
+      animation-fill-mode:forwards;
+    }
+  }
+}

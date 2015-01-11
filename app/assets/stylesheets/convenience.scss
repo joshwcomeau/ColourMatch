@@ -35,6 +35,14 @@
   float: right;
 }
 
+.smaller {
+  font-size: 0.8em !important;
+}
+
+.bigger {
+  font-size: 1.2em !important;
+}
+
 .children-fill-width {
   /* three items */
   &:first-child {

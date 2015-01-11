@@ -1,6 +1,10 @@
 @import 'variables';
 
-.info-wrapper {
+.privacy-wrapper {
+  a {
+
+  }
+
   header {
     background: darken($darkgrey, 4%);
     padding-bottom: 3rem !important;
@@ -39,7 +43,7 @@
     margin-bottom: 1rem;
 
     em {
-      color: $green;
+      color: $red;
     }
 
     a {
