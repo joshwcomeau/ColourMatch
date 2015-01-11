@@ -47,8 +47,7 @@ RSpec.describe Calculate::MatchScore do
     end
 
     it "gives photo 2 a score around 50" do
-      expect(photo_2_score).to be > 48
-      expect(photo_2_score).to be < 52
+      expect(photo_2_score).to be_within(5).of(50)
     end
 
     it "gives photo 3 a score of <50" do

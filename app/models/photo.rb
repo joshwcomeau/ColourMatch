@@ -2,27 +2,21 @@
 #
 # Table name: photos
 #
-#  id                   :integer          not null, primary key
-#  image                :string(255)
-#  from_500px           :boolean
-#  hue_mean             :float
-#  hue_deviation        :float
-#  saturation_mean      :float
-#  saturation_deviation :float
-#  brightness_mean      :float
-#  brightness_deviation :float
-#  px_id                :integer
-#  px_image             :string(255)
-#  px_link              :string(255)
-#  px_name              :string(255)
-#  px_category          :integer
-#  px_user              :json
-#  px_for_sale          :boolean
-#  px_store_download    :boolean
-#  px_license_type      :integer
-#  px_privacy           :boolean
-#  created_at           :datetime
-#  updated_at           :datetime
+#  id                :integer          not null, primary key
+#  px_id             :integer
+#  px_name           :string(255)
+#  px_category       :integer
+#  px_user           :json
+#  px_for_sale       :boolean
+#  px_store_download :boolean
+#  px_license_type   :integer
+#  px_privacy        :boolean
+#  created_at        :datetime
+#  updated_at        :datetime
+#  px_link           :string(255)
+#  image             :string(255)
+#  from_500px        :boolean
+#  px_image          :string(255)
 #
 
 class Photo < ActiveRecord::Base
@@ -37,7 +31,7 @@ class Photo < ActiveRecord::Base
 
   validates :px_id, uniqueness: true, if: :from_500px
 
-  after_create :analyze_photograph
+  before_create :analyze_photograph
 
   mount_uploader :image, ImageUploader
 
@@ -67,16 +61,19 @@ class Photo < ActiveRecord::Base
 
   def analyze_photograph
 
-    colour_data = Photo::CreatePaletteFromPhoto.call(file_path)
+    colour_data = Photo::CreatePaletteFromPhoto.call(file_path, resize: true)
 
-    update_channel_stats(colour_data[:stats])
+    # Throw in some logic here, for not saving it if it's from 500px and doesn't
+    # meet the requirements.
+
+    build_stat(colour_data[:stats])
     
     pixels = get_pixel_count.to_f
 
 
 
     colour_data[:colours].each do |colo|
-      self.photo_colours.create({
+      self.photo_colours.new({
         outlier:            colo[:type] == 'outlier',
         closest_colour_id:  colo[:closest][:id],
         label:              colo[:closest][:label],
@@ -91,7 +88,7 @@ class Photo < ActiveRecord::Base
     end
   end
 
-  def update_channel_stats(stats)
+  def build_stat(stats)
     # replace NaN's with 0's.
     stats.map! do |s|
       s[:mean]      = 0 if s[:mean].nan?
@@ -99,13 +96,21 @@ class Photo < ActiveRecord::Base
       s
     end
 
-    self.update({
-      hue_mean:             stats.first[:mean],
-      hue_deviation:        stats.first[:deviation],
-      saturation_mean:      stats.second[:mean],
-      saturation_deviation: stats.second[:deviation],
-      brightness_mean:      stats.third[:mean],
-      brightness_deviation: stats.third[:deviation],
+    self.stat = Stat.new({
+      hsb: {
+        hue: {
+          mean:       stats.first[:mean],
+          deviation:  stats.first[:deviation],
+        },
+        saturation: {
+          mean:       stats.second[:mean],
+          deviation:  stats.second[:deviation],
+        },
+        brightness: {
+          mean:       stats.third[:mean],
+          deviation:  stats.third[:deviation],
+        }
+      }
     })
   end
 
