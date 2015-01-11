@@ -3,9 +3,12 @@ Rails.application.routes.draw do
 
   resources :photos, only: [:index, :create]
 
-  get  'search'         => 'search#show'      # Search by hex color code
 
-  get  'test'           => 'photos#test'      # Temporary testing route
-  get  'kmeans'         => 'photos#kmeans'    # Temporary testing route
+  get  'search'   => 'search#show'                    # Search by hex color code
+  get  'info'     => 'info#index', as: 'information'  # More information
+
+  # Temporary testing routes
+  get  'test'     => 'photos#test'                    
+  get  'kmeans'   => 'photos#kmeans' 
 
 end
