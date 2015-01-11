@@ -33,6 +33,8 @@ class Photo < ActiveRecord::Base
   has_many :photo_colours, dependent: :destroy
   has_many :colours, through: :photo_colours
 
+  has_one :stat
+
   validates :px_id, uniqueness: true, if: :from_500px
 
   after_create :analyze_photograph
