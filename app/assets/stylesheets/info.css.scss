@@ -1,3 +1,29 @@
-// Place all the styles related to the Info controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'variables';
+
+.info-wrapper {
+  header {
+    background: darken($darkgrey, 4%);
+  
+    #info-header-bottom {
+      font-weight: 900;
+      color: $red;
+      padding: 2rem 0 3rem 0;
+    }
+
+    .droplet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: auto;
+      bottom: -2rem;
+      height: 4rem;
+      opacity: 0;
+      animation-delay: 1s;
+      animation-duration: 1s;
+      animation-name: fadeInDrop;
+      animation-fill-mode:forwards;
+    }
+
+
+  }
+}

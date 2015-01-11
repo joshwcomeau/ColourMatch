@@ -54,6 +54,18 @@
   }
 }
 
+@keyframes fadeInDrop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -300%, 0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes fadeOutShrink {
   0% {
     opacity: 1;

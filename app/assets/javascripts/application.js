@@ -21,5 +21,6 @@
 //= require ng-file-upload/angular-file-upload
 //= require ngAnimate-animate.css/animate.js
 //= require lodash/dist/lodash
+//= require percentext/percentext.min.js
 //= require app/app.js
 //= require_tree .
