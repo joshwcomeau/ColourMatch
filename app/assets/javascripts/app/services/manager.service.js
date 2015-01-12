@@ -38,9 +38,6 @@ function Manager($timeout, UploadPhoto, SendColour) {
         Manager.palette = data.colours;
         Manager.stats   = data.stats;
 
-        console.log(config.file);
-
-        console.log("DATA", data)
 
         Manager.requestPath += "?mode_data=" + data.stats.id + "&mode=photo";
 
