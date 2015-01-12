@@ -8,7 +8,7 @@ RSpec.describe Calculate::MatchScore do
     reset_a_few_colours
   end
 
-  context "when using a colour" do
+  xcontext "when using a colour" do
     # Let's use bright red as our sample colour
     let(:colour) { Colour::BuildColourHashFromHex.call("FF0000") }
 

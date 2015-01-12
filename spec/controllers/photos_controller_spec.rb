@@ -34,13 +34,14 @@ RSpec.describe PhotosController, :type => :controller do
         expect(Colour.find(data["colours"].first["closest_colour_id"])).to be_a Colour
 
         expect(data["stats"]).to be_a Hash
-        expect(data["stats"]["hue_mean"]).to be_a Float
-        expect(data["stats"]["hue_deviation"]).to be_a Float
-        expect(data["stats"]["saturation_mean"]).to be_a Float
-        expect(data["stats"]["saturation_deviation"]).to be_a Float
-        expect(data["stats"]["brightness_mean"]).to be_a Float
-        expect(data["stats"]["brightness_deviation"]).to be_a Float
-        
+        expect(data["stats"]["hsb"]).to be_a Hash
+        expect(data["stats"]["lab"]).to be_a Hash
+        expect(data["stats"]["hsb"]["h"]).to be_a Hash
+        expect(data["stats"]["hsb"]["h"]["mean"]).to be_a Float
+        expect(data["stats"]["hsb"]["h"]["deviation"]).to be_a Float
+        expect(data["stats"]["lab"]["l"]["mean"]).to be_a Float
+        expect(data["stats"]["lab"]["l"]["deviation"]).to be_a Float
+
       end
     end
 

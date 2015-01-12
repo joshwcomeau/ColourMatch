@@ -21,13 +21,9 @@ RSpec.describe Photo::GetChannelStats do
     describe "HSB" do
       describe "hue" do
         # values [0, 0, 201]
-        subject { stats[:hsb][:hue] }
+        subject { stats[:hsb][:h] }
 
         it { is_expected.to be_a Hash }
-
-        it "returns the right channel" do
-          expect(subject[:channel]).to eq(:h)
-        end
 
         it "returns the right stats" do
           expect(subject[:mean]).to eq(67)
@@ -37,13 +33,9 @@ RSpec.describe Photo::GetChannelStats do
 
       describe "saturation" do
         # values [0, 0, 50]
-        subject { stats[:hsb][:saturation] }
+        subject { stats[:hsb][:s] }
 
         it { is_expected.to be_a Hash }
-
-        it "returns the right channel" do
-          expect(subject[:channel]).to eq(:s)
-        end
 
         it "returns the right stats" do
           expect(subject[:mean]).to eq(16.666666666666668)
@@ -53,13 +45,9 @@ RSpec.describe Photo::GetChannelStats do
 
       describe "brightness" do
         # values [0, 100, 50]
-        subject { stats[:hsb][:brightness] }
+        subject { stats[:hsb][:b] }
 
         it { is_expected.to be_a Hash }
-
-        it "returns the right channel" do
-          expect(subject[:channel]).to eq(:b)
-        end
 
         it "returns the right stats" do
           expect(subject[:mean]).to eq(50)

@@ -60,8 +60,8 @@ class PhotosController < ApplicationController
   def create
     if results = Photo.create(image: params[:photo], from_500px: false)
       render json: {
-        stats: results,
-        colours: results.photo_colours
+        stats: results.stat,
+        colours: results.photo_colours.order("coverage DESC")
       }
     else
       render json: {error: "Couldn't extract photo information."}, status: 415 
