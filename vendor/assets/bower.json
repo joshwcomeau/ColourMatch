@@ -12,6 +12,7 @@
     "lodash": "latest",
     "ngAnimate-animate.css": "latest",
     "ng-file-upload": "latest",
-    "font-awesome": "latest"
+    "font-awesome": "latest",
+    "percentext": "latest"
   }
 }
