@@ -7,7 +7,6 @@ RSpec.describe Photo::GetChannelStats do
     let(:stats)       { Photo::GetChannelStats.call(colour_data[:colours]) }
 
     it "returns a hash" do
-      binding.pry
       expect(stats).to be_a Hash
     end
 

@@ -3,9 +3,9 @@ class Photo::GetChannelStats
   def self.call(colour_data)
     {
       hsb: {
-        hue:        get_channel_stats(colour_data, space: :hsb, channel: :h),
-        saturation: get_channel_stats(colour_data, space: :hsb, channel: :s),
-        brightness: get_channel_stats(colour_data, space: :hsb, channel: :b)
+        h: get_channel_stats(colour_data, space: :hsb, channel: :h),
+        s: get_channel_stats(colour_data, space: :hsb, channel: :s),
+        b: get_channel_stats(colour_data, space: :hsb, channel: :b)
       },
       lab: {
         l: get_channel_stats(colour_data, space: :lab, channel: :l),
@@ -23,7 +23,6 @@ class Photo::GetChannelStats
     deviation = Maths.standard_deviation(colours)
 
     return {
-      channel:   channel,
       mean:      mean,
       deviation: deviation,
     }

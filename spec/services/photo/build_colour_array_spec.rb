@@ -23,7 +23,7 @@ RSpec.describe Photo::BuildColourArray do
       ) 
     end
 
-    let(:stats)    { Photo::GetHSBChannelStats.call(colour_data_hires[:colours])  }
+    let(:stats)    { Photo::GetChannelStats.call(colour_data_hires[:colours])  }
     let(:outliers) { Photo::ExtractOutliers.call(colour_data_hires, stats)        } 
     let(:commons)  { Photo::ExtractMostCommonColours.call(colour_data_lores)      }
 

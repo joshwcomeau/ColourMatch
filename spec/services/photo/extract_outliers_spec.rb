@@ -17,7 +17,7 @@ RSpec.describe Photo::ExtractOutliers do
         colours: Photo::CreatePaletteFromPhoto::HIRES
       ) 
     end
-    let(:stats_data)  { Photo::GetHSBChannelStats.call(colour_data[:colours]) }
+    let(:stats_data)  { Photo::GetChannelStats.call(colour_data[:colours]) }
     let(:results)     { Photo::ExtractOutliers.call(colour_data, stats_data) }
 
     it "returns an array" do

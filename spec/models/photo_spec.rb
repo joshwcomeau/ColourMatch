@@ -43,5 +43,13 @@ RSpec.describe Photo, :type => :model do
     it "creates a stat object" do
       expect(subject.stat).to be_a Stat
     end
+
+    it "assigns a hash to the HSB json spot on Stat" do
+      expect(subject.stat.hsb).to be_a Hash
+    end
+
+    it "assigns a hash to the LAB json spot on Stat" do
+      expect(subject.stat.lab).to be_a Hash
+    end
   end
 end

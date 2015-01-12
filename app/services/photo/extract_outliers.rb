@@ -40,8 +40,8 @@ class Photo::ExtractOutliers
   def self.find_highest_zscore(c, colour_stats)
     winner = { outlier_channel: nil, z_score: 0 }
 
-    colour_stats.each do |stat|
-      channel     = stat[:channel]
+
+    colour_stats[:hsb].each do |channel, stat|
       colour_val  = c[:hsb][channel] 
       z_score     = Maths.z_score(colour_val, mean: stat[:mean], deviation: stat[:deviation])
       winner = { outlier_channel: channel, z_score: z_score } if z_score.abs > winner[:z_score]

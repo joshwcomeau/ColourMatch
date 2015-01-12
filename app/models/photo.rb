@@ -88,30 +88,20 @@ class Photo < ActiveRecord::Base
     end
   end
 
-  def build_stat(stats)
-    # replace NaN's with 0's.
-    stats.map! do |s|
-      s[:mean]      = 0 if s[:mean].nan?
-      s[:deviation] = 0 if s[:deviation].nan?
-      s
+  def remove_nans(stats)
+    stats.each_value do |v|
+      case v
+      when Numeric 
+        v = 0 if v.nan?
+      when Hash   then remove_nans(v)
+      else raise ArgumentError, "Unhandled type #{v.class}"
+      end
     end
+  end  
 
-    self.stat = Stat.new({
-      hsb: {
-        hue: {
-          mean:       stats.first[:mean],
-          deviation:  stats.first[:deviation],
-        },
-        saturation: {
-          mean:       stats.second[:mean],
-          deviation:  stats.second[:deviation],
-        },
-        brightness: {
-          mean:       stats.third[:mean],
-          deviation:  stats.third[:deviation],
-        }
-      }
-    })
+  def build_stat(stats)
+    washed_stats = remove_nans(stats)
+    self.stat = Stat.new(stats)
   end
 
 end
