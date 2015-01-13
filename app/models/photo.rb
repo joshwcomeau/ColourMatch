@@ -60,8 +60,8 @@ class Photo < ActiveRecord::Base
   end
 
   def analyze_photograph
-
-    colour_data = Photo::CreatePaletteFromPhoto.call(file_path, resize: true)
+    resize = !from_500px
+    colour_data = Photo::CreatePaletteFromPhoto.call(file_path, resize: resize)
 
     # Throw in some logic here, for not saving it if it's from 500px and doesn't
     # meet the requirements.
@@ -69,8 +69,6 @@ class Photo < ActiveRecord::Base
     build_stat(colour_data[:stats])
     
     pixels = get_pixel_count.to_f
-
-
 
     colour_data[:colours].each do |colo|
       self.photo_colours.new({
@@ -88,6 +86,12 @@ class Photo < ActiveRecord::Base
     end
   end
 
+  def build_stat(stats)
+    washed_stats = remove_nans(stats)
+    self.stat = Stat.new(stats)
+  end
+
+  # Recursive helper method to remove any NaN's from our mean/deviation hash, replacing them with 0.
   def remove_nans(stats)
     stats.each_value do |v|
       case v
@@ -98,10 +102,5 @@ class Photo < ActiveRecord::Base
       end
     end
   end  
-
-  def build_stat(stats)
-    washed_stats = remove_nans(stats)
-    self.stat = Stat.new(stats)
-  end
 
 end

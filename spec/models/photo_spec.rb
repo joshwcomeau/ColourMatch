@@ -23,8 +23,12 @@ require 'rails_helper'
 require 'initial_colour_setup'
 
 RSpec.describe Photo, :type => :model do
-  include InitialColourSetup
 
+  # NOTE
+  # All of the business logic takes place in service objects.
+  # Therefore, the bulk of the tests for photos are in spec/services/photo
+
+  include InitialColourSetup
   before(:all) do
     reset_colours
   end
@@ -42,14 +46,6 @@ RSpec.describe Photo, :type => :model do
 
     it "creates a stat object" do
       expect(subject.stat).to be_a Stat
-    end
-
-    it "assigns a hash to the HSB json spot on Stat" do
-      expect(subject.stat.hsb).to be_a Hash
-    end
-
-    it "assigns a hash to the LAB json spot on Stat" do
-      expect(subject.stat.lab).to be_a Hash
     end
   end
 end

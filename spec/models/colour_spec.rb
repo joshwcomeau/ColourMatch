@@ -17,6 +17,10 @@ require 'rails_helper'
 
 RSpec.describe Colour, :type => :model do
 
+  # NOTE
+  # All of the business logic takes place in service objects.
+  # Therefore, the bulk of the tests for photos are in spec/services/photo
+
   describe "valid" do
 
     let(:colour) { create(:colour) }
