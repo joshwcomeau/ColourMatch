@@ -5,7 +5,7 @@ class Calculate::MatchScore
     if mode == 'photo'
       p1 = data
 
-      mean_dist = get_distance(p1.stat.hsb['hue']['mean'], p2.stat.hsb['hue']['mean'], hue: true)
+      mean_dist = get_distance(p1.stat.hsb['h']['mean'], p2.stat.hsb['h']['mean'], hue: true)
       # At this point, the perfect match is a 0, and the worst match is 380 (hue is 180 to be on opposite ends)
       # Let's say a good match is anything below 60. 
       score = mean_dist

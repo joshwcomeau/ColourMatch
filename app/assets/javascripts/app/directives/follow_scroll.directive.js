@@ -10,9 +10,7 @@ function followScroll($window) {
         // Get updated attrs-enabled
         enabled = element.attr("enabled");
 
-        console.log("Attrs, ", attrs.enabled)
         if (enabled === 'true') {
-          console.log("Attrs are enabled.")
           // See if we need to switch into fixed
           if ( shouldItBeFixed() ) {
             setWidthToParent(element)

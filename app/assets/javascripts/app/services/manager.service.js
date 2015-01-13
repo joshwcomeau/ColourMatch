@@ -1,27 +1,33 @@
-function Manager($timeout, UploadPhoto, SendColour) {
+function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
   var Manager  = this;
-  this.state   = 0;
   this.states  = {
     idle:          0,
     uploading:     1,
-    done:          2
+    done:          2,
+    error:         3
   };
-  this.photos  = [];
-
-  this.mode    = null; // Either 'photo' or 'colour'  
-
-  this.photo   = null;
-  this.palette = null;
-
-  this.colour  = null;
-  this.closestColour = null;
-
-  this.requestPath = "/photos";
 
   if (gon.suggestions) {
     this.suggestions = gon.suggestions;
   }
 
+  this.initialize = function() {
+    this.state          = 0;
+    this.photos         = [];
+    this.mode           = null; // Either 'photo' or 'colour'  
+    this.photo          = null; // The locally stored photo file.
+    this.preview        = null;
+    this.palette        = null;
+    this.colour         = null;
+    this.closestColour  = null;
+    this.requestPath    = "/photos";
+    this.flash          = {
+      message:  null,
+      details:  null,
+      type:     null
+    };
+
+  };
 
 
   this.requestImages = function(search, token, type) {
@@ -31,24 +37,41 @@ function Manager($timeout, UploadPhoto, SendColour) {
     Manager.mode  = type;
 
     if (type == 'photo') {
+      // Display the preview to the user
+      ReadImageContents.call(search)
+      .then(function(photoData) {
+        Manager.preview = 'url(' + photoData + ')';
+      })
+      .catch(function(error) {
+        console.log(error);
+      });    
+
+      // Send the photo to the server
       UploadPhoto.call(search, token)
       .success(function(data, status, headers, config) {
         // file is uploaded successfully
-        Manager.photo   = config.file;
-        Manager.palette = data.colours;
-        Manager.stats   = data.stats;
+        Manager.photo         = config.file;
+        Manager.palette       = data.colours;
+        Manager.stats         = data.stats;
 
 
-        Manager.requestPath += "?mode_data=" + data.stats.id + "&mode=photo";
+        Manager.requestPath += "?mode_data=" + data.photo.id + "&mode=photo";
 
         // The second server request happens when Manager.state gets updated in Manager#updateAfterInterval.
         // There's a watch function in dash.ctrl.js
         Manager.updateAfterInterval(Manager.states.done, 700);
 
+      })
+      .error(function(data, status, headers, config) {
+        // Reset to initial state
+        Manager.initialize();
+
+        if ( status == 415 ) {
+          Manager.flash.message = "Please upload a valid image!";
+          Manager.flash.details = "We accept JPG/JPEG, GIF, and PNG images.";
+          Manager.flash.type    = "error";
+        }
       });
-      //.error(...)
-      //.then(success, error, progress); // returns a promise that does NOT have progress/abort/xhr functions
-      //.xhr(function(xhr){xhr.upload.addEventListener(...)}) // access or attach event listeners to the underlying XMLHttpRequest
     
     } else if (type == 'colour') {
       console.log("COLOUR IS ", Manager.colour);
@@ -83,10 +106,11 @@ function Manager($timeout, UploadPhoto, SendColour) {
     Manager.stats       = data.photo;
     Manager.state       = Manager.states.uploading;
     Manager.requestPath  += "?mode_data=" + data.photo.id + "&mode=photo"; 
+    Manager.preview     = 'url(' + data.photo.image.url + ')';
 
     Manager.updateAfterInterval(Manager.states.done, 220);
   }
 
 }
 
-angular.module('colourMatch').service("Manager", ["$timeout", "UploadPhoto", "SendColour", Manager]);
+angular.module('colourMatch').service("Manager", ["$timeout", "UploadPhoto", "ReadImageContents", "SendColour", Manager]);

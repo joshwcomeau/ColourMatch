@@ -1,8 +1,8 @@
-function UploadPhoto($upload, SetImagePreview) {
+function UploadPhoto($upload) {
   var serv = this;
 
   this.call = function(photo, token) {
-    SetImagePreview.call(photo);    
+    
     return $upload.upload({
       url: '/photos',
       method: 'POST',
@@ -21,4 +21,4 @@ function UploadPhoto($upload, SetImagePreview) {
 
 }
 
-angular.module('colourMatch').service("UploadPhoto", ["$upload", "SetImagePreview", UploadPhoto]);
+angular.module('colourMatch').service("UploadPhoto", ["$upload", UploadPhoto]);

@@ -2,6 +2,7 @@ function DashboardController($scope, $attrs, $window, Manager ) {
   var dash = this
   this.auth         = $attrs.authToken;
   this.manager      = Manager;
+  Manager.initialize();
 
   // When we've finished uploading our photo or sending our color, Manager.state becomes '2'.
   // At this point, we need to grab our colour(s) and open an SSE stream.

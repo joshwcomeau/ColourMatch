@@ -12,7 +12,7 @@
             </h3>
             <button class="photo_box" 
             ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
-            ng-style="{'background-image': 'url(' + dash.manager.suggestion.photo.image.url + ')'}"
+            ng-style="{'background-image': dash.manager.preview }"
             ng-file-drop 
             ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
             ng-model="dash.manager.photo" 
@@ -47,8 +47,7 @@
             ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
-            allowDir="true"
-            move-to side="right">
+            allowDir="true">
             </div>
           </section>
 
@@ -124,7 +123,7 @@
         </section> 
         
         <div class="submit-button-wrapper" ng-class="{'hide-behind-card': dash.manager.state > 1}" ng-hide="dash.manager.mode === 'photo' || dash.manager.state > 1">
-          <button ng-click="dash.manager.requestImages(dash.manager.colour, dash.auth, 'colour')" move-to side="right">
+          <button ng-click="dash.manager.requestImages(dash.manager.colour, dash.auth, 'colour')">
             <i class="fa fa-check" ng-show="dash.manager.state === 0"></i>
             <i class="fa fa-circle-o-notch loading-icon" ng-show="dash.manager.state === 1"></i>
           </button>

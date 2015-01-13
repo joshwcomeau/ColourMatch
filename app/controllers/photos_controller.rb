@@ -19,7 +19,6 @@ class PhotosController < ApplicationController
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
     
-      # let's do the analyzing in groups of 10, for now
       Photo.where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
 
         photos.each do |p|
@@ -58,10 +57,11 @@ class PhotosController < ApplicationController
   # Used when searching by photo.
   # Param: photo -> HttpUpload object
   def create
-    if results = Photo.create(image: params[:photo], from_500px: false)
+    if result = Photo.create(image: params[:photo], from_500px: false)
       render json: {
-        stats: results.stat,
-        colours: results.photo_colours.order("coverage DESC")
+        photo:    result,
+        stats:    result.stat,
+        colours:  result.photo_colours.order("coverage DESC")
       }
     else
       render json: {error: "Couldn't extract photo information."}, status: 415 
