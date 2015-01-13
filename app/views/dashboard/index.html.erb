@@ -2,6 +2,11 @@
   <%= render partial: 'layouts/header', locals: { subheader: 'Find beautiful photos from 500px, using colour.' } %>
 
   <div class="content-wrapper" ng-class="{widemode: dash.manager.state > 1}" ng-cloak>
+    <div class="flash" ng-show="dash.manager.flash.type" 
+    ng-class="{notice: dash.manager.flash.type === 'notice', error: dash.manager.flash.type === 'error'}">
+      <h2>{{dash.manager.flash.message}}</h2>        
+      <h5>{{dash.manager.flash.details}}</h5>      
+    </div>
     <div class="grid padded-grid">
       <div id="left-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour'}" ng-mouseleave="dash.manager.active = null">
         <div class="left-side-wrapper follower" follow-scroll min-scroll-top="30" initial-offset="211" enabled="false">
@@ -73,7 +78,7 @@
 
       </div>
       
-
+      <div class="or animated rotateIn" ng-show="dash.manager.state === 0">OR</div>
 
       <div id="right-col" ng-class="{c6: dash.manager.state <= 1, c3: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'colour', c9: dash.manager.state > 1 &amp;&amp; dash.manager.mode === 'photo'}">
         <div class="photo-processing-loadscreen" ng-show="dash.manager.state === 1 &amp;&amp; dash.manager.mode === 'photo'">
@@ -138,7 +143,6 @@
       </div>
 
     </div>  
-    <div class="or animated rotateIn" ng-show="dash.manager.state === 0">OR</div>
   </div>
 
   <div class="suggested-photos width-wrapper" ng-hide="dash.manager.state !== 0  || dash.manager.suggestions.length < 4">

@@ -8,7 +8,7 @@ class DashboardController < ApplicationController
       .map do |p|
         {
           photo:    p,
-          palette:  p.photo_colours
+          palette:  p.photo_colours.order("coverage DESC")
         }
       end
   end

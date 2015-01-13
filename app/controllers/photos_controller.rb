@@ -112,7 +112,12 @@ class PhotosController < ApplicationController
   end
 
   def is_an_image?(content_type)
-    (content_type =~ /image/) && !(content_type =~ /svg/)
+    ( content_type =~ /image/ ) && 
+    (
+      content_type =~ /png/  || 
+      content_type =~ /gif/  ||
+      content_type =~ /jp[e]?g/ 
+    ) 
   end
 
 end

@@ -7,6 +7,9 @@
 @import 'variables';
 
 
+.grid {
+  position: relative;
+}
 // Avoid the overflow issue with floated elements with a pseudoelement.
 .grid:after {
   content: "";

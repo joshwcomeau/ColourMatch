@@ -69,6 +69,39 @@ body {
 
 }
 
+.flash {
+  position: relative;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  border-radius: 4px;
+  color: #FFF;
+
+  &.error {
+    background: $red;
+  }
+
+  &.notice {
+    background: $green;
+  }
+
+  &.ng-hide-remove.ng-hide-remove-active {
+    animation-name: bounce;
+    transform-origin: center bottom;
+    animation-duration: 0.5s !important;  
+  }
+
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  h5 {
+    font-size: 1rem;
+    font-weight: 100;
+  }
+}
+
 em {
   font-style:   italic;
 }

@@ -75,7 +75,7 @@ class Photo < ActiveRecord::Base
         outlier:            colo[:type] == 'outlier',
         closest_colour_id:  colo[:closest][:id],
         label:              colo[:closest][:label],
-        coverage:           colo[:occurances] / pixels * 100,
+        coverage:           colo[:coverage],
         outlier_channel:    colo[:outlier_channel],
         z_score:            colo[:z_score],
         hex:                colo[:colour][:hex],
