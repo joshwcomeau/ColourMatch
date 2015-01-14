@@ -65,25 +65,54 @@ class Photo < ActiveRecord::Base
 
     # Throw in some logic here, for not saving it if it's from 500px and doesn't
     # meet the requirements.
+    if a_good_fit?(colour_data)
 
-    build_stat(colour_data[:stats])
-    
-    pixels = get_pixel_count.to_f
+      build_stat(colour_data[:stats])
+      
+      pixels = get_pixel_count.to_f
 
-    colour_data[:colours].each do |colo|
-      self.photo_colours.new({
-        outlier:            colo[:type] == 'outlier',
-        closest_colour_id:  colo[:closest][:id],
-        label:              colo[:closest][:label],
-        coverage:           colo[:coverage],
-        outlier_channel:    colo[:outlier_channel],
-        z_score:            colo[:z_score],
-        hex:                colo[:colour][:hex],
-        rgb:                colo[:colour][:rgb],
-        lab:                colo[:colour][:lab],
-        hsb:                colo[:colour][:hsb],
-      })
+      colour_data[:colours].each do |colo|
+        self.photo_colours.new({
+          outlier:            colo[:type] == 'outlier',
+          closest_colour_id:  colo[:closest][:id],
+          label:              colo[:closest][:label],
+          coverage:           colo[:coverage],
+          outlier_channel:    colo[:outlier_channel],
+          z_score:            colo[:z_score],
+          hex:                colo[:colour][:hex],
+          rgb:                colo[:colour][:rgb],
+          lab:                colo[:colour][:lab],
+          hsb:                colo[:colour][:hsb],
+        })
+      end
+    else
+      # returning false if the photo isn't a good fit, to avoid saving it.
+      false
     end
+  end
+
+  def a_good_fit?(colour_data)
+    # we only want to judge photos from 500px
+    return true unless from_500px
+
+    # We want photos with a low hue standard deviation, *or* photos with good outliers.
+    return true if consistent_hue(colour_data) || has_a_good_outlier(colour_data)
+  end
+
+  def consistent_hue(colour_data)
+    colour_data[:stats][:hsb][:h][:deviation] < 30
+  end
+
+  def has_a_good_outlier(colour_data)
+    # A good outlier is a really saturated, bright colour in an unsaturated backdrop
+    if colour_data[:stats][:hsb][:s][:mean] < 25
+      colour_data[:colours].each do |c|
+        return true if  ( c[:type] == "outlier" ) && 
+                        ( c[:colour][:hsb][:s] > 60 ) && 
+                        ( c[:colour][:hsb][:b] > 40 )
+      end
+    end
+    false
   end
 
   def build_stat(stats)

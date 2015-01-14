@@ -48,4 +48,27 @@ RSpec.describe Photo, :type => :model do
       expect(subject.stat).to be_a Stat
     end
   end
+
+  context "when creating a photo from 500px" do
+    context "when choosing an evenly-colored image" do
+      let(:photo_file)  { File.open("spec/files/lots_of_browns.png") }
+      subject           { Photo.create(image: photo_file, from_500px: true) }
+
+      it { is_expected.to be_persisted }
+    end
+    
+    context "When choosing a rainbow image" do
+      let(:photo_file)  { File.open("spec/files/colours_for_testing.png") }
+      subject           { Photo.create(image: photo_file, from_500px: true) }
+
+      it { is_expected.not_to be_persisted }
+    end 
+
+    context "when choosing the cat image with bright eyes" do
+      let(:photo_file)  { File.open("spec/files/cat.jpg") }
+      subject           { Photo.create(image: photo_file, from_500px: true) }
+
+      it { is_expected.to be_persisted }
+    end
+  end
 end
