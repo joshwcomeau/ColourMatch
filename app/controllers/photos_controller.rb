@@ -22,39 +22,38 @@ class PhotosController < ApplicationController
       
       puts "Data is #{data}"
 
-      Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
-        puts "Got a batch of #{photos.count} photos"
 
-        photos.each do |p|
-          puts "looking at first photo"
-          match_score = Calculate::MatchScore.call(params[:mode], data, p)
-          
-          puts "match score is #{match_score}"
 
-          if match_score > 0
-            puts "Match score is sufficient. Writing to client."
-            results += 1
-            sse.write({ 
-              photo:    p,
-              palette:  p.photo_colours,
-              score:    match_score,
-              stats:    p.stat
-            })
+      Photo.includes(:stat).where(from_500px: true).each do |p|
+        puts "looking at first photo"
+        match_score = Calculate::MatchScore.call(params[:mode], data, p)
+        
+        puts "match score is #{match_score}"
 
-            puts "found #{results} results"
+        if match_score > 0
+          puts "Match score is sufficient. Writing to client."
+          results += 1
+          sse.write({ 
+            photo:    p,
+            palette:  p.photo_colours,
+            score:    match_score,
+            stats:    p.stat
+          })
 
-            if results >= MAX_RESULTS
-              puts "Thats all the results we need! Returning true."
-              return true 
-            end
+          puts "found #{results} results"
+
+          if results >= MAX_RESULTS
+            puts "Thats all the results we need! Returning true."
+            return true 
           end
         end
-
-        # # Want them to stream in slowly? Uncomment to fake a database query with math.
-        # (30_000_000 * Random.rand).to_i.times do |n|
-        #   n * 1000
-        # end
       end
+
+      # # Want them to stream in slowly? Uncomment to fake a database query with math.
+      # (30_000_000 * Random.rand).to_i.times do |n|
+      #   n * 1000
+      # end
+ 
 
     rescue Exception => e
       puts "Rescuing! #{e}"
@@ -63,7 +62,7 @@ class PhotosController < ApplicationController
       puts "Connection terminating."
       sse.write("OVER")  
       sse.close
-      
+
       render nothing: true
     end
   end
