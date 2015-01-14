@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
   include ActionController::Live
 
   before_action :validate_photo, only: :create
-  MAX_RESULTS = 15
+  MAX_RESULTS = 50
 
   # GET /photos
   # Nabs all photos through Server-Sent Events that match the provided colour info
@@ -24,7 +24,7 @@ class PhotosController < ApplicationController
         photos.each do |p|
           match_score = Calculate::MatchScore.call(params[:mode], data, p)
 
-          if match_score > 40
+          if match_score > 95
             results += 1
             sse.write({ 
               photo:    p,
