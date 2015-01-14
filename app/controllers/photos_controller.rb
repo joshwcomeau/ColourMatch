@@ -63,6 +63,8 @@ class PhotosController < ApplicationController
       puts "Connection terminating."
       sse.write("OVER")  
       sse.close
+      
+      render nothing: true
     end
   end
 
