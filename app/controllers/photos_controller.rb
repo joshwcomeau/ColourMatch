@@ -29,7 +29,8 @@ class PhotosController < ApplicationController
             sse.write({ 
               photo:    p,
               palette:  p.photo_colours,
-              score:    match_score
+              score:    match_score,
+              stats:    p.stat
             })
 
             return true if results >= MAX_RESULTS
