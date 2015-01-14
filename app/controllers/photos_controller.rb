@@ -13,18 +13,26 @@ class PhotosController < ApplicationController
     response.headers['Content-Type']  = 'text/event-stream'
 
     begin
+      puts "Starting to fetch photos!"
       results = 0
       sse = SSE.new(response.stream, retry: 300)
 
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
-    
+      
+      puts "Data is #{data}"
+
       Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
+        puts "Got a batch of #{photos.count} photos"
 
         photos.each do |p|
+          puts "looking at first photo"
           match_score = Calculate::MatchScore.call(params[:mode], data, p)
+          
+          puts "match score is #{match_score}"
 
           if match_score > 0
+            puts "Match score is sufficient. Writing to client."
             results += 1
             sse.write({ 
               photo:    p,
@@ -33,7 +41,12 @@ class PhotosController < ApplicationController
               stats:    p.stat
             })
 
-            return true if results >= MAX_RESULTS
+            puts "found #{results} results"
+
+            if results >= MAX_RESULTS
+              puts "Thats all the results we need! Returning true."
+              return true 
+            end
           end
         end
 
