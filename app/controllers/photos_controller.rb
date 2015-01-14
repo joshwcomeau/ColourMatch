@@ -15,30 +15,30 @@ class PhotosController < ApplicationController
     begin
       puts "Starting to fetch photos!"
       results = 0
-      sse = SSE.new(response.stream, retry: 10000)
+      sse = SSE.new(response.stream, retry: 300)
 
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
       
-      result = Photo.where(from_500px: true).first
-      puts "Data: #{result}"
-      puts "Data.photo_colours: #{result.photo_colours}"
-      puts "Data.stat: #{result.stat}"
-      puts "SSE is #{sse}"
+      puts "Data is #{data}"
 
-      sse.write({ 
-        photo:    result,
-        palette:  result.photo_colours,
-        score:    50,
-        stats:    result.stat
+      answer = Photo.includes(:stat).where(from_500px: true).first
+
+      puts "answer has these colours: #{answer.photo_colours}"
+      sse.write({
+        photo:    answer,
+        palette:  answer.photo_colours,
+        score:    99,
+        stats:    answer.stat
       })
+
 
       # Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
       #   puts "Got a batch of #{photos.count} photos"
 
       #   photos.each do |p|
       #     puts "looking at first photo"
-      #     match_score = Calculate::MatchScore.call(params[:mode], data, p)
+      #     # match_score = Calculate::MatchScore.call(params[:mode], data, p)
           
       #     puts "match score is #{match_score}"
 
@@ -74,6 +74,8 @@ class PhotosController < ApplicationController
       puts "Connection terminating."
       sse.write("OVER")  
       sse.close
+
+      render nothing: true
     end
   end
 
