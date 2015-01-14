@@ -17,8 +17,8 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
     this.mode           = null; // Either 'photo' or 'colour'  
     this.photo          = null; // The locally stored photo file.
     this.preview        = null;
+    this.colour         = "#DC3522";
     this.palette        = null;
-    this.colour         = null;
     this.closestColour  = null;
     this.requestPath    = "/photos";
     this.flash          = {
@@ -64,13 +64,14 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
       })
       .error(function(data, status, headers, config) {
         // Reset to initial state
-        Manager.initialize();
-
-        if ( status == 415 ) {
-          Manager.flash.message = "Please upload a valid image!";
-          Manager.flash.details = "We accept JPG/JPEG, GIF, and PNG images.";
-          Manager.flash.type    = "error";
-        }
+        $timeout(function() {
+          Manager.initialize(); 
+          if ( status == 415 ) {
+            Manager.flash.message = "Please upload a valid image!";
+            Manager.flash.details = "We accept JPG/JPEG, GIF, and PNG images.";
+            Manager.flash.type    = "error";
+          }
+        }, 500);
       });
     
     } else if (type == 'colour') {
