@@ -15,45 +15,54 @@ class PhotosController < ApplicationController
     begin
       puts "Starting to fetch photos!"
       results = 0
-      sse = SSE.new(response.stream, retry: 300)
+      sse = SSE.new(response.stream, retry: 3000)
 
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
       
       puts "Data is #{data}"
+      puts "SSE is #{sse}"
 
+      sse.write({ 
+        photo:    data,
+        palette:  data.photo_colours,
+        score:    50,
+        stats:    data.stat
+      })
 
+      Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
+        puts "Got a batch of #{photos.count} photos"
 
-      Photo.includes(:stat).where(from_500px: true).each do |p|
-        puts "looking at first photo"
-        match_score = Calculate::MatchScore.call(params[:mode], data, p)
-        
-        puts "match score is #{match_score}"
+        photos.each do |p|
+          puts "looking at first photo"
+          match_score = Calculate::MatchScore.call(params[:mode], data, p)
+          
+          puts "match score is #{match_score}"
 
-        if match_score > 0
-          puts "Match score is sufficient. Writing to client."
-          results += 1
-          sse.write({ 
-            photo:    p,
-            palette:  p.photo_colours,
-            score:    match_score,
-            stats:    p.stat
-          })
+          if match_score > 0
+            puts "Match score is sufficient. Writing to client."
+            results += 1
+            sse.write({ 
+              photo:    p,
+              palette:  p.photo_colours,
+              score:    match_score,
+              stats:    p.stat
+            })
 
-          puts "found #{results} results"
+            puts "found #{results} results"
 
-          if results >= MAX_RESULTS
-            puts "Thats all the results we need! Returning true."
-            return true 
+            if results >= MAX_RESULTS
+              puts "Thats all the results we need! Returning true."
+              return true 
+            end
           end
         end
-      end
 
-      # # Want them to stream in slowly? Uncomment to fake a database query with math.
-      # (30_000_000 * Random.rand).to_i.times do |n|
-      #   n * 1000
-      # end
- 
+        # # Want them to stream in slowly? Uncomment to fake a database query with math.
+        # (30_000_000 * Random.rand).to_i.times do |n|
+        #   n * 1000
+        # end
+      end
 
     rescue Exception => e
       puts "Rescuing! #{e}"

@@ -26,6 +26,7 @@ function DashboardController($scope, $attrs, $window, Manager ) {
     console.log("Listening for response from ", link)
 
     source.onmessage = function(event) {
+      console.log("Event: ", event)
       var data = event.data
       if (data === 'OVER') {
         // Wrap me in a $scope.$apply to fix me.
