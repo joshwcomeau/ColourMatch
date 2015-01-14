@@ -29,10 +29,6 @@ function DashboardController($scope, $attrs, $window, Manager ) {
       console.log("Event: ", event.data)
       var data = event.data
 
-      // Just close it right away, for now.
-      Manager.allComplete = true;
-      console.log("Closing.");
-      source.close();
 
 
       if (data === 'OVER') {
