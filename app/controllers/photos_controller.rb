@@ -19,7 +19,7 @@ class PhotosController < ApplicationController
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
     
-      Photo.where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
+      Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
 
         photos.each do |p|
           match_score = Calculate::MatchScore.call(params[:mode], data, p)
