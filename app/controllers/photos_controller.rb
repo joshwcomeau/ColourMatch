@@ -45,11 +45,16 @@ class PhotosController < ApplicationController
 
             if results >= MAX_RESULTS
               puts "Thats all the results we need! Returning true."
+              puts "Connection terminating."
+              sse.write("OVER")  
+              sse.close
               return true 
             end
           end
         end
-
+        puts "Connection terminating."
+        sse.write("OVER")  
+        sse.close
         # # Want them to stream in slowly? Uncomment to fake a database query with math.
         # (30_000_000 * Random.rand).to_i.times do |n|
         #   n * 1000
@@ -58,11 +63,10 @@ class PhotosController < ApplicationController
 
     rescue Exception => e
       puts "Rescuing! #{e}"
-      IOError
-    ensure
-      puts "Connection terminating."
+      puts "Connection terminating in rescue."
       sse.write("OVER")  
       sse.close
+      IOError
     end
   end
 
