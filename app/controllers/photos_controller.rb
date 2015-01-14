@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
   include ActionController::Live
 
   before_action :validate_photo, only: :create
-  MAX_RESULTS = 50
+  MAX_RESULTS = 15
 
   # GET /photos
   # Nabs all photos through Server-Sent Events that match the provided colour info
@@ -13,59 +13,35 @@ class PhotosController < ApplicationController
     response.headers['Content-Type']  = 'text/event-stream'
 
     begin
-      puts "Starting to fetch photos!"
       results = 0
       sse = SSE.new(response.stream, retry: 300)
 
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
-      
-      puts "Data is #{data}"
+    
+      Photo.where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
 
-      answer = Photo.includes(:stat).where(from_500px: true).first
+        photos.each do |p|
+          match_score = Calculate::MatchScore.call(params[:mode], data, p)
 
-      puts "answer has these colours: #{answer.photo_colours}"
-      sse.write({
-        photo:    answer,
-        palette:  answer.photo_colours,
-        score:    99,
-        stats:    answer.stat
-      })
+          if match_score > 0
+            results += 1
+            sse.write({ 
+              photo:    p,
+              palette:  p.photo_colours,
+              score:    match_score,
+              stats:    p.stat
+            })
 
+            return true if results >= MAX_RESULTS
+          end
+        end
 
-      # Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
-      #   puts "Got a batch of #{photos.count} photos"
-
-      #   photos.each do |p|
-      #     puts "looking at first photo"
-      #     # match_score = Calculate::MatchScore.call(params[:mode], data, p)
-          
-      #     puts "match score is #{match_score}"
-
-      #     if match_score > 0
-      #       puts "Match score is sufficient. Writing to client."
-      #       results += 1
-      #       sse.write({ 
-      #         photo:    p,
-      #         palette:  p.photo_colours,
-      #         score:    match_score,
-      #         stats:    p.stat
-      #       })
-
-      #       puts "found #{results} results"
-
-      #       if results >= MAX_RESULTS
-      #         puts "Thats all the results we need! Returning true."
-      #         return true 
-      #       end
-      #     end
-      #   end
-
-      #   # # Want them to stream in slowly? Uncomment to fake a database query with math.
-      #   # (30_000_000 * Random.rand).to_i.times do |n|
-      #   #   n * 1000
-      #   # end
-      # end
+        # # Want them to stream in slowly? Uncomment to fake a database query with math.
+        # (30_000_000 * Random.rand).to_i.times do |n|
+        #   n * 1000
+        # end
+      end
 
     rescue Exception => e
       puts "Rescuing! #{e}"
@@ -74,8 +50,6 @@ class PhotosController < ApplicationController
       puts "Connection terminating."
       sse.write("OVER")  
       sse.close
-
-      render nothing: true
     end
   end
 
