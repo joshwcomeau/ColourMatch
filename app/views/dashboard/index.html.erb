@@ -96,7 +96,7 @@
           <h2>Processing Photo...</h2>
         </div>
 
-        <section class="colour-select card follower" ng-hide="dash.manager.state > 0 &amp;&amp; dash.manager.mode !== 'colour'" 
+        <section class="colour-select card follower" ng-show="dash.manager.state === 0 || dash.manager.mode === 'colour'" 
         ng-class="{fadeInUp: dash.manager.state === 0, shortenedHeight: dash.manager.state > 0}" 
         follow-scroll min-scroll-top="30" initial-offset="211" enabled="false">
           <h3>
@@ -146,7 +146,7 @@
   </div>
 
   <div class="suggested-photos width-wrapper" ng-hide="dash.manager.state !== 0  || dash.manager.suggestions.length < 4">
-    <h4>{{dash.manager.suggestions.count}}Try one of these <strong>recent user uploads</strong>:</h4>
+    <h4>Try one of these <strong>recent user uploads</strong>:</h4>
     <div class="grid">
       
       <div class="suggested-cell-wrapper c3" ng-repeat="sug in dash.manager.suggestions">

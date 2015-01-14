@@ -1,3 +1,10 @@
+<div class="results-header" ng-class="{'in-progress': !dash.manager.allComplete, finished: dash.manager.allComplete}">
+  <div class="search-text">
+    <h3 ng-show="!dash.manager.allComplete">Finding Matches<span class="ellipsis num1">.</span><span class="ellipsis num2">.</span><span class="ellipsis num3">.</span><span class="ellipsis num4">.</span></h3> 
+    <h3 ng-show="dash.manager.allComplete">Found {{dash.manager.photos.length}} Matching Photos.</h3>
+  </div>
+  <h5 ng-click="dash.manager.initialize()">Restart search</h5>
+</div>
 <ul>
   <li class="result" ng-class="{'active-result': dash.manager.activeResult === p.photo.id}"
   ng-repeat="p in dash.manager.photos track by $index"
@@ -42,9 +49,7 @@
       </div>
 
       <p style="display: none;"> <!-- debugging purposes -->
-        Hue: {{p.photo.hue_mean}} with {{p.photo.hue_deviation}}<br>
-        Sat: {{p.photo.saturation_mean}} with {{p.photo.saturation_deviation}}<br>
-        Bri: {{p.photo.brightness_mean}} with {{p.photo.brightness_deviation}}<br>
+        {{p.stats}}
       </p>
 
       <div class="for-sale">

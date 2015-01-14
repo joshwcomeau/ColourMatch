@@ -1,3 +1,5 @@
+@import 'variables';
+
 @keyframes fadeInUp {
   0% {
     opacity: 0;
@@ -182,6 +184,76 @@
     transform: scale3D(1, 1, 1); 
   }
 }
+
+@keyframes auburn-glow {
+  0% {
+    background: $yellow;
+  }
+  80% {
+    background: #be5e10;
+  }
+  100% {
+    background: $yellow;
+  }
+}
+
+@keyframes ellipsis-1 {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  21% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes ellipsis-2 {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  41% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes ellipsis-3 {
+  0% {
+    opacity: 0;
+  }
+  60% {
+    opacity: 0;
+  }
+  61% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes ellipsis-4 {
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  81% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 
 
 .sk-spinner-cube-grid {

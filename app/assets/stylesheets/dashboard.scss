@@ -410,7 +410,50 @@
     .results {
       position: relative;
       z-index: 3;
-      background: rgba(255,255,255,0.1);
+
+      .results-header {
+        margin: 0 0 0.6rem 0.6rem; // Match the left-offset the tiles have.
+        padding: 0 1.5rem;
+        line-height: 4rem;
+        height: 4rem;
+        overflow: auto;
+        color: #FFF;
+
+        &.in-progress {
+          animation-name: auburn-glow;
+          animation-duration: 3s;
+          animation-iteration-count: infinite;
+          
+        }
+
+        &.finished {
+          background: $green;
+        }
+
+        .search-text {
+          float: left;
+          font-weight: 500;
+          font-size: 1.4rem;
+        }
+
+        h5 {
+          float: right;
+          font-weight: 300;
+          cursor: pointer;
+          text-decoration: underline;
+        }
+
+        .ellipsis {
+          animation-duration: 2s;
+          animation-iteration-count: infinite;
+          padding: 0 1px;
+
+          &.num1 { animation-name: ellipsis-1; }
+          &.num2 { animation-name: ellipsis-2; }
+          &.num3 { animation-name: ellipsis-3; }
+          &.num4 { animation-name: ellipsis-4; }
+        }
+      }
 
       li.result {
         float: left;
