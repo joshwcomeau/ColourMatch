@@ -5,7 +5,7 @@ module FiveHundredAPI
   def self.get_photos(given_opts={})
     opts = default_opts.merge(given_opts)
     request_string = BASE_URL + build_endpoint_string(opts)
-
+    puts "Requesting URL:\n #{request_string}"
     JSON.parse(RestClient.get(request_string))
   end
 
