@@ -26,8 +26,15 @@ function DashboardController($scope, $attrs, $window, Manager ) {
     console.log("Listening for response from ", link)
 
     source.onmessage = function(event) {
-      console.log("Event: ", event)
+      console.log("Event: ", event.data)
       var data = event.data
+
+      // Just close it right away, for now.
+      Manager.allComplete = true;
+      console.log("Closing.");
+      source.close();
+
+
       if (data === 'OVER') {
         // Wrap me in a $scope.$apply to fix me.
         $scope.$apply(function() {
