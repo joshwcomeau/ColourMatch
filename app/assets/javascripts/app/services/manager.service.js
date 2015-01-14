@@ -21,11 +21,15 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
     this.palette        = null;
     this.closestColour  = null;
     this.requestPath    = "/photos";
+    this.allComplete    = false;
     this.flash          = {
       message:  null,
       details:  null,
       type:     null
     };
+
+    // Ugh, I hate that I need to do this, but ng-animations are buggy.
+    $(".left-side-wrapper, .colour-select").attr("style", "").attr("enabled", "false");
 
   };
 
