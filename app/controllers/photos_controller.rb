@@ -24,7 +24,7 @@ class PhotosController < ApplicationController
         photos.each do |p|
           match_score = Calculate::MatchScore.call(params[:mode], data, p)
 
-          if match_score > 95
+          if match_score > 0
             results += 1
             sse.write({ 
               photo:    p,

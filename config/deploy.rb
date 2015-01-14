@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.1.0'
+lock '3.2.1'
 
 set :application, 'ColourMatch'
 set :repo_url, 'git@github.com:joshwcomeau/ColourMatch.git'
