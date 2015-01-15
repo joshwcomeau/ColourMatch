@@ -25,7 +25,7 @@ function DashboardController($scope, $attrs, $window, Manager ) {
     source = new EventSource(link);
     console.log("Listening for response from ", link)
 
-    source.onmessage = function(event) {
+    source.addEventListener('photo', function(event) {
       console.log("NEW event: ", event);
       var data = event.data
       if (data === 'OVER') {
@@ -42,7 +42,7 @@ function DashboardController($scope, $attrs, $window, Manager ) {
           Manager.photos.push(JSON.parse(data));  
         });
       }
-    };
+    });
   };
 }
 
