@@ -12,57 +12,68 @@ class PhotosController < ApplicationController
   def index
     response.headers['Content-Type']  = 'text/event-stream'
 
-    begin
+    # begin
       results = 0
       sse = SSE.new(response.stream, retry: 1000)
 
-      # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
-      data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
+      puts "Writing John"
+      sse.write({
+        name: "John"
+      })
 
-      puts "Data is #{data}"
+      puts "Writing Over"
+      sse.write("OVER")
 
-      sse.write("test write")
-    
-      Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
-        puts "Starting with batch"
-
-        photos.each do |p|
-          puts "Starting with photo #{p}"
-          match_score = Calculate::MatchScore.call(params[:mode], data, p)
-
-          puts "Match score is #{match_score}"
-
-
-          if match_score > 0
-            puts "We're taking it"
-            puts "photo has these colours: #{p.photo_colours}"
-            puts "photo has these stats: #{p.stat}"
-            results += 1
-            sse.write({ 
-              photo:    p,
-              palette:  p.photo_colours,
-              score:    match_score,
-              stats:    p.stat
-            })
-
-            return true if results >= MAX_RESULTS
-          end
-        end
-
-        # # Want them to stream in slowly? Uncomment to fake a database query with math.
-        # (30_000_000 * Random.rand).to_i.times do |n|
-        #   n * 1000
-        # end
-      end
-
-    rescue Exception => e
-      puts "Rescuing! #{e}"
-      IOError
-    ensure
-      puts "Connection terminating."
-      sse.write("OVER")  
+      puts "Closing connection."
       sse.close
-    end
+
+      # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
+      # data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
+
+      # puts "Data is #{data}"
+
+      # sse.write("test write")
+    
+      # Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
+      #   puts "Starting with batch"
+
+      #   photos.each do |p|
+      #     puts "Starting with photo #{p}"
+      #     match_score = Calculate::MatchScore.call(params[:mode], data, p)
+
+      #     puts "Match score is #{match_score}"
+
+
+      #     if match_score > 0
+      #       puts "We're taking it"
+      #       puts "photo has these colours: #{p.photo_colours}"
+      #       puts "photo has these stats: #{p.stat}"
+      #       results += 1
+      #       sse.write({ 
+      #         photo:    p,
+      #         palette:  p.photo_colours,
+      #         score:    match_score,
+      #         stats:    p.stat
+      #       })
+
+      #       return true if results >= MAX_RESULTS
+      #     end
+      #   end
+
+      #   # # Want them to stream in slowly? Uncomment to fake a database query with math.
+      #   # (30_000_000 * Random.rand).to_i.times do |n|
+      #   #   n * 1000
+      #   # end
+      # end
+
+    # rescue Exception => e
+    #   puts "Rescuing! #{e}"
+    #   IOError
+    # ensure
+    #   puts "Connection terminating."
+    #   sse.write("OVER")  
+    #   sse.close
+    # end
   end
 
 
