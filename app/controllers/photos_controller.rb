@@ -14,14 +14,16 @@ class PhotosController < ApplicationController
 
     begin
       results = 0
-      sse = SSE.new(response.stream, retry: 300)
+      sse = SSE.new(response.stream, retry: 1000)
 
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
 
       puts "Data is #{data}"
+
+      sse.write("test write")
     
-      Photo.where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
+      Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
         puts "Starting with batch"
 
         photos.each do |p|

@@ -26,9 +26,10 @@ function DashboardController($scope, $attrs, $window, Manager ) {
     console.log("Listening for response from ", link)
 
     source.onmessage = function(event) {
-      console.log("NEW event: ", event.data);
+      console.log("NEW event: ", event);
       var data = event.data
       if (data === 'OVER') {
+        console.log("Data equals 'OVER'");
         // Wrap me in a $scope.$apply to fix me.
         $scope.$apply(function() {
           Manager.allComplete = true;
@@ -36,6 +37,7 @@ function DashboardController($scope, $attrs, $window, Manager ) {
           source.close();
         });
       } else {
+        console.log("Data does NOT equal 'OVER'");
         $scope.$apply(function() {
           Manager.photos.push(JSON.parse(data));  
         });
