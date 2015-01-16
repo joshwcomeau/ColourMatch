@@ -36,7 +36,7 @@ class PhotosController < ApplicationController
           results += 1
           sse.write({ 
             photo:    p,
-            palette:  p.photo_colours,
+            palette:  p.photo_colours.order("coverage DESC"),
             score:    match_score,
             stats:    p.stat
           }, event: 'photo')
