@@ -17,6 +17,7 @@ gem 'autoprefixer-rails'            # Adds CSS vendor prefixes.
 gem 'bower-rails'                   # Front-end package manager.
 gem 'carrierwave'                   # File upload handling.
 gem 'fastimage'                     # Quickly get external image resolutions without downloading/saving the image.
+gem 'fog'                           # The glue between CarrierWave and Amazon S3
 gem 'gon'                           # Pass data from Rails to JS in a nice, tidy way
 gem 'puma'                          # App server that handles concurrency better than WEBrick.
 gem 'quiet_assets'                  # Hides asset stuff from the console.
