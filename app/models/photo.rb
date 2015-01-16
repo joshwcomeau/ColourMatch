@@ -39,6 +39,10 @@ class Photo < ActiveRecord::Base
 
   scope :from_500px, -> { where(from_500px: true) }
 
+  def outliers
+    self.photo_colours.where(outlier: true)
+  end
+
   private
 
   def file_path
@@ -104,11 +108,11 @@ class Photo < ActiveRecord::Base
 
   def has_a_good_outlier(colour_data)
     # A good outlier is a really saturated, bright colour in an unsaturated backdrop
-    if colour_data[:stats][:hsb][:s][:mean] < 25
+    if colour_data[:stats][:hsb][:s][:mean] < 60
       colour_data[:colours].each do |c|
         return true if  ( c[:type] == "outlier" ) && 
                         ( c[:colour][:hsb][:s] > 80 ) && 
-                        ( c[:colour][:hsb][:b] > 60 )
+                        ( c[:colour][:hsb][:b] > 55 )
       end
     end
     false

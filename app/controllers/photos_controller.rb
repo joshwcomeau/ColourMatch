@@ -22,31 +22,28 @@ class PhotosController < ApplicationController
       puts "Data is #{data}"
 
     
-      Photo.includes(:stat).where(from_500px: true).order("created_at DESC").find_in_batches(batch_size: 100) do |photos|
-        puts "Starting with batch"
+      Photo.includes(:stat).where(from_500px: true).order("created_at DESC").each do |p|
+        puts "Starting with photo #{p}"
+        match_score = Calculate::MatchScore.call(params[:mode], data, p)
 
-        photos.each do |p|
-          puts "Starting with photo #{p}"
-          match_score = Calculate::MatchScore.call(params[:mode], data, p)
-
-          puts "Match score is #{match_score}"
+        puts "Match score is #{match_score}"
 
 
-          if match_score > 0
-            puts "We're taking it"
-            puts "photo has these colours: #{p.photo_colours}"
-            puts "photo has these stats: #{p.stat}"
-            results += 1
-            sse.write({ 
-              photo:    p,
-              palette:  p.photo_colours,
-              score:    match_score,
-              stats:    p.stat
-            }, event: 'photo')
+        if match_score > 0
+          puts "We're taking it"
+          puts "photo has these colours: #{p.photo_colours}"
+          puts "photo has these stats: #{p.stat}"
+          results += 1
+          sse.write({ 
+            photo:    p,
+            palette:  p.photo_colours,
+            score:    match_score,
+            stats:    p.stat
+          }, event: 'photo')
 
-            return true if results >= MAX_RESULTS
-          end
+          return true if results >= MAX_RESULTS
         end
+      
 
         # # Want them to stream in slowly? Uncomment to fake a database query with math.
         # (30_000_000 * Random.rand).to_i.times do |n|
