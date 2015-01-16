@@ -67,6 +67,13 @@ class Photo < ActiveRecord::Base
     resize = !from_500px
     colour_data = Photo::CreatePaletteFromPhoto.call(file_path, resize: resize)
 
+    # Sometimes, an image fails to get processed by ImageMagick's codec.
+    # We don't want to store these images.
+    if unprocessable_image(colour_data)
+      puts "#{px_id} wasn't processable. Skipping this one."
+      return false 
+    end
+
     # Throw in some logic here, for not saving it if it's from 500px and doesn't
     # meet the requirements.
     if consistent_hue(colour_data)
@@ -97,8 +104,13 @@ class Photo < ActiveRecord::Base
       end
     else
       # returning false if the photo isn't a good fit, to avoid saving it.
+      puts "#{px_id} isn't a good fit"
       false
     end
+  end
+
+  def unprocessable_image(colour_data)
+    colour_data[:stats][:hsb][:h][:mean].nil? || colour_data[:stats][:lab][:l][:mean].nil? 
   end
 
   def consistent_hue(colour_data)
