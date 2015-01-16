@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
   include ActionController::Live
 
   before_action :validate_photo, only: :create
-  MAX_RESULTS = 50
+  MAX_RESULTS = 15
 
   # GET /photos
   # Nabs all photos through Server-Sent Events that match the provided colour info
@@ -13,40 +13,38 @@ class PhotosController < ApplicationController
     response.headers['Content-Type']  = 'text/event-stream'
 
     begin
-      puts "Starting to fetch photos!"
       results = 0
-      sse = SSE.new(response.stream, retry: 300)
+      sse = SSE.new(response.stream, retry: 10000)
 
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
-      
+
       puts "Data is #{data}"
 
+    
       Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
-        puts "Got a batch of #{photos.count} photos"
+        puts "Starting with batch"
 
         photos.each do |p|
-          puts "looking at first photo"
+          puts "Starting with photo #{p}"
           match_score = Calculate::MatchScore.call(params[:mode], data, p)
-          
-          puts "match score is #{match_score}"
+
+          puts "Match score is #{match_score}"
+
 
           if match_score > 0
-            puts "Match score is sufficient. Writing to client."
+            puts "We're taking it"
+            puts "photo has these colours: #{p.photo_colours}"
+            puts "photo has these stats: #{p.stat}"
             results += 1
             sse.write({ 
               photo:    p,
               palette:  p.photo_colours,
               score:    match_score,
               stats:    p.stat
-            })
+            }, event: 'photo')
 
-            puts "found #{results} results"
-
-            if results >= MAX_RESULTS
-              puts "Thats all the results we need! Returning true."
-              return true 
-            end
+            return true if results >= MAX_RESULTS
           end
         end
 
@@ -61,7 +59,7 @@ class PhotosController < ApplicationController
       IOError
     ensure
       puts "Connection terminating."
-      sse.write("OVER")  
+      sse.write("OVER", event: 'photo')  
       sse.close
     end
   end
