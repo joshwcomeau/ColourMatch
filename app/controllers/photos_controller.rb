@@ -2,7 +2,7 @@ class PhotosController < ApplicationController
   include ActionController::Live
 
   before_action :validate_photo, only: :create
-  MAX_RESULTS = 15
+  MAX_RESULTS = 40
 
   # GET /photos
   # Nabs all photos through Server-Sent Events that match the provided colour info

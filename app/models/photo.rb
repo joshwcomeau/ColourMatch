@@ -74,6 +74,11 @@ class Photo < ActiveRecord::Base
       return false 
     end
 
+    # I have enough greyscale photos for now.
+    return false if black_and_white(colour_data)
+
+
+
     # Throw in some logic here, for not saving it if it's from 500px and doesn't
     # meet the requirements.
     if consistent_hue(colour_data)
@@ -107,6 +112,10 @@ class Photo < ActiveRecord::Base
       puts "#{px_id} isn't a good fit"
       false
     end
+  end
+
+  def black_and_white(colour_data)
+    colour_data[:stats][:hsb][:h][:mean] == 0.0
   end
 
   def unprocessable_image(colour_data)
