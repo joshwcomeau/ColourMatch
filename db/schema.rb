@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150116190527) do
+ActiveRecord::Schema.define(version: 20150116193026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 20150116190527) do
 
   add_index "photos", ["from_500px"], name: "index_photos_on_from_500px", using: :btree
   add_index "photos", ["match_category"], name: "index_photos_on_match_category", using: :btree
+  add_index "photos", ["px_id"], name: "index_photos_on_px_id", using: :btree
 
   create_table "stats", force: true do |t|
     t.integer  "photo_id"
