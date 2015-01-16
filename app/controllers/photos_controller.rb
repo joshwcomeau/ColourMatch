@@ -22,7 +22,7 @@ class PhotosController < ApplicationController
       puts "Data is #{data}"
 
     
-      Photo.includes(:stat).where(from_500px: true).find_in_batches(batch_size: 100) do |photos|
+      Photo.includes(:stat).where(from_500px: true).order("created_at DESC").find_in_batches(batch_size: 100) do |photos|
         puts "Starting with batch"
 
         photos.each do |p|
