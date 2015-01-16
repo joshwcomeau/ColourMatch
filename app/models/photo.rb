@@ -65,7 +65,13 @@ class Photo < ActiveRecord::Base
 
     # Throw in some logic here, for not saving it if it's from 500px and doesn't
     # meet the requirements.
-    if a_good_fit?(colour_data)
+    if consistent_hue(colour_data)
+      self.match_category = "common" 
+    elsif has_a_good_outlier(colour_data)
+      self.match_category = "outlier"
+    end
+
+    if !from_500px || match_category
 
       build_stat(colour_data[:stats])
       
@@ -91,16 +97,9 @@ class Photo < ActiveRecord::Base
     end
   end
 
-  def a_good_fit?(colour_data)
-    # we only want to judge photos from 500px
-    return true unless from_500px
-
-    # We want photos with a low hue standard deviation, *or* photos with good outliers.
-    return true if consistent_hue(colour_data) || has_a_good_outlier(colour_data)
-  end
-
   def consistent_hue(colour_data)
-    colour_data[:stats][:hsb][:h][:deviation] < 30
+    (colour_data[:stats][:hsb][:h][:deviation] < 30) ||
+    (colour_data[:stats][:lab][:a][:deviation] + colour_data[:stats][:lab][:b][:deviation] < 8)
   end
 
   def has_a_good_outlier(colour_data)
@@ -108,8 +107,8 @@ class Photo < ActiveRecord::Base
     if colour_data[:stats][:hsb][:s][:mean] < 25
       colour_data[:colours].each do |c|
         return true if  ( c[:type] == "outlier" ) && 
-                        ( c[:colour][:hsb][:s] > 60 ) && 
-                        ( c[:colour][:hsb][:b] > 40 )
+                        ( c[:colour][:hsb][:s] > 80 ) && 
+                        ( c[:colour][:hsb][:b] > 60 )
       end
     end
     false
