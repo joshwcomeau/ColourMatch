@@ -12,6 +12,6 @@ class Photo::SaveToDb
       px_privacy:         p['privacy'],
       px_link:            p['url'],
       from_500px:         true
-    )
+    ).persisted?
   end
 end
