@@ -88,7 +88,7 @@ class Photo < ActiveRecord::Base
 
       # Sometimes, an image fails to get processed by ImageMagick's codec.
       # We don't want to store these images.
-      if unprocessable_image(colour_data)
+      if unprocessable_image
         puts "#{px_id} wasn't processable. Skipping this one."
         return false 
       end
