@@ -67,13 +67,7 @@ class Photo < ActiveRecord::Base
     resize = !from_500px
     colour_data = Photo::CreatePaletteFromPhoto.call(file_path, resize: resize)
 
-    # Sometimes, an image fails to get processed by ImageMagick's codec.
-    # We don't want to store these images.
-    if unprocessable_image(colour_data)
-      puts "#{px_id} wasn't processable. Skipping this one."
-      return false 
-    end
-
+    
     # I have enough greyscale photos for now.
     return false if black_and_white(colour_data)
 
@@ -91,6 +85,15 @@ class Photo < ActiveRecord::Base
 
       build_stat(colour_data[:stats])
       
+
+      # Sometimes, an image fails to get processed by ImageMagick's codec.
+      # We don't want to store these images.
+      if unprocessable_image(colour_data)
+        puts "#{px_id} wasn't processable. Skipping this one."
+        return false 
+      end
+
+
       pixels = get_pixel_count.to_f
 
       colour_data[:colours].each do |colo|
@@ -118,8 +121,8 @@ class Photo < ActiveRecord::Base
     colour_data[:stats][:hsb][:h][:mean] == 0.0
   end
 
-  def unprocessable_image(colour_data)
-    colour_data[:stats][:hsb][:h][:mean].nil? || colour_data[:stats][:lab][:l][:mean].nil? 
+  def unprocessable_image
+    self.stat.hsb['h']['mean'].nil? || self.stat.lab['l']['mean'].nil? 
   end
 
   def consistent_hue(colour_data)
