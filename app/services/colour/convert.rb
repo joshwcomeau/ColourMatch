@@ -8,7 +8,7 @@ class Colour::Convert
       return colour[:rgb].symbolize_keys if (colour.key?(:rgb) && to_type == :rgb)
       @colour = colour.symbolize_keys
       
-    elsif colour.is_a?(String) && /#?([\dA-F]{3}|[\dA-F]{6})/ =~ colour
+    elsif colour.is_a?(String) && /#?([\dA-F]{3}|[\dA-F]{6})/i =~ colour
       @colour = { hex: colour }
     else
       raise "Invalid colour input to Colour::Convert (Needs to be a Hash, hex string or colour object). You provided a #{colour.class}"
