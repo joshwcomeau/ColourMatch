@@ -60,9 +60,42 @@ RSpec.describe Photo::GetChannelStats do
     end
   end
 
-  describe "a blue image with white" do
+  describe "A 3-colour image with black, white and grey" do
+    let(:colour_data) { Photo::GetHistogramData.call('spec/files/photo_get_hsb_channel_stats/black_white_grey.png') }
+    let(:stats)       { Photo::GetChannelStats.call(colour_data[:colours]) }
 
-  end 
+    describe "HSB" do
+      describe "hue" do
+        # values []
+        subject { stats[:hsb][:h] }
+
+        it "returns the right stats" do
+          expect(subject[:mean]).to eq(0)
+          expect(subject[:deviation]).to eq(0)
+        end
+      end
+
+      describe "saturation" do
+        # values [0, 0, 0]
+        subject { stats[:hsb][:s] }
+
+        it "returns the right stats" do
+          expect(subject[:mean]).to eq(0)
+          expect(subject[:deviation]).to eq(0)
+        end
+      end
+
+      describe "brightness" do
+        # values [0, 100, 50]
+        subject { stats[:hsb][:b] }
+
+        it "returns the right stats" do
+          expect(subject[:mean]).to eq(50)
+          expect(subject[:deviation]).to eq(41.16934847963091)
+        end
+      end
+    end
+  end
 end
 
 

@@ -19,8 +19,12 @@ class Photo::GetChannelStats
 
   def self.get_channel_stats(colour_data, space:, channel:)
     colours   = build_representative_array(colour_data, space, channel)
-    mean      = Maths.mean(colours)
-    deviation = Maths.standard_deviation(colours)
+    if channel == :h && colours.empty? # greyscale image
+      mean, deviation = 0, 0
+    else
+      mean      = Maths.mean(colours)
+      deviation = Maths.standard_deviation(colours)
+    end
 
     return {
       mean:      mean,
