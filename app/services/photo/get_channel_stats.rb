@@ -33,11 +33,22 @@ class Photo::GetChannelStats
   # However, it adds too much to the processing time to use every pixel, so I'm dividing 
   # occurances by 500 so get a general representation of the occurances, without killing CPU.
   def self.build_representative_array(colours, space, channel)
+    # White and black both have a hue of 0, which is in the reds.
+    # A blue image with black, therefore, would have a purple mean. This is bad.
+    # We want to ignore images whose brightness is either very very low or very very high.
+    colours = remove_grey_and_dim_hues(colours) if channel == :h
+
     data = colours.map do |c| 
       [ c[space][channel] ] * ( c[:occurances] / 500.0 ).ceil
     end
 
     data.flatten
+  end
+
+  def self.remove_grey_and_dim_hues(colours)
+    colours.select do |c| 
+      c[:hsb][:b] > 18 && c[:hsb][:s] > 18
+    end
   end
 
 end

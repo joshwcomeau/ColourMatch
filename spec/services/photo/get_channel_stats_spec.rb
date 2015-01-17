@@ -20,14 +20,17 @@ RSpec.describe Photo::GetChannelStats do
 
     describe "HSB" do
       describe "hue" do
-        # values [0, 0, 201]
+        # values [201]
+        # The idea here is we shouldn't consider hues whose brightness is an extreme. A red photo with near-black
+        # blue shouldnt have a purple hue mean.
+
         subject { stats[:hsb][:h] }
 
         it { is_expected.to be_a Hash }
 
         it "returns the right stats" do
-          expect(subject[:mean]).to eq(67)
-          expect(subject[:deviation]).to eq(95.5519203968472)
+          expect(subject[:mean]).to eq(201)
+          expect(subject[:deviation]).to eq(0)
         end
       end
 
@@ -57,20 +60,9 @@ RSpec.describe Photo::GetChannelStats do
     end
   end
 
-  # describe "A red image with hues at 5 degrees and 355 degrees" do
-  #   let(:colour_data) { Photo::GetHistogramData.call('spec/files/photo_get_hsb_channel_stats/two_reds.png') }
-  #   let(:stats)       { Photo::GetChannelStats.call(colour_data[:colours]) }
-  #   subject { stats.first }
+  describe "a blue image with white" do
 
-  #   it "returns a hue mean of 360" do
-  #     expect(subject[:mean]).to eq(360)
-  #   end
-
-  #   it "returns a deviation of 5" do
-  #     expect(subject[:deviation]).to eq(5)
-  #   end
-  # end
-
+  end 
 end
 
 
