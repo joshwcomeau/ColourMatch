@@ -24,7 +24,7 @@ class PhotosController < ApplicationController
     
       Photo.includes(:stat).where(from_500px: true).order("created_at DESC").each do |p|
         puts "Starting with photo #{p}"
-        match_score = Calculate::MatchScore.call(params[:mode], data, p)
+        match_score = Calculate::MatchScore.call(data, p)
 
         puts "Match score is #{match_score}"
 
