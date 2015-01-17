@@ -10,12 +10,12 @@ namespace :fhpx do
 
   task :thorough, [:starting_page, :feature] => [:environment] do |t, args|
     args.with_defaults(starting_page: 1, feature: 'fresh_today', rpp: 200)
-    full_retrieve({ page: args.starting_page, feature: args.feature })
+    full_retrieve({ page: args.starting_page.to_i, feature: args.feature })
   end
 
   task :last_24h, [:starting_page, :feature] => [:environment] do |t, args|
     args.with_defaults(starting_page: 1, feature: 'fresh_today')
-    full_retrieve({ page: args.starting_page, feature: args.feature }, mode: :last24h)
+    full_retrieve({ page: args.starting_page.to_i, feature: args.feature }, mode: :last24h)
   end
 end
 
