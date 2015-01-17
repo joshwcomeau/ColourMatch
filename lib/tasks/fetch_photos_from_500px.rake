@@ -6,12 +6,9 @@ namespace :fhpx do
     full_retrieve({page: 1, feature: 'fresh_today'}, recursive: false)
   end
 
-  task all_fresh: :environment do
-    full_retrieve({page: 1, feature: 'fresh_today'})
-  end
-
-  task all_editors: :environment do
-    full_retrieve({page: 1, feature: 'editors'})
+  task :thorough, [:starting_page, :feature] => [:environment] do |t, args|
+    args.with_defaults(starting_page: 1, feature: 'fresh_today')
+    full_retrieve({ page: args.starting_page, feature: args.feature })
   end
 end
 
@@ -23,10 +20,10 @@ def full_retrieve(opts, recursive: true)
 
   data["photos"].each do |p|
     p[:from_500px] = true
-    puts Photo::SaveToDb.call(p) ? "Photo #{p['id']} has been saved." : "Photo  #{p['id']} NOT saved."
+    puts Photo::SaveToDb.call(p) ? "YES, Photo #{p['id']} saved." : "NO, Photo #{p['id']} rejected."
   end
 
-  if recursive && opts[:page] < 100 # data["total_pages"]
+  if recursive && opts[:page] <= 100 # regrettably, the API doesn't seem to accept page numbers > 100
     opts[:page] += 1
     full_retrieve(opts)
   end
