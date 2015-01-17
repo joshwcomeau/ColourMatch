@@ -51,7 +51,7 @@ class Photo::GetChannelStats
 
   def self.remove_grey_and_dim_hues(colours)
     colours.select do |c| 
-      c[:hsb][:b] > 18 && c[:hsb][:s] > 18
+      Colour::ValidHue.call(c)
     end
   end
 

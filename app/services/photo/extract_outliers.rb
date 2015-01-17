@@ -42,9 +42,14 @@ class Photo::ExtractOutliers
 
 
     colour_stats[:hsb].each do |channel, stat|
-      colour_val  = c[:hsb][channel] 
-      z_score     = Maths.z_score(colour_val, mean: stat[:mean], deviation: stat[:deviation])
-      winner = { outlier_channel: channel, z_score: z_score } if z_score.abs > winner[:z_score]
+      if channel != :h || Colour::ValidHue.call(c)
+        colour_val  = c[:hsb][channel] 
+        z_score     = Maths.z_score(colour_val, mean: stat[:mean], deviation: stat[:deviation])
+
+        if z_score.abs > winner[:z_score] 
+          winner = { outlier_channel: channel, z_score: z_score } 
+        end
+      end
     end
 
     winner
