@@ -2,8 +2,9 @@
   <%= render partial: 'layouts/header', locals: { subheader: 'Find beautiful photos from 500px, using colour.' } %>
 
   <div class="content-wrapper" ng-class="{widemode: dash.manager.state > 1}" ng-cloak>
-    <div class="flash" ng-show="dash.manager.flash.type" 
+    <div class="flash" ng-show="dash.manager.flash.type &amp;&amp; dash.manager.state === 0" 
     ng-class="{notice: dash.manager.flash.type === 'notice', error: dash.manager.flash.type === 'error'}">
+      <div class="close" ng-click="dash.manager.flash.type = null"><i class="fa fa-times"></i></div>
       <h2>{{dash.manager.flash.message}}</h2>        
       <h5>{{dash.manager.flash.details}}</h5>      
     </div>
@@ -121,7 +122,10 @@
             </div>
           </div>
 
-          <div class="colour-selection" ng-class="{white: dash.manager.closestColour.lab.l <= 68, black: dash.manager.closestColour.lab.l > 68, 'move-into-canvas': dash.manager.state > 0 &amp;&amp; dash.manager.mode === 'colour'}">
+          <div class="colour-selection" 
+          ng-class="{white: dash.manager.closestColour.lab.l <= 68, black: dash.manager.closestColour.lab.l > 68, 'move-into-canvas': dash.manager.state > 0 &amp;&amp; dash.manager.mode === 'colour'}"
+          ng-style="{'background-color': dash.manager.colour}"
+          >
             <h4>{{dash.manager.colour}}</h4> 
             <h6>{{dash.manager.closestColour.label}}</h6>
           </div>
