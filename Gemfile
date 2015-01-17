@@ -22,6 +22,7 @@ gem 'gon'                           # Pass data from Rails to JS in a nice, tidy
 gem 'puma'                          # App server that handles concurrency better than WEBrick.
 gem 'quiet_assets'                  # Hides asset stuff from the console.
 gem 'rest-client'                   # A simple HTTP and REST client for Ruby (used for API calls)
+gem 'whenever', require: false      # Scheduler for cron jobs
 
 
 group :development, :test do 

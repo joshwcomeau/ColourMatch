@@ -19,6 +19,9 @@ namespace :fhpx do
   end
 end
 
+# To use in terminal: bundle exec rake fhpx:last_24h[1,'fresh_today']
+# Important to not have any spaces in that 'array'.
+
 
 def full_retrieve(opts, mode: :recursive)
   puts "Started retrieving page #{opts[:page]}."
