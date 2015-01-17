@@ -113,8 +113,6 @@ class Photo < ActiveRecord::Base
         })
       end
     else
-      # returning false if the photo isn't a good fit, to avoid saving it.
-      puts "#{px_id} isn't a good fit"
       false
     end
   end

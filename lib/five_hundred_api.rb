@@ -19,13 +19,9 @@ module FiveHundredAPI
 
   def self.default_opts
     {
-      rpp:            200,
+      rpp:            100,
       image_size:     3,
       sort:           'created_at'
     }
   end
 end
-
-#NOTES
-
-# I only want images that have a distinct primary colour (or two), OR have a brilliant outlier.
