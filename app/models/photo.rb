@@ -30,6 +30,8 @@ class Photo < ActiveRecord::Base
   has_one :stat
 
   validates :px_id, uniqueness: true, if: :from_500px
+  validates :px_image, length: { maximum: 255 }, if: :from_500px
+  validates :px_link, length: { maximum: 255 }, if: :from_500px
 
   before_create :analyze_photograph
 
