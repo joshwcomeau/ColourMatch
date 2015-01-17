@@ -6,6 +6,7 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
     done:          2,
     error:         3
   };
+  this.hex_regex = /^#?([0-9A-F]{6}|[0-9A-F]{3})$/i
 
   if (gon.suggestions) {
     this.suggestions = gon.suggestions;
@@ -80,20 +81,30 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
     
     } else if (type == 'colour') {
       console.log("COLOUR IS ", Manager.colour);
-      SendColour.call(search, token)
-      .$promise.then(function(successResult) {
-        Manager.closestColour = successResult.closest_colour;
 
-        Manager.requestPath  += "?mode_data=" + Manager.colour.replace("#", "") + "&mode=colour";
-        
-        
-        // The second server request happens when Manager.state gets updated in Manager#updateAfterInterval.
-        // There's a watch function in dash.ctrl.js
-        Manager.updateAfterInterval(Manager.states.done, 700);
-        
-      }, function(errorResult) {
-        console.log(errorResult);
-      });
+      // Validations
+      if ( Manager.hex_regex.test(Manager.colour) ) {
+
+        SendColour.call(search, token)
+        .$promise.then(function(successResult) {
+          Manager.closestColour = successResult.closest_colour;
+
+          Manager.requestPath  += "?mode_data=" + Manager.colour.replace("#", "") + "&mode=colour";
+          
+          
+          // The second server request happens when Manager.state gets updated in Manager#updateAfterInterval.
+          // There's a watch function in dash.ctrl.js
+          Manager.updateAfterInterval(Manager.states.done, 700);
+          
+        }, function(errorResult) {
+          console.log(errorResult);
+        });
+      } else {
+        Manager.initialize(); 
+        Manager.flash.message = "Please select a valid colour!";
+        Manager.flash.details = "Use the colourpicker, or enter a valid hex color code (eg. #123456)";
+        Manager.flash.type    = "error";
+      }
     }
   };
 
