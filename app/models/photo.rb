@@ -155,10 +155,9 @@ class Photo < ActiveRecord::Base
   def remove_nans(stats)
     stats.each_value do |v|
       case v
-      when Numeric 
+      when Float 
         v = 0 if v.nan?
       when Hash   then remove_nans(v)
-      else raise ArgumentError, "Unhandled type #{v.class}"
       end
     end
   end  
