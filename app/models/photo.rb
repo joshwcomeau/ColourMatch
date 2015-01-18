@@ -45,6 +45,10 @@ class Photo < ActiveRecord::Base
     self.photo_colours.where(outlier: true)
   end
 
+  def sorted_colours
+    self.photo_colours.order("outlier ASC").order("coverage DESC")
+  end
+
   private
 
   def file_path
@@ -68,25 +72,17 @@ class Photo < ActiveRecord::Base
   def analyze_photograph
     resize = !from_500px
     colour_data = Photo::CreatePaletteFromPhoto.call(file_path, resize: resize)
-
     
     # I have enough greyscale photos for now.
     return false if black_and_white(colour_data)
 
 
-
-    # Throw in some logic here, for not saving it if it's from 500px and doesn't
-    # meet the requirements.
-    if consistent_hue(colour_data)
-      self.match_category = "common" 
-    elsif has_a_good_outlier(colour_data)
-      self.match_category = "outlier"
-    end
+    self.match_category = get_match_category(colour_data) if from_500px
 
     if !from_500px || match_category
 
-      build_stat(colour_data[:stats])
-      
+      self.stat = build_stat(colour_data[:stats])
+
 
       # Sometimes, an image fails to get processed by ImageMagick's codec.
       # We don't want to store these images.
@@ -109,7 +105,7 @@ class Photo < ActiveRecord::Base
           hex:                colo[:colour][:hex],
           rgb:                colo[:colour][:rgb],
           lab:                colo[:colour][:lab],
-          hsb:                colo[:colour][:hsb],
+          hsb:                colo[:colour][:hsb]
         })
       end
     else
@@ -117,8 +113,16 @@ class Photo < ActiveRecord::Base
     end
   end
 
+  def get_match_category(colour_data)
+    if consistent_hue(colour_data)
+      "common" 
+    elsif has_a_good_outlier(colour_data)
+      "outlier"
+    end
+  end
+
   def black_and_white(colour_data)
-    colour_data[:stats][:hsb][:h][:mean] == 0.0
+    colour_data[:stats][:hsb][:s][:mean] < 5
   end
 
   def unprocessable_image
@@ -144,7 +148,7 @@ class Photo < ActiveRecord::Base
 
   def build_stat(stats)
     washed_stats = remove_nans(stats)
-    self.stat = Stat.new(stats)
+    Stat.new(stats)
   end
 
   # Recursive helper method to remove any NaN's from our mean/deviation hash, replacing them with 0.

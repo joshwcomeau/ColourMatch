@@ -29,7 +29,7 @@ class PhotosController < ApplicationController
           results += 1
           sse.write({ 
             photo:    p,
-            palette:  p.photo_colours.order("coverage DESC"),
+            palette:  p.sorted_colours,
             score:    match_score,
             stats:    p.stat
           }, event: 'photo')
@@ -56,7 +56,7 @@ class PhotosController < ApplicationController
       render json: {
         photo:    result,
         stats:    result.stat,
-        colours:  result.photo_colours.order("coverage DESC")
+        colours:  result.sorted_colours
       }
     else
       render json: {error: "Couldn't extract photo information."}, status: 415 

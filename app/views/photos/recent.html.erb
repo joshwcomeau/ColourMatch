@@ -6,7 +6,7 @@
     <div class="image">
       <%= image_tag i.px_image, style: 'max-width: 250px;' %>
       <ul class="palette">
-        <% i.photo_colours.order("coverage DESC").each do |p| %>
+        <% i.sorted_colours.each do |p| %>
           <li class="palette-colour" style="background-color: #<%= p[:hex] %>">
             
           </li>  
