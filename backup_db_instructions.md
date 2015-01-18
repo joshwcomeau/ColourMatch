@@ -5,6 +5,11 @@ Database Backup & Restore
 Use the pg_dump tool like so:
 ```$ pg_dump ColourMatch_production > filename```
 
+This dumps the structure *and* the data. If you only want the data, you can use:
+```$ pg_dump ColourMatch_production -a -f filename```
+
+This happens twice a week automatically on the server via cron.
+
 ###To Restore:
 There are two Postgres roles required to re-create the database structure: 'deploy' and 'postgres'.
 Create these roles with `createuser ROLENAME` from the terminal (NOT from a PSQL console)
