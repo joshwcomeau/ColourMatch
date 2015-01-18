@@ -10,12 +10,14 @@ namespace :fhpx do
 
   task :thorough, [:starting_page, :feature] => [:environment] do |t, args|
     args.with_defaults(starting_page: 1, feature: 'fresh_today', rpp: 200)
-    full_retrieve({ page: args.starting_page.to_i, feature: args.feature })
+    full_retrieve({ page: args.starting_page.to_i, feature: args.feature, rpp: args.rpp })
   end
 
   task :until_caught_up, [:starting_page, :feature] => [:environment] do |t, args|
-    args.with_defaults(starting_page: 1, feature: 'fresh_today', rpp: 200)
-    full_retrieve({ page: args.starting_page.to_i, feature: args.feature }, mode: :until_caught_up)
+    args.with_defaults(starting_page: 1, feature: 'fresh_today', rpp: 4)
+    
+    last_time_from_database = Photo.where(from_500px: true).order("created_at DESC").first.created_at
+    full_retrieve({ page: args.starting_page.to_i, feature: args.feature, rpp: args.rpp }, mode: :until_caught_up, run_until: last_time_from_database)
   end
 end
 
@@ -23,24 +25,24 @@ end
 # Important to not have any spaces in that 'array'.
 
 
-def full_retrieve(opts, mode: :recursive)
+def full_retrieve(opts, mode: :recursive, run_until: nil)
   puts "Started retrieving page #{opts[:page]}."
   data = FiveHundredAPI.get_photos(opts)
   puts "#{data["total_pages"]} total pages"
+
 
   data["photos"].each do |p|
     p[:from_500px] = true
     puts Photo::SaveToDb.call(p) ? "YES, Photo #{p['id']} saved." : "NO, Photo #{p['id']} rejected."
   end
 
-  last_time_from_database = Photo.where(from_500px: true).order("created_at DESC").first.created_at if mode == :until_caught_up
-
   if mode == :recursive && opts[:page] <= 100 
     opts[:page] += 1
     full_retrieve(opts)
-  elsif mode == :until_caught_up && within_time?(data, last_time_from_database) && opts[:page] <= 100 
+  elsif mode == :until_caught_up && within_time?(data, run_until) && opts[:page] <= 100 
+    
     opts[:page] += 1
-    full_retrieve(opts, mode: :until_caught_up)
+    full_retrieve(opts, mode: :until_caught_up, run_until: run_until)
   end
 end
 
