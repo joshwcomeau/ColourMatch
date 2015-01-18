@@ -17,6 +17,11 @@ namespace :fhpx do
     args.with_defaults(starting_page: 1, feature: 'fresh_today')
     full_retrieve({ page: args.starting_page.to_i, feature: args.feature }, mode: :last24h)
   end
+
+  task :last_12h, [:starting_page, :feature] => [:environment] do |t, args|
+    args.with_defaults(starting_page: 1, feature: 'fresh_today')
+    full_retrieve({ page: args.starting_page.to_i, feature: args.feature }, mode: :last12h)
+  end
 end
 
 # To use in terminal: bundle exec rake fhpx:last_24h[1,'fresh_today']
@@ -36,14 +41,17 @@ def full_retrieve(opts, mode: :recursive)
   if mode == :recursive && opts[:page] <= 100 
     opts[:page] += 1
     full_retrieve(opts)
-  elsif mode == :last24h && within_last_24h?(data)
+  elsif mode == :last24h && within_time?(data, 24) && opts[:page] <= 100 
     opts[:page] += 1
     full_retrieve(opts, mode: :last24h)
+  elsif mode == :last12h && within_time?(data, 12) && opts[:page] <= 100 
+    opts[:page] += 1
+    full_retrieve(opts, mode: :last12h)
   end
 end
 
-def within_last_24h?(data)
+def within_time?(data, hours)
   last_photo_date   = Time.parse( data["photos"].last["created_at"] )
   elapsed_time_in_s = Time.now - last_photo_date
-  elapsed_time_in_s < 86400
+  elapsed_time_in_s < (hours * 3600) # Convert hours to seconds
 end
