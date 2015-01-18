@@ -37,7 +37,5 @@ class Photo::BuildColourArray
       new_data
     end
 
-    unique_colours = matched_colours.uniq { |c| c[:closest][:id] }
-
   end
 end
