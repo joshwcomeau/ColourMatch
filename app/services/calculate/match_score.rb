@@ -1,11 +1,6 @@
 class Calculate::MatchScore
   def self.call(data, p2)
-    score = nil
-
-    # original_way(data, p2)
-
     better_way(data, p2)
-
   end
 
   private
@@ -35,8 +30,7 @@ class Calculate::MatchScore
 
   def self.normalized_dist(c1, c2)
     dist  = Calculate::Distance.call(c1, c2)
-    score = Calculate::NormalizedDistance.call(dist)
-    score.round(2)
+    Calculate::NormalizedDistance.call(dist).round(2)
   end
 
   def self.get_nearest_colour(c1, colours)

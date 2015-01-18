@@ -21,20 +21,22 @@ class PhotosController < ApplicationController
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
       data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildHashFromHex.call(params[:mode_data])
     
-      Photo.includes(:stat).where(from_500px: true).order("created_at DESC").each do |p|
-        match_score = Calculate::MatchScore.call(data, p)
+      Photo.includes(:stat, :photo_colours).where(from_500px: true).find_in_batches do |pgroup|
+        pgroup.each do |p|
+          match_score = Calculate::MatchScore.call(data, p)
 
-        if match_score > SCORE_THRESHOLD
-          puts "Photo #{p.id} has an acceptable match score of #{match_score}."
-          results += 1
-          sse.write({ 
-            photo:    p,
-            palette:  p.sorted_colours,
-            score:    match_score,
-            stats:    p.stat
-          }, event: 'photo')
+          if match_score > SCORE_THRESHOLD
+            puts "Photo #{p.id} has an acceptable match score of #{match_score}."
+            results += 1
+            sse.write({ 
+              photo:    p,
+              palette:  p.sorted_colours,
+              score:    match_score,
+              stats:    p.stat
+            }, event: 'photo')
 
-          return true if results >= MAX_RESULTS
+            return true if results >= MAX_RESULTS
+          end
         end
       end
     rescue Exception => e
