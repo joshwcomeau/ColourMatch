@@ -10,7 +10,7 @@ RSpec.describe Calculate::MatchScore do
 
   context "when using a colour" do
     # Let's use bright red as our sample colour
-    let(:colour) { Colour::BuildColourHashFromHex.call("FF0000") }
+    let(:colour) { Colour::BuildHashFromHex.call("FF0000") }
 
     # This image is a perfect match: 100% coverage of the same colour.
     let(:photo_1) { Photo.create(image: File.open('spec/files/calculate_match_score/colour_all_red.png'), from_500px: false) }

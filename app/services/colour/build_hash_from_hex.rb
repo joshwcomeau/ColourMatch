@@ -1,4 +1,4 @@
-class Colour::BuildColourHashFromHex
+class Colour::BuildHashFromHex
   def self.call(hex)
     rgb = Colour::Convert.call(hex, :rgb)
     hsb = Colour::Convert.call(rgb, :hsb)

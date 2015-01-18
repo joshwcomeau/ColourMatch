@@ -19,7 +19,7 @@ class PhotosController < ApplicationController
       sse = SSE.new(response.stream, retry: 10000)
 
       # data will either be a Photo from DB, or a colour hash (with HSB, RGB and LAB)
-      data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildColourHashFromHex.call(params[:mode_data])
+      data = params[:mode] == 'photo' ? Photo.find(params[:mode_data]) : Colour::BuildHashFromHex.call(params[:mode_data])
     
       Photo.includes(:stat).where(from_500px: true).order("created_at DESC").each do |p|
         match_score = Calculate::MatchScore.call(data, p)

@@ -7,7 +7,7 @@ class SearchController < ApplicationController
     return render json: {error: "Missing necessary parameter 'colour'"}, status: 422 unless params[:colour]
 
     # Get our colourspaces
-    colour = Colour::BuildColourHashFromHex.call(params[:colour])
+    colour = Colour::BuildHashFromHex.call(params[:colour])
 
 
     nearest_neighbor = Colour::FindClosest.call(colour)
