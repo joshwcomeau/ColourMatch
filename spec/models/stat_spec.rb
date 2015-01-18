@@ -29,7 +29,7 @@ RSpec.describe Photo, :type => :model do
     it { is_expected.to be_a Stat }
  
     it "includes HSB analytics" do
-      expect(subject.hsb).to eq({"h" => {"mean" => 161.14583333333334, "deviation" => 119.7955257196868}, "s" => {"mean" => 9.072916666666666, "deviation" => 9.497085194573248}, "b" => {"mean" => 62.229166666666664, "deviation" => 21.9139365253048}})
+      expect(subject.hsb).to eq({"h" => {"mean" => 80.88888888888889, "deviation" => 98.00184238630982}, "s" => {"mean" => 9.072916666666666, "deviation" => 9.497085194573248}, "b" => {"mean" => 62.229166666666664, "deviation" => 21.9139365253048}})
     end
 
     it "includes LAB analytics" do

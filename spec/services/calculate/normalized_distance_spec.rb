@@ -10,8 +10,8 @@ RSpec.describe Calculate::NormalizedDistance do
     expect(Calculate::NormalizedDistance.call(150)).to eq(0)
   end
 
-  it "converts 128 to 50" do
-    expect(Calculate::NormalizedDistance.call(75)).to eq(50)
+  it "converts 25 to 75" do
+    expect(Calculate::NormalizedDistance.call(25)).to eq(75)
   end
 
 end
