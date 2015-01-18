@@ -18,7 +18,6 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
     this.mode           = null; // Either 'photo' or 'colour'  
     this.photo          = null; // The locally stored photo file.
     this.preview        = null;
-    this.colour         = "#DC3522";
     this.palette        = null;
     this.closestColour  = null;
     this.requestPath    = "/photos";
@@ -31,6 +30,9 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
 
     // Ugh, I hate that I need to do this, but ng-animations are buggy.
     $(".left-side-wrapper, .colour-select").attr("style", "").attr("enabled", "false");
+
+    // Also probably a better way, but I need to reset the colorpicker with the plugin's
+    // jQuery command
 
   };
 
