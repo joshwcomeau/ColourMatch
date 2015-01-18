@@ -68,7 +68,7 @@ class PhotosController < ApplicationController
   # GET /recent
   # Temporary testing route - just shows all recent additions to the database, from rake task.
   def recent
-    @images = Photo.includes(:photo_colours).where(from_500px: true).order("created_at DESC").last(50)
+    @images = Photo.includes(:photo_colours).where(from_500px: true).order("created_at DESC").first(50)
   end
 
   private
