@@ -13,18 +13,13 @@ namespace :fhpx do
     full_retrieve({ page: args.starting_page.to_i, feature: args.feature })
   end
 
-  task :last_24h, [:starting_page, :feature] => [:environment] do |t, args|
-    args.with_defaults(starting_page: 1, feature: 'fresh_today')
-    full_retrieve({ page: args.starting_page.to_i, feature: args.feature }, mode: :last24h)
-  end
-
-  task :last_12h, [:starting_page, :feature] => [:environment] do |t, args|
-    args.with_defaults(starting_page: 1, feature: 'fresh_today')
-    full_retrieve({ page: args.starting_page.to_i, feature: args.feature }, mode: :last12h)
+  task :until_caught_up, [:starting_page, :feature] => [:environment] do |t, args|
+    args.with_defaults(starting_page: 1, feature: 'fresh_today', rpp: 200)
+    full_retrieve({ page: args.starting_page.to_i, feature: args.feature }, mode: :until_caught_up)
   end
 end
 
-# To use in terminal: bundle exec rake fhpx:last_24h[1,'fresh_today']
+# To use in terminal: bundle exec rake fhpx:thorough[1,'fresh_today']
 # Important to not have any spaces in that 'array'.
 
 
@@ -38,20 +33,18 @@ def full_retrieve(opts, mode: :recursive)
     puts Photo::SaveToDb.call(p) ? "YES, Photo #{p['id']} saved." : "NO, Photo #{p['id']} rejected."
   end
 
+  last_time_from_database = Photo.where(from_500px: true).order("created_at DESC").first.created_at if mode == :until_caught_up
+
   if mode == :recursive && opts[:page] <= 100 
     opts[:page] += 1
     full_retrieve(opts)
-  elsif mode == :last24h && within_time?(data, 24) && opts[:page] <= 100 
+  elsif mode == :until_caught_up && within_time?(data, last_time_from_database) && opts[:page] <= 100 
     opts[:page] += 1
-    full_retrieve(opts, mode: :last24h)
-  elsif mode == :last12h && within_time?(data, 12) && opts[:page] <= 100 
-    opts[:page] += 1
-    full_retrieve(opts, mode: :last12h)
+    full_retrieve(opts, mode: :until_caught_up)
   end
 end
 
-def within_time?(data, hours)
-  last_photo_date   = Time.parse( data["photos"].last["created_at"] )
-  elapsed_time_in_s = Time.now - last_photo_date
-  elapsed_time_in_s < (hours * 3600) # Convert hours to seconds
+def within_time?(data, last_time_from_database)
+  last_time_from_500px   = Time.parse( data["photos"].last["created_at"] )
+  last_time_from_database < last_time_from_500px
 end

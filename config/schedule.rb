@@ -23,7 +23,7 @@ env :GEM_PATH, ENV['GEM_PATH']
 
 set :output, 'log/cron.log'
 
-every 12.hours, at: "4:30 PM" do
+every 4.hours do
   rake "fhpx:last_12h"
 end
 
