@@ -3,8 +3,8 @@ class Photo::CompileToDominant
     return commons.first(palette_size) if outliers.empty?
 
     outliers = remove_any_duplicates(commons, outliers)
-
     outliers = outliers.first(max_outliers)
+    
     commons  = commons.first(palette_size - outliers.count)
     results  = []
 
@@ -17,7 +17,7 @@ class Photo::CompileToDominant
     outliers.select do |o|
       unique = true
       commons.each do |c|
-        unique = false if c[:colour] == o[:colour]
+        unique = false if c[:closest] == o[:closest]
       end
       unique
     end
