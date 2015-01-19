@@ -130,17 +130,17 @@ class Photo < ActiveRecord::Base
   end
 
   def consistent_hue(colour_data)
-    (colour_data[:stats][:hsb][:h][:deviation] < 30) ||
+    (colour_data[:stats][:hsb][:h][:deviation] < 37) ||
     (colour_data[:stats][:lab][:a][:deviation] + colour_data[:stats][:lab][:b][:deviation] < 8)
   end
 
   def has_a_good_outlier(colour_data)
     # A good outlier is a really saturated, bright colour in an unsaturated backdrop
-    if colour_data[:stats][:hsb][:s][:mean] < 60
+    if colour_data[:stats][:hsb][:s][:mean] < 50
       colour_data[:colours].each do |c|
         return true if  ( c[:type] == "outlier" ) && 
-                        ( c[:colour][:hsb][:s] > 80 ) && 
-                        ( c[:colour][:hsb][:b] > 55 )
+                        ( c[:colour][:hsb][:s] > 75 ) && 
+                        ( c[:colour][:hsb][:b] > 30 )
       end
     end
     false
