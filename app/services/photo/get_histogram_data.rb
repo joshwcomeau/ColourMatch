@@ -37,8 +37,14 @@ class Photo::GetHistogramData
   end
 
   # returns an array [w, h]
-  def self.get_dimensions(path, resize)
-    `convert #{path} #{resize} -ping -format '%[fx:w]x%[fx:h]' info:`.split('x').map(&:to_i)
+  def self.get_dimensions(path, resize, first_try: true)
+    begin
+      `convert #{path} #{resize} -ping -format '%[fx:w]x%[fx:h]' info:`.split('x').map(&:to_i)
+    rescue
+      sleep 2
+      get_dimensions(path, resize, first_try: false) if first_try == true
+    end
+
   end
 
   def self.parse_histogram(histogram)
