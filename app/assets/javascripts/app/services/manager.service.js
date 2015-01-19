@@ -6,7 +6,9 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
     done:          2,
     error:         3
   };
-  this.hex_regex = /^#?([0-9A-F]{6}|[0-9A-F]{3})$/i
+  this.hex_regex = /^#?([0-9A-F]{6}|[0-9A-F]{3})$/i;
+
+  this.comparison = true;
 
   if (gon.suggestions) {
     this.suggestions = gon.suggestions;
