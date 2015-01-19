@@ -43,12 +43,14 @@
         By <a ng-href="https://www.500px.com/{{p.photo.px_user.username}}" target="_blank">{{p.photo.px_user.username}}</a>
       </h6>
 
-      <div class="match-score">
+      <div class="match-score" ng-click="dash.manager.comparison = p">
+        <h5>Match Score</h5>
         <h2>{{p.score}}%</h2>
-        <h5>Match</h5>
+        <p>View Stats</p>
       </div>
 
-      <p style=""> <!-- debugging purposes -->
+ 
+      <p style="display: none;"> <!-- debugging purposes -->
         {{p.stats.hsb.h.mean | number:1}} // {{p.stats.hsb.s.mean | number:1}} // {{p.stats.hsb.b.mean | number:1}}
       </p>
 
