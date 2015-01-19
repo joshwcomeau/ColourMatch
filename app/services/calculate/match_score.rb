@@ -2,8 +2,7 @@ class Calculate::MatchScore
   def self.call(data, p2)
     if data.is_a? Photo
 
-      if data.stat.hsb["h"]["deviation"] < 100
-        return score = 0 if p2.stat.hsb["h"]["deviation"] < 60
+      if data.stat.hsb["h"]["deviation"] < 100 && p2.stat.hsb["h"]["deviation"] < 60
         c1 = { l: data.stat.lab['l']['mean'], a: data.stat.lab['a']['mean'], b: data.stat.lab['b']['mean'] }
         c2 = { l: p2.stat.lab['l']['mean'], a: p2.stat.lab['a']['mean'], b: p2.stat.lab['b']['mean'] }        
         score = normalized_dist(c1, c2)   
