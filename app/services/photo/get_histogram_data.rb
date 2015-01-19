@@ -19,12 +19,21 @@ class Photo::GetHistogramData
     resize ? "-resize #{dimension}x#{dimension}" : ""
   end
 
-  def self.make_histogram(path, resize, colours)
-    `convert #{path}    \
-    -format %c          \
-    #{resize}           \
-    -colors #{colours}  \
-    histogram:info:-    | sort -n -r`
+  def self.make_histogram(path, resize, colours, first_try: true)
+    begin
+      `convert #{path}    \
+      -format %c          \
+      #{resize}           \
+      -colors #{colours}  \
+      histogram:info:-    | sort -n -r`
+    rescue
+      # If an error gets thrown, it is likely a not-enough-memory error.
+      # Typically this error is enough to throw all the memory contents out, so it solves itself.
+      # Let's run this method again, but with a condition so we don't get stuck in a recursive loop.
+      sleep 2
+      make_histogram(path, resize, colours, first_try: false) if first_try == true
+    end
+
   end
 
   # returns an array [w, h]
