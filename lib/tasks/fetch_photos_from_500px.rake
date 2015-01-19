@@ -14,7 +14,7 @@ namespace :fhpx do
   end
 
   task :until_caught_up, [:starting_page, :feature] => [:environment] do |t, args|
-    args.with_defaults(starting_page: 1, feature: 'fresh_today', rpp: 4)
+    args.with_defaults(starting_page: 1, feature: 'fresh_today', rpp: 200)
     
     last_time_from_database = Photo.where(from_500px: true).order("created_at DESC").first.created_at
     full_retrieve({ page: args.starting_page.to_i, feature: args.feature, rpp: args.rpp }, mode: :until_caught_up, run_until: last_time_from_database)
