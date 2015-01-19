@@ -1,32 +1,39 @@
 class Calculate::MatchScore
   def self.call(data, p2)
-    better_way(data, p2)
-  end
-
-  private
-
-  def self.better_way(data, p2)
     if data.is_a? Photo
-      c1 = { l: data.stat.lab['l']['mean'], a: data.stat.lab['a']['mean'], b: data.stat.lab['b']['mean'] }
-      c2 = { l: p2.stat.lab['l']['mean'], a: p2.stat.lab['a']['mean'], b: p2.stat.lab['b']['mean'] }
+      if data.stat.hsb["h"]["mean"] < 40
+        c1 = { l: data.stat.lab['l']['mean'], a: data.stat.lab['a']['mean'], b: data.stat.lab['b']['mean'] }
+        c2 = { l: p2.stat.lab['l']['mean'], a: p2.stat.lab['a']['mean'], b: p2.stat.lab['b']['mean'] }        
+        score = normalized_dist(c1, c2)   
+      else
+        matching_colours = []
+        score = 0
+        # What about... we be a little more lenient on match... and look for photos that have 3+ matches? when a match is 80%+.
+        good_colours = data.photo_colours.select { |c| c.hsb["s"] > 18 }
+        good_colours.each do |c|
+          next if c.hsb["s"] < 18
+          closest = get_nearest_colour(c, p2.photo_colours)
+          dist = normalized_dist(c, closest)
+          if dist >= 90
+            matching_colours << dist
+          end
+        end
+
+        if matching_colours.count >= (good_colours.count-1)
+          score = Maths.mean(matching_colours).round(2)
+        end
+      end
     else
       # Let's compare our colour to all the colours in the photo, and find the closest one.
       c1 = data[:lab]
       c2 = get_nearest_colour(c1, p2.photo_colours)
-    end
-    normalized_dist(c1, c2)   
-  end
-
-  def self.original_way(data, p2)
-    if data.is_a? Photo
-      c1 = { l: data.stat.lab['l']['mean'], a: data.stat.lab['a']['mean'], b: data.stat.lab['b']['mean'] }
-    else
-      c1 = data[:lab]
+      score = normalized_dist(c1, c2)   
     end
 
-    c2 = { l: p2.stat.lab['l']['mean'], a: p2.stat.lab['a']['mean'], b: p2.stat.lab['b']['mean'] }
-    normalized_dist(c1, c2)
+    score
   end
+
+  private
 
   def self.normalized_dist(c1, c2)
     dist  = Calculate::Distance.call(c1, c2)
