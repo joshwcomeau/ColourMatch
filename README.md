@@ -2,7 +2,7 @@
 ####Find beautiful photos from 500px, with colour
 
 
-Rather than search with keywords, I thought it'd be fun to make a search-by-colour photo search engine. The project is live at http://www.colourmatch.ca/.
+Rather than search with keywords, I thought it'd be fun to make a search-by-colour photo search engine. The project is live at http://colourmatch.ca/.
 
 There are, in fact, other search tools that do similar things. Mine differs in how I judge colours as important. When you select a vibrant red, other tools will find images that are 100% red; A macro shot of a rose, a photo from the red light district where everything is bathed in crimson. 
 
