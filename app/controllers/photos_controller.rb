@@ -4,7 +4,7 @@ class PhotosController < ApplicationController
   before_action :validate_photo, only: :create
 
   MAX_RESULTS      = 40
-  PHOTO_THRESHOLD  = 80
+  PHOTO_THRESHOLD  = 85
   COLOUR_THRESHOLD = 94
 
   # GET /photos

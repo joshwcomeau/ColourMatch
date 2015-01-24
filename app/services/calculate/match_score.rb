@@ -2,6 +2,9 @@ class Calculate::MatchScore
   def self.call(data, p2)
     if data.is_a? Photo
 
+      # Don't even bother with B&W photos if our photo isnt B&W
+      return 0 if p2.stat.hsb['s']['mean'] < 22 && data.stat.hsb['s']['mean'] > 22
+
       if data.stat.hsb["h"]["deviation"] < 20 && p2.stat.hsb["h"]["deviation"] < 60
         c1 = { l: data.stat.lab['l']['mean'], a: data.stat.lab['a']['mean'], b: data.stat.lab['b']['mean'] }
         c2 = { l: p2.stat.lab['l']['mean'], a: p2.stat.lab['a']['mean'], b: p2.stat.lab['b']['mean'] }        
@@ -19,7 +22,6 @@ class Calculate::MatchScore
         
         saturated_data   = get_most_saturated(data.photo_colours)
         saturated_target = get_most_saturated(p2.photo_colours)
-
         score_part_2 = normalized_dist(saturated_data, saturated_target)
 
 
@@ -65,7 +67,7 @@ class Calculate::MatchScore
   end
 
   def self.get_most_saturated(colours)
-    colours.sort { |a, b|  b.hsb['s'] <=> a.hsb['s'] }.first
+    colours.sort { |a, b|  (b.hsb['s'] + b.hsb['b'] * 0.75) <=> (a.hsb['s'] + a.hsb['b'] * 0.75) }.first
   end
 
   def self.normalized_dist(c1, c2)
