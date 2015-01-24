@@ -1,12 +1,20 @@
 class Photo::GetHistogramData
-  def self.call(path, colours:64, resize: false, resize_dimension: 250)
-    path        = strip_version_from_path(path)
-    resize      = resize_str(resize, resize_dimension)
-    histogram   = make_histogram(path, resize, colours)
-    dimensions  = get_dimensions(path, resize)
-    rgb_data    = parse_histogram(histogram)
+  def self.call(path, colours:64, resize: false, resize_dimension: 250, first_try: true)
+    begin
+      path        = strip_version_from_path(path)
+      resize      = resize_str(resize, resize_dimension)
+      histogram   = make_histogram(path, resize, colours)
+      dimensions  = get_dimensions(path, resize)
+      rgb_data    = parse_histogram(histogram)
 
-    format_data(rgb_data, path, dimensions)
+      format_data(rgb_data, path, dimensions)
+    rescue
+      # If an error gets thrown, it is likely a not-enough-memory error.
+      # Typically this error is enough to throw all the memory contents out, so it solves itself.
+      # Let's run this method again, but with a condition so we don't get stuck in a loop.
+      sleep 2
+      call(path, colours: colours, resize: resize, resize_dimension: resize_dimension, first_try: false) if first_try == true
+    end
   end
 
   private
@@ -20,31 +28,16 @@ class Photo::GetHistogramData
   end
 
   def self.make_histogram(path, resize, colours, first_try: true)
-    begin
-      `convert #{path}    \
-      -format %c          \
-      #{resize}           \
-      -colors #{colours}  \
-      histogram:info:-    | sort -n -r`
-    rescue
-      # If an error gets thrown, it is likely a not-enough-memory error.
-      # Typically this error is enough to throw all the memory contents out, so it solves itself.
-      # Let's run this method again, but with a condition so we don't get stuck in a recursive loop.
-      sleep 2
-      make_histogram(path, resize, colours, first_try: false) if first_try == true
-    end
-
+    `convert #{path}    \
+    -format %c          \
+    #{resize}           \
+    -colors #{colours}  \
+    histogram:info:-    | sort -n -r`
   end
 
   # returns an array [w, h]
   def self.get_dimensions(path, resize, first_try: true)
-    begin
-      `convert #{path} #{resize} -ping -format '%[fx:w]x%[fx:h]' info:`.split('x').map(&:to_i)
-    rescue
-      sleep 2
-      get_dimensions(path, resize, first_try: false) if first_try == true
-    end
-
+    `convert #{path} #{resize} -ping -format '%[fx:w]x%[fx:h]' info:`.split('x').map(&:to_i)
   end
 
   def self.parse_histogram(histogram)
