@@ -35,6 +35,7 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
 
 
   this.requestImages = function(search, token, type) {
+    console.log("REquest made");
     var request_string;
 
     Manager.state = Manager.states.uploading;

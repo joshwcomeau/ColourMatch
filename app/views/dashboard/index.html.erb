@@ -22,7 +22,6 @@
             ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
             ng-style="{'background-image': dash.manager.preview }"
             ng-file-drop 
-            ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
             ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
@@ -51,7 +50,6 @@
             -->
             <div id="click-handler"
             ng-file-select 
-            ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
             ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
