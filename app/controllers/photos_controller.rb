@@ -3,8 +3,9 @@ class PhotosController < ApplicationController
 
   before_action :validate_photo, only: :create
 
-  MAX_RESULTS     = 40
-  SCORE_THRESHOLD = 94
+  MAX_RESULTS      = 40
+  PHOTO_THRESHOLD  = 85
+  COLOUR_THRESHOLD = 94
 
   # GET /photos
   # Nabs all photos through Server-Sent Events that match the provided colour info
@@ -25,7 +26,9 @@ class PhotosController < ApplicationController
         pgroup.each do |p|
           match_score = Calculate::MatchScore.call(data, p)
 
-          if match_score > SCORE_THRESHOLD
+          score_threshold = params[:mode] == 'photo' ? PHOTO_THRESHOLD : COLOUR_THRESHOLD 
+
+          if match_score >= score_threshold
             puts "Photo #{p.id} has an acceptable match score of #{match_score}."
             results += 1
             sse.write({ 

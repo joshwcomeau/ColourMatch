@@ -11,16 +11,16 @@ class Calculate::MatchScore
         score = 0
         # What about... we be a little more lenient on match... and look for photos that have 3+ matches? when a match is 80%+.
         good_colours = data.photo_colours.select { |c| c.hsb["s"] > 18 }
+        
         good_colours.each do |c|
-          next if c.hsb["s"] < 18
           closest = get_nearest_colour(c, p2.photo_colours)
           dist = normalized_dist(c, closest)
-          if dist >= 90
+          if dist >= 85
             matching_colours << dist
           end
         end
 
-        if matching_colours.count >= (good_colours.count-1)
+        if matching_colours.count >= (good_colours.count-2)
           score = Maths.mean(matching_colours).round(2)
         end
       end
