@@ -22,10 +22,10 @@ function DashboardController($scope, $attrs, $window, Manager ) {
   });
 
   this.listenForResponse = function(link) {
-    source = new EventSource(link);
+    dash.source = new EventSource(link);
     console.log("Listening for response from ", link)
 
-    source.addEventListener('photo', function(event) {
+    dash.source.addEventListener('photo', function(event) {
       console.log("NEW event: ", event);
       var data = event.data
       if (data === 'OVER') {
@@ -34,7 +34,7 @@ function DashboardController($scope, $attrs, $window, Manager ) {
         $scope.$apply(function() {
           Manager.allComplete = true;
           console.log("Closing.");
-          source.close();
+          dash.source.close();
         });
       } else {
         console.log("Data does NOT equal 'OVER'");
@@ -44,6 +44,11 @@ function DashboardController($scope, $attrs, $window, Manager ) {
       }
     });
   };
+
+  this.restart = function() {
+    Manager.initialize();
+    dash.source.close();
+  }
 }
 
 
