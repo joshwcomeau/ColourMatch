@@ -24,8 +24,10 @@ function DashboardController($scope, $attrs, $window, Manager ) {
   $scope.$watch(angular.bind(this, function () {
     return Manager.photo
   }), function(newVal, oldVal) {
-    console.log("Photo changed from", oldVal, "to", newVal);
-    Manager.requestImages(newVal, dash.auth, 'photo');
+    if ( newVal ) {
+      console.log("Photo changed from", oldVal, "to", newVal);
+      Manager.requestImages(newVal, dash.auth, 'photo');
+    }
   });
 
   this.listenForResponse = function(link) {
