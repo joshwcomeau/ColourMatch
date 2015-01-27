@@ -3,14 +3,18 @@ class Calculate::MatchScore
     if data.is_a? Photo
 
       # Don't even bother with B&W photos if our photo isnt B&W
-      return 0 if p2.stat.hsb['s']['mean'] < 22 && data.stat.hsb['s']['mean'] > 22
+      return 0 if p2.stat.hsb['s']['mean'] < 10 && data.stat.hsb['s']['mean'] > 10
 
-      if data.stat.hsb["h"]["deviation"] < 20 && p2.stat.hsb["h"]["deviation"] < 60
-        c1 = { l: data.stat.lab['l']['mean'], a: data.stat.lab['a']['mean'], b: data.stat.lab['b']['mean'] }
-        c2 = { l: p2.stat.lab['l']['mean'], a: p2.stat.lab['a']['mean'], b: p2.stat.lab['b']['mean'] }        
-        score = normalized_dist(c1, c2)   
+      if data.stat.hsb["h"]["deviation"] < 8
+        if p2.stat.hsb["h"]["deviation"] < 8
+          c1 = { l: data.stat.lab['l']['mean'], a: data.stat.lab['a']['mean'], b: data.stat.lab['b']['mean'] }
+          c2 = { l: p2.stat.lab['l']['mean'], a: p2.stat.lab['a']['mean'], b: p2.stat.lab['b']['mean'] }        
+          score = normalized_dist(c1, c2)   
+        else
+          score = 0
+        end
       else
-        matching_colours = []
+       
         score = 0
 
 
@@ -58,6 +62,8 @@ class Calculate::MatchScore
   end
 
   def self.by_threshold_num_of_matches(p1, p2)
+    matching_colours = []
+
     # We only want to compare colours that aren't greyscale, or near it.
     good_p1_colours = p1.photo_colours.select { |c| c.hsb["s"] > 18 }
     good_p2_colours = p2.photo_colours.select { |c| c.hsb["s"] > 18 }
