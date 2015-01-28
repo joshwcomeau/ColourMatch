@@ -34,9 +34,31 @@ body {
       color: lighten($beige, 10%);
     }
 
+    h6 {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      color: #CCC;
+      animation-delay: 0.5s;
+      animation-duration: 2s;
+      animation-name: fadeInDown;
+      animation-fill-mode:both;
+
+
+      a {
+        color: $blue;
+        text-decoration: underline;
+        font-weight: 500;
+      }
+    }
+
     a {
       color: $red;
       text-decoration: none;
+    }
+
+    sup {
+      color: lighten($green, 10%);
+      font-weight: 500;
     }
   }
 
@@ -127,3 +149,7 @@ button {
   outline:      none;  
 }
 
+sup {
+  vertical-align: super;
+  font-size: 0.65em;
+}
