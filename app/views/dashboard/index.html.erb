@@ -1,6 +1,8 @@
+
+
 <div class="photos-wrapper" ng-controller="DashboardController as dash" data-auth-token="<%= form_authenticity_token %>">
   <%= render partial: 'layouts/header', locals: { subheader: 'Find beautiful photos from 500px, using colour.' } %>
-
+  <%= render partial: 'stats.html.erb' %>
   <div class="content-wrapper" ng-class="{widemode: dash.manager.state > 1}" ng-cloak>
     <div class="flash" ng-show="dash.manager.flash.type &amp;&amp; dash.manager.state === 0" 
     ng-class="{notice: dash.manager.flash.type === 'notice', error: dash.manager.flash.type === 'error'}">
@@ -20,7 +22,6 @@
             ng-class="{'with-image': dash.manager.state !== 0, 'without-image': dash.manager.state === 0 }"
             ng-style="{'background-image': dash.manager.preview }"
             ng-file-drop 
-            ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
             ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"
@@ -49,7 +50,6 @@
             -->
             <div id="click-handler"
             ng-file-select 
-            ng-file-change="dash.manager.requestImages(dash.manager.photo, dash.auth, 'photo')"
             ng-model="dash.manager.photo" 
             accept="image/*"
             ng-rejected-file-model="rejected"

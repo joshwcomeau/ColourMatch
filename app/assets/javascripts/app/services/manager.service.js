@@ -6,7 +6,7 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
     done:          2,
     error:         3
   };
-  this.hex_regex = /^#?([0-9A-F]{6}|[0-9A-F]{3})$/i
+  this.hex_regex = /^#?([0-9A-F]{6}|[0-9A-F]{3})$/i;
 
   if (gon.suggestions) {
     this.suggestions = gon.suggestions;
@@ -28,16 +28,14 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
       type:     null
     };
 
-    // Ugh, I hate that I need to do this, but ng-animations are buggy.
+    // Ugh, I hate that I need to do this here, but ng-animations are buggy.
     $(".left-side-wrapper, .colour-select").attr("style", "").attr("enabled", "false");
-
-    // Also probably a better way, but I need to reset the colorpicker with the plugin's
-    // jQuery command
 
   };
 
 
   this.requestImages = function(search, token, type) {
+    console.log("REquest made");
     var request_string;
 
     Manager.state = Manager.states.uploading;

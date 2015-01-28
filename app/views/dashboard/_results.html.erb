@@ -3,7 +3,7 @@
     <h3 ng-show="!dash.manager.allComplete">Finding Matches<span class="ellipsis num1">.</span><span class="ellipsis num2">.</span><span class="ellipsis num3">.</span><span class="ellipsis num4">.</span></h3> 
     <h3 ng-show="dash.manager.allComplete">Found {{dash.manager.photos.length}} Matching Photos.</h3>
   </div>
-  <h5 ng-click="dash.manager.initialize()">Restart search</h5>
+  <h5 ng-click="dash.restart()">Restart search</h5>
 </div>
 <ul>
   <li class="result" ng-class="{'active-result': dash.manager.activeResult === p.photo.id}"
@@ -43,12 +43,14 @@
         By <a ng-href="https://www.500px.com/{{p.photo.px_user.username}}" target="_blank">{{p.photo.px_user.username}}</a>
       </h6>
 
-      <div class="match-score">
+      <div class="match-score" ng-click="dash.manager.comparison = p">
+        <h5>Match Score</h5>
         <h2>{{p.score}}%</h2>
-        <h5>Match</h5>
+        <!-- <p>View Stats</p> -->
       </div>
 
-      <p style=""> <!-- debugging purposes -->
+ 
+      <p style="display: none;"> <!-- debugging purposes -->
         {{p.stats.hsb.h.mean | number:1}} // {{p.stats.hsb.s.mean | number:1}} // {{p.stats.hsb.b.mean | number:1}}
       </p>
 

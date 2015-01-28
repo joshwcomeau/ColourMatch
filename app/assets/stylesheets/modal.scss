@@ -1,0 +1,56 @@
+.modal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.75);
+
+
+  &.ng-hide-add.ng-hide-add-active {
+    animation-delay: 0s;
+    animation-duration: 0.75s !important;  
+    animation-name: fadeOut;
+    animation-fill-mode: both;
+
+    .modal-window {
+      animation-delay: 0s;
+      animation-duration: 0.25s !important;  
+      animation-name: fadeOutUp;
+      animation-fill-mode: both;
+    }
+  }
+  &.ng-hide-remove.ng-hide-remove-active {
+    animation-delay: 0s;
+    animation-duration: 0.75s !important;  
+    animation-name: fadeIn;
+    animation-fill-mode: both;
+
+    .modal-window {
+      animation-delay: 0s;
+      animation-duration: 0.25s !important;  
+      animation-name: fadeInDown;
+      animation-fill-mode: both;
+    }
+
+  }
+
+  .modal-window {
+    position: absolute;
+    width: 800px;
+    min-height: 400px;
+    top: 120px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    background: #FFF;
+    outline: 6px solid rgba(255,255,255,0.6);
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 500;
+      text-align: center;
+    }
+  }
+}

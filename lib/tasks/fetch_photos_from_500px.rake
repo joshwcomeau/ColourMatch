@@ -10,23 +10,26 @@ namespace :fhpx do
 
   task :thorough, [:starting_page, :feature] => [:environment] do |t, args|
     args.with_defaults(starting_page: 1, feature: 'fresh_today', rpp: 200)
-    full_retrieve({ page: args.starting_page.to_i, feature: args.feature })
+    full_retrieve({ page: args.starting_page.to_i, feature: args.feature, rpp: args.rpp })
   end
 
-  task :last_24h, [:starting_page, :feature] => [:environment] do |t, args|
-    args.with_defaults(starting_page: 1, feature: 'fresh_today')
-    full_retrieve({ page: args.starting_page.to_i, feature: args.feature }, mode: :last24h)
+  task :until_caught_up, [:starting_page, :feature] => [:environment] do |t, args|
+    args.with_defaults(starting_page: 1, feature: 'fresh_today', rpp: 200)
+    
+    last_time_from_database = Photo.where(from_500px: true).order("created_at DESC").first.created_at
+    full_retrieve({ page: args.starting_page.to_i, feature: args.feature, rpp: args.rpp }, mode: :until_caught_up, run_until: last_time_from_database)
   end
 end
 
-# To use in terminal: bundle exec rake fhpx:last_24h[1,'fresh_today']
+# To use in terminal: bundle exec rake fhpx:thorough[1,'fresh_today']
 # Important to not have any spaces in that 'array'.
 
 
-def full_retrieve(opts, mode: :recursive)
+def full_retrieve(opts, mode: :recursive, run_until: nil)
   puts "Started retrieving page #{opts[:page]}."
   data = FiveHundredAPI.get_photos(opts)
   puts "#{data["total_pages"]} total pages"
+
 
   data["photos"].each do |p|
     p[:from_500px] = true
@@ -36,14 +39,14 @@ def full_retrieve(opts, mode: :recursive)
   if mode == :recursive && opts[:page] <= 100 
     opts[:page] += 1
     full_retrieve(opts)
-  elsif mode == :last24h && within_last_24h?(data)
+  elsif mode == :until_caught_up && within_time?(data, run_until) && opts[:page] <= 100 
+    
     opts[:page] += 1
-    full_retrieve(opts, mode: :last24h)
+    full_retrieve(opts, mode: :until_caught_up, run_until: run_until)
   end
 end
 
-def within_last_24h?(data)
-  last_photo_date   = Time.parse( data["photos"].last["created_at"] )
-  elapsed_time_in_s = Time.now - last_photo_date
-  elapsed_time_in_s < 86400
+def within_time?(data, last_time_from_database)
+  last_time_from_500px   = Time.parse( data["photos"].last["created_at"] )
+  last_time_from_database < last_time_from_500px
 end

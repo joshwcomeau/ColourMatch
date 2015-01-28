@@ -610,7 +610,7 @@
         .match-score {
           position: absolute;
           width: 40%;
-          height: 3.875rem;
+          height: 3.7rem;
           top: 0;
           bottom: 0;
           margin: auto 0px;
@@ -619,7 +619,7 @@
           border-radius: 2px;
 
           h5 {
-            font-weight: 300;
+            font-weight: 500;
             font-size: 0.9rem;
           }
 
@@ -627,6 +627,13 @@
             font-weight: 900;
             font-size: 2rem;
             letter-spacing: -1px;
+          }
+
+          p {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: $blue;
+            cursor: pointer;
           }
         }
 
