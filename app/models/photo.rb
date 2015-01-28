@@ -65,7 +65,8 @@ class Photo < ActiveRecord::Base
     if from_500px && [1,2,3].include?(IMAGE_SIZE)
       Photo.resolution_from_500px ** 2
     else
-      `identify -format "%wx%h" #{image.file.path}`.split(/x/).map(&:to_i).inject(&:*)  
+      pixels = System::RunTerminalCommand.call("identify -format '%wx%h' #{image.file.path}")
+      pixels.split(/x/).map(&:to_i).inject(&:*)  
     end  
   end
 

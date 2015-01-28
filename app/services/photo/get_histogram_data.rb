@@ -1,9 +1,8 @@
 class Photo::GetHistogramData
-  def self.call(path, colours:64, resize: false, resize_dimension: 250)
+  def self.call(path, colours:64, resize: false, dimension: 250)
     path        = strip_version_from_path(path)
-    resize      = resize_str(resize, resize_dimension)
-    histogram   = make_histogram(path, resize, colours)
-    dimensions  = get_dimensions(path, resize)
+    histogram   = make_histogram(path, colours, resize, dimension)
+    dimensions  = get_dimensions(path, resize, dimension)
     rgb_data    = parse_histogram(histogram)
 
     format_data(rgb_data, path, dimensions)
@@ -15,21 +14,22 @@ class Photo::GetHistogramData
     path.gsub(/\?v=[\d]+/, '')
   end 
 
-  def self.resize_str(resize, dimension)
-    resize ? "-resize #{dimension}x#{dimension}" : ""
-  end
+  def self.make_histogram(path, colours, resize, dimension)
+    query_string  = "convert #{path} -format %c "
+    query_string += "-resize #{dimension}x#{dimension} " if resize
+    query_string += "-colors #{colours} histogram:info:- | sort -n -r"
 
-  def self.make_histogram(path, resize, colours)
-    `convert #{path}    \
-    -format %c          \
-    #{resize}           \
-    -colors #{colours}  \
-    histogram:info:-    | sort -n -r`
+    # run the query, and return what it returns.
+    System::RunTerminalCommand.call(query_string)
   end
 
   # returns an array [w, h]
-  def self.get_dimensions(path, resize)
-    `convert #{path} #{resize} -ping -format '%[fx:w]x%[fx:h]' info:`.split('x').map(&:to_i)
+  def self.get_dimensions(path, resize, dimension)
+    query_string  = "convert #{path} -ping -format '%[fx:w]x%[fx:h]' "
+    query_string += "-resize #{dimension}x#{dimension} " if resize
+    query_string += " info:"
+
+    System::RunTerminalCommand.call(query_string).split('x').map(&:to_i)
   end
 
   def self.parse_histogram(histogram)
