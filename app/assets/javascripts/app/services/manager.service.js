@@ -35,7 +35,6 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
 
 
   this.requestImages = function(search, token, type) {
-    console.log("REquest made");
     var request_string;
 
     Manager.state = Manager.states.uploading;
@@ -48,7 +47,7 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
         Manager.preview = 'url(' + photoData + ')';
       })
       .catch(function(error) {
-        console.log(error);
+        alert("Oh no! We had trouble reading the image you selected. Things may be broken. You might want to refresh and try again.");
       });    
 
       // Send the photo to the server
@@ -80,8 +79,6 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
       });
     
     } else if (type == 'colour') {
-      console.log("COLOUR IS ", Manager.colour);
-
       // Validations
       if ( Manager.hex_regex.test(Manager.colour) ) {
 
@@ -98,6 +95,7 @@ function Manager($timeout, UploadPhoto, ReadImageContents, SendColour) {
           
         }, function(errorResult) {
           console.log(errorResult);
+          alert("Oh no! We ran into some trouble. Things may be broken. You might want to refresh and try again.");
         });
       } else {
         Manager.initialize(); 

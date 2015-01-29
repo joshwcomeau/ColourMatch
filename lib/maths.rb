@@ -7,6 +7,14 @@ module Maths
     sum(a) / a.length.to_f
   end
 
+  def self.circular_mean(a)
+    # a is an array of degree values from 0 to 360.
+    # I need to convert it from degrees to cartesian coordinates [x, y]. 
+    # Then we'll get the mean of x and y, and convert back to polar coordinates.
+    
+    
+  end
+
   def self.sample_variance(a)
     m = mean(a)
     sum = a.inject(0){ |accum, i| accum + (i - m) ** 2 }
