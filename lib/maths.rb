@@ -29,10 +29,10 @@ module Maths
     (a - mean) / deviation
   end
 
-  def self.circular_mean(a)
+  def self.circular_mean(a, cartesian_array: nil)
     # a is an array of degree values from 0 to 360.
     # I need to convert it from degrees to cartesian coordinates [x, y].     
-    cartesian_array = a.map { |angle| convert_to_cartesian(angle) }
+    cartesian_array ||= a.map { |angle| convert_to_cartesian(angle) }
 
     # cartesian_array is a 2-dimensional array with x-y values.
     # eg. [ [1, 4], [2, 3], [1, 0.5] ]
@@ -43,6 +43,19 @@ module Maths
     # let's convert this x,y pair back to polar coordinates, for our solution.
     polar = convert_to_polar(average_x, average_y)
     polar[:angle]
+  end
+
+  def self.circular_deviation(a)
+    cartesian_array = a.map { |angle| convert_to_cartesian(angle) }
+
+    # So this is tricky. We have two values for every point, [x, y]. 
+    # Should I get the standard deviation of both x and y, and average them out?
+    dev_x = standard_deviation( cartesian_array.map { |arr| arr[0] } )
+    dev_y = standard_deviation( cartesian_array.map { |arr| arr[1] } )
+
+    polar = convert_to_polar(dev_x, dev_y)
+    polar[:angle]
+
   end
 
   def self.convert_to_cartesian(angle, radius: 1, type: :radians)
