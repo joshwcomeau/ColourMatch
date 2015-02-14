@@ -49,7 +49,7 @@ module Maths
   end
 
   def self.circular_deviation(a)
-    cartesian_array = a.map(method(:convert_to_cartesian))
+    cartesian_array = a.map(&method(:convert_to_cartesian))
 
     # So this is tricky. We have two values for every point, [x, y].
     # Should I get the standard deviation of both x and y, and average them out?
