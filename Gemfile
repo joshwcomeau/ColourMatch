@@ -25,15 +25,15 @@ gem 'rest-client'                   # A simple HTTP and REST client for Ruby (us
 gem 'whenever', require: false      # Scheduler for cron jobs
 
 
-group :development, :test do 
+group :development, :test do
   gem 'factory_girl_rails'          # Provides factories for quick creation during tests.
   gem 'faker'                       # Provides quick data for seeds and tests
   gem 'pry'                         # Alternative console, allows for JS-style breakpoints.
   gem 'pry-byebug'                  # A Pry augmentor, provides convenience methods like 'next'.
   gem 'rspec-rails'                 # Testing framework. Better than what's included with Rails.
-end 
+end
 
-group :test do 
+group :test do
   gem 'capybara'                    # Used for feature (browser-based) tests.
   gem 'capybara-webkit'             # Allows feature tests to run in a headless webkit state. Faster, but you can't see the magic.
   gem 'capybara-angular'            # Allows feature tests to work with Angular
@@ -45,9 +45,8 @@ end
 
 
 # Deployment gems
-gem 'capistrano', '~> 3.2.1'
+gem 'capistrano', '~> 3.4.1'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'capistrano-rails', '~> 1.1.1'
 gem 'capistrano-rbenv', '~> 2.0'
 gem 'capistrano3-puma'
-
