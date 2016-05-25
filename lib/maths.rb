@@ -3,7 +3,7 @@ module Maths
   DEG_MULTIPLIER = 0.0174532925
 
   def self.sum(a)
-    a.inject(0){ |accum, i| accum + i }
+    a.inject(0, :+)
   end
 
   def self.mean(a)
@@ -12,8 +12,8 @@ module Maths
 
   def self.sample_variance(a)
     m = mean(a)
-    sum = a.inject(0){ |accum, i| accum + (i - m) ** 2 }
-    sum / (a.length - 1).to_f
+    sum = a.inject(0) { |accum, i| accum + (i - m) ** 2 }
+    sum / (a.size - 1).to_f
   end
 
   def self.standard_deviation(a)
@@ -24,38 +24,42 @@ module Maths
     raise "Need either the sample, or the mean and deviation, to calculate z-score" unless sample || (mean && deviation)
     # Calculate mean and deviation unless provided
     mean      ||= mean(sample)
-    deviation ||= standard_deviation(sample) 
+    deviation ||= standard_deviation(sample)
 
     (a - mean) / deviation
   end
 
   def self.circular_mean(a, cartesian_array: nil)
     # a is an array of degree values from 0 to 360.
-    # I need to convert it from degrees to cartesian coordinates [x, y].     
-    cartesian_array ||= a.map { |angle| convert_to_cartesian(angle) }
+    # I need to convert it from degrees to cartesian coordinates [x, y].
+    # cartesian_array ||= a.map(&method(:convert_to_cartesian))
 
     # cartesian_array is a 2-dimensional array with x-y values.
     # eg. [ [1, 4], [2, 3], [1, 0.5] ]
     # Let's get the average x and y
-    average_x = mean( cartesian_array.map { |arr| arr[0] } )
-    average_y = mean( cartesian_array.map { |arr| arr[1] } )
+    # average_x = mean( cartesian_array.map { |arr| arr[0] } )
+    # average_y = mean( cartesian_array.map { |arr| arr[1] } )
 
     # let's convert this x,y pair back to polar coordinates, for our solution.
-    polar = convert_to_polar(average_x, average_y)
-    polar[:angle]
+    # convert_to_polar(average_x, average_y)[:angle]
+
+    # This two-line combo replaces all the above
+    cartesian_array ||= a.map(&method(:convert_to_cartesian))
+    convert_to_polar(*cartesian_array.transpose.map(&method(:mean)))[:angle]
   end
 
   def self.circular_deviation(a)
-    cartesian_array = a.map { |angle| convert_to_cartesian(angle) }
+    cartesian_array = a.map(&method(:convert_to_cartesian))
 
-    # So this is tricky. We have two values for every point, [x, y]. 
+    # So this is tricky. We have two values for every point, [x, y].
     # Should I get the standard deviation of both x and y, and average them out?
-    dev_x = standard_deviation( cartesian_array.map { |arr| arr[0] } )
-    dev_y = standard_deviation( cartesian_array.map { |arr| arr[1] } )
+    # dev_x = standard_deviation( cartesian_array.map { |arr| arr[0] } )
+    # dev_y = standard_deviation( cartesian_array.map { |arr| arr[1] } )
 
-    polar = convert_to_polar(dev_x, dev_y)
-    polar[:angle]
+    # convert_to_polar(dev_x, dev_y)[:angle]
 
+    # This one-line combo replaces all the above
+    convert_to_polar(*cartesian_array.transpose.map(&method(:standard_deviation)))[:angle]
   end
 
   def self.convert_to_cartesian(angle, radius: 1, type: :radians)
@@ -64,7 +68,7 @@ module Maths
 
     # We're using the unit circle by default for all calculations; radius = 1
     [ radius * Math::cos(angle) , radius * Math::sin(angle) ]
-  end 
+  end
 
 
   def self.convert_to_polar(x, y)
@@ -85,7 +89,7 @@ module Maths
       r:     r,
       angle: angle
     }
-  end 
+  end
 
 
   def self.find_quadrant(x, y)
